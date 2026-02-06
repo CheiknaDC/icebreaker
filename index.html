@@ -1,126 +1,353 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paris Discovery ✨</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Paris Discovery ✨</title>
 
-<style>
+  <style>
+    :root{
+      --bg1:#0b1220;
+      --bg2:#111a2e;
+      --card: rgba(255,255,255,.07);
+      --border: rgba(255,255,255,.14);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.70);
+      --shadow: 0 18px 55px rgba(0,0,0,.55);
+      --radius: 18px;
+    }
 
-body{
-background: linear-gradient(135deg,#0f172a,#1e293b);
-font-family: Arial;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-margin:0;
-}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:-apple-system, system-ui, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 15% 10%, rgba(168,85,247,.45), transparent 55%),
+        radial-gradient(900px 600px at 85% 20%, rgba(34,197,94,.28), transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+    }
 
-.container{
-background: rgba(255,255,255,0.05);
-padding:30px;
-border-radius:15px;
-text-align:center;
-width:90%;
-max-width:400px;
-}
+    .app{
+      min-height:100%;
+      padding: calc(18px + env(safe-area-inset-top)) 16px calc(18px + env(safe-area-inset-bottom));
+      max-width: 560px;
+      margin: 0 auto;
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+    }
 
-button{
-margin:10px;
-padding:12px;
-border:none;
-border-radius:10px;
-font-size:16px;
-width:100%;
-cursor:pointer;
-background:white;
-color:black;
-}
+    header{
+      text-align:center;
+      margin-top:8px;
+    }
+    h1{margin:0; font-size:28px; letter-spacing:.2px}
+    .sub{margin:6px 0 0; color:var(--muted); font-size:14px}
 
-button:hover{
-background:#e2e8f0;
-}
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
 
-</style>
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
+      color: var(--muted);
+      font-size: 12px;
+    }
 
+    .q{
+      margin: 14px 0 0;
+      font-size: 20px;
+      line-height: 1.25;
+      text-align:center;
+      min-height: 64px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn{
+      width:100%;
+      padding: 14px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      font-size: 15px;
+      cursor:pointer;
+      transition: transform .06s ease;
+      box-shadow: 0 10px 18px rgba(0,0,0,.22);
+      text-align:center;
+    }
+    .btn:active{transform: scale(.99)}
+    .btn.primary{
+      font-weight: 700;
+      background: rgba(255,255,255,.18);
+      border-color: rgba(255,255,255,.28);
+    }
+
+    .input{
+      width:100%;
+      padding: 14px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      font-size: 15px;
+      outline:none;
+    }
+    .input::placeholder{color: rgba(255,255,255,.45)}
+
+    .row{
+      display:flex;
+      gap:10px;
+      margin-top: 12px;
+    }
+
+    .small{
+      color: var(--muted);
+      font-size: 12px;
+      text-align:center;
+      margin: 4px 0 0;
+    }
+
+    .summary{
+      line-height: 1.45;
+      font-size: 15px;
+      color: rgba(255,255,255,.88);
+      white-space: pre-wrap;
+    }
+
+    .sep{
+      height:1px;
+      background: rgba(255,255,255,.12);
+      margin: 14px 0;
+    }
+  </style>
 </head>
+
 <body>
+  <main class="app">
+    <header>
+      <h1>Paris Discovery ✨</h1>
+      <p class="sub">Une façon élégante d’apprendre à se connaître, avant Paris.</p>
+    </header>
 
-<div class="container">
+    <section class="card" id="screen">
+      <!-- contenu injecté -->
+    </section>
 
-<h2>Paris Discovery ✨</h2>
+    <p class="small">Astuce : à la fin, tu peux copier le résultat et l’envoyer.</p>
+  </main>
 
-<p id="question"></p>
+  <script>
+    const state = {
+      step: 0,
+      prenom: "",
+      answers: {}
+    };
 
-<div id="choices"></div>
+    const steps = [
+      {
+        type: "name",
+        tag: "✨ Départ"
+      },
+      {
+        type: "choice",
+        tag: "🌙 Ambiance",
+        key: "moment",
+        q: "Quel moment te ressemble le plus ?",
+        choices: ["Matin doux", "Coucher de soleil", "Nuit & lumières"]
+      },
+      {
+        type: "choice",
+        tag: "☕ Goûts",
+        key: "style",
+        q: "Pour un moment à deux, tu préfères…",
+        choices: ["Un café élégant", "Une promenade", "Un dîner", "Une surprise délicate"]
+      },
+      {
+        type: "choice",
+        tag: "🎶 Activités",
+        key: "activite",
+        q: "Ton activité idéale quand tu as du temps ?",
+        choices: ["Balade & découvertes", "Musée / expo", "Shopping / flâner", "Ciné / chill", "Resto / brunch"]
+      },
+      {
+        type: "choice",
+        tag: "✨ Détails",
+        key: "energie",
+        q: "Tu aimes plutôt…",
+        choices: ["Calme et intime", "Vivant et spontané", "Un mélange des deux"]
+      },
+      {
+        type: "text",
+        tag: "💌 Signature",
+        key: "petitplaisir",
+        q: "Dis-moi un petit plaisir simple que tu aimes (un détail qui te ressemble).",
+        placeholder: "Ex : un chocolat chaud, marcher le soir, écouter une playlist, etc."
+      },
+      {
+        type: "result",
+        tag: "🥂 Paris"
+      }
+    ];
 
-</div>
+    const screen = document.getElementById("screen");
 
-<script>
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, m => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[m]));
+    }
 
-const questions = [
+    function render(){
+      const step = steps[state.step];
 
-{
-question: "Quel est ton moment préféré de la journée ?",
-choices: ["Le matin", "Le coucher de soleil", "La nuit"]
-},
+      if(step.type === "name"){
+        screen.innerHTML = `
+          <div class="pill">${step.tag}</div>
+          <div class="q">Comment tu t’appelles ?</div>
+          <div class="grid">
+            <input class="input" id="nameInput" placeholder="Son prénom" autocomplete="off" />
+            <button class="btn primary" id="startBtn">Continuer</button>
+          </div>
+          <div class="small">Promis, c’est juste pour personnaliser ✨</div>
+        `;
+        document.getElementById("startBtn").onclick = () => {
+          const v = document.getElementById("nameInput").value.trim();
+          state.prenom = v || "toi";
+          state.step++;
+          render();
+        };
+        return;
+      }
 
-{
-question: "Tu préfères quel type de moment ?",
-choices: ["Un café élégant", "Une promenade", "Un dîner", "Une surprise"]
-},
+      if(step.type === "choice"){
+        const buttons = step.choices.map(c =>
+          `<button class="btn" data-choice="${escapeHtml(c)}">${escapeHtml(c)}</button>`
+        ).join("");
 
-{
-question: "Qu’est-ce qui t’attire le plus à Paris ?",
-choices: ["La vue", "Les rues", "Les cafés", "L’ambiance"]
-}
+        screen.innerHTML = `
+          <div class="pill">${step.tag}</div>
+          <div class="q">${escapeHtml(step.q)}</div>
+          <div class="grid">${buttons}</div>
+          <div class="row">
+            <button class="btn" id="backBtn">Retour</button>
+          </div>
+        `;
 
-];
+        screen.querySelectorAll("[data-choice]").forEach(btn => {
+          btn.addEventListener("click", () => {
+            state.answers[step.key] = btn.getAttribute("data-choice");
+            state.step++;
+            render();
+          });
+        });
 
-let index = 0;
+        document.getElementById("backBtn").onclick = () => {
+          state.step = Math.max(0, state.step - 1);
+          render();
+        };
+        return;
+      }
 
-function showQuestion(){
+      if(step.type === "text"){
+        screen.innerHTML = `
+          <div class="pill">${step.tag}</div>
+          <div class="q">${escapeHtml(step.q)}</div>
+          <div class="grid">
+            <input class="input" id="textInput" placeholder="${escapeHtml(step.placeholder)}" autocomplete="off" />
+            <button class="btn primary" id="nextBtn">Valider</button>
+          </div>
+          <div class="row">
+            <button class="btn" id="backBtn">Retour</button>
+          </div>
+        `;
 
-let q = questions[index];
+        document.getElementById("nextBtn").onclick = () => {
+          const v = document.getElementById("textInput").value.trim();
+          state.answers[step.key] = v || "un petit plaisir simple";
+          state.step++;
+          render();
+        };
 
-document.getElementById("question").innerText = q.question;
+        document.getElementById("backBtn").onclick = () => {
+          state.step = Math.max(0, state.step - 1);
+          render();
+        };
+        return;
+      }
 
-let html = "";
+      if(step.type === "result"){
+        const a = state.answers;
+        const prenom = state.prenom;
 
-q.choices.forEach(choice => {
+        const recap =
+`✨ Résumé de ${prenom}
+• Moment : ${a.moment || "-"}
+• Style : ${a.style || "-"}
+• Activité : ${a.activite || "-"}
+• Énergie : ${a.energie || "-"}
+• Petit plaisir : ${a.petitplaisir || "-"}
 
-html += `<button onclick="selectChoice('${choice}')">${choice}</button>`;
+💌 Invitation (classe)
+J’ai l’impression que Paris te plairait encore plus dans une ambiance ${a.energie?.toLowerCase() || "qui te ressemble"}.
+À ta prochaine visite, j’aimerais t’inviter à un moment ${a.style?.toLowerCase() || "simple"} — et te faire découvrir un endroit qui colle à ton énergie.
+Si tu es d’accord, tu me dis juste la période où tu viens, et je m’occupe du reste.`;
 
-});
+        screen.innerHTML = `
+          <div class="pill">${step.tag}</div>
+          <div class="q">Merci, ${escapeHtml(prenom)} ✨</div>
+          <div class="sep"></div>
+          <div class="summary" id="summary">${escapeHtml(recap)}</div>
+          <div class="sep"></div>
+          <div class="grid">
+            <button class="btn primary" id="copyBtn">Copier le message</button>
+            <button class="btn" id="restartBtn">Recommencer</button>
+          </div>
+        `;
 
-document.getElementById("choices").innerHTML = html;
+        document.getElementById("copyBtn").onclick = async () => {
+          const text = recap;
+          try{
+            await navigator.clipboard.writeText(text);
+            alert("Copié ✅");
+          } catch(e){
+            alert("Impossible de copier automatiquement. Sélectionne et copie le texte.");
+          }
+        };
 
-}
+        document.getElementById("restartBtn").onclick = () => {
+          state.step = 0;
+          state.prenom = "";
+          state.answers = {};
+          render();
+        };
 
-function selectChoice(choice){
+        return;
+      }
+    }
 
-index++;
-
-if(index < questions.length){
-
-showQuestion();
-
-}else{
-
-document.getElementById("question").innerText =
-"Merci pour tes réponses. J’aimerais transformer ces réponses en un vrai moment à Paris, avec toi.";
-
-document.getElementById("choices").innerHTML = "";
-
-}
-
-}
-
-showQuestion();
-
-</script>
-
+    render();
+  </script>
 </body>
 </html>
