@@ -261,7 +261,6 @@
 </div>
 
 <script>
-  // ✅ Personnalisation
   const SON_PRENOM = "Bambi";
   const TON_PRENOM = "Cheikhna";
 
@@ -277,7 +276,7 @@
   let ambience = null;   // Douce | Mystérieuse | Lumineuse
   let words = [];        // 3 mots choisis
 
-  // --- Mini son (WebAudio) ---
+  // --- Sound ---
   let audioCtx = null, osc = null, gain = null, isSoundOn = false;
 
   function startSound(){
@@ -286,7 +285,7 @@
     osc = audioCtx.createOscillator();
     gain = audioCtx.createGain();
     osc.type = "sine";
-    osc.frequency.value = 174; // un peu plus "mystérieux"
+    osc.frequency.value = 174;
     gain.gain.value = 0.00001;
     osc.connect(gain); gain.connect(audioCtx.destination);
     osc.start();
@@ -347,44 +346,62 @@
     typeFastName();
   }
 
-  // --- Poème romantique & mystérieux avec métaphores ---
+  // ✅ Poème cohérent (métaphores adaptées à chaque mot)
+  function metaphorFor(word, ambience){
+    const w = (word || "").toLowerCase();
+
+    const map = {
+      "romantique": "comme une lettre scellée qu’on ouvre lentement",
+      "loyale": "comme une main qui ne lâche pas, même quand la nuit tombe",
+      "douce": "comme une pluie tiède qui apaise sans faire de bruit",
+      "mystérieuse": "comme une lueur derrière un rideau, qu’on devine sans la saisir",
+      "solaire": "comme un matin clair qui réchauffe tout autour de lui",
+      "élégante": "comme un parfum rare, discret mais inoubliable",
+      "spontanée": "comme un éclat de rire qui arrive sans prévenir",
+      "calme": "comme un lac tranquille où l’on respire mieux",
+      "rieuse": "comme une lumière qui danse sur les murs",
+      "intense": "comme un feu doux qui ne s’éteint pas",
+      "curieuse": "comme une porte entrouverte sur mille possibles",
+      "audacieuse": "comme un pas en avant, même quand le cœur hésite",
+      "sensible": "comme une peau qui ressent le monde plus fort",
+      "sereine": "comme une paix qu’on n’explique pas, qu’on reconnaît",
+      "magnétique": "comme une gravité discrète qui attire sans effort",
+      "vraie": "comme un regard franc, sans masque et sans détour"
+    };
+
+    if(!map[w]){
+      if(ambience === "Mystérieuse") return "comme un secret qu’on garde au creux de la nuit";
+      if(ambience === "Lumineuse") return "comme une lumière qui revient quand on ferme les yeux";
+      return "comme une présence qui apaise";
+    }
+    return map[w];
+  }
+
   function poemFromWords(name, ambience, words){
-    const w1 = (words[0] || "douce").toLowerCase();
-    const w2 = (words[1] || "vraie").toLowerCase();
-    const w3 = (words[2] || "lumière").toLowerCase();
+    const pick = (i, fallback) => (words[i] ? words[i].toLowerCase() : fallback);
+    const a = ambience || "Douce";
 
-    // on adapte le vocabulaire selon l'ambiance
-    if(ambience === "Mystérieuse"){
-      return `${name},\n\n` +
-`Tu es ${w1} comme un secret qu’on garde au creux de la nuit,\n` +
-`${w2} comme un signe qu’on devine sans le comprendre,\n` +
-`et ${w3}… comme une étoile qui n’apparaît qu’aux âmes attentives.\n\n` +
-`Trois mots,\n` +
-`et mon silence devient une lettre.\n` +
-`Trois mots,\n` +
-`et l’instant prend ton parfum.`;
-    }
+    const w1 = pick(0, "douce");
+    const w2 = pick(1, "vraie");
+    const w3 = pick(2, "lumière");
 
-    if(ambience === "Lumineuse"){
-      return `${name},\n\n` +
-`Tu es ${w1} comme l’aube qui effleure les toits,\n` +
-`${w2} comme un sourire qui éclaire sans bruit,\n` +
-`et ${w3}… comme une chaleur qui reste sur la peau.\n\n` +
-`Trois mots,\n` +
-`et le monde paraît plus tendre.\n` +
-`Trois mots,\n` +
-`et j’ai envie d’y croire.`;
-    }
+    const m1 = metaphorFor(w1, a);
+    const m2 = metaphorFor(w2, a);
+    const m3 = metaphorFor(w3, a);
 
-    // Douce (par défaut)
+    const outro =
+      a === "Mystérieuse"
+        ? "Trois mots… et l’ombre devient douce."
+        : a === "Lumineuse"
+          ? "Trois mots… et l’instant s’illumine."
+          : "Trois mots… et le cœur ralentit.";
+
     return `${name},\n\n` +
-`Tu es ${w1} comme une respiration qu’on retrouve,\n` +
-`${w2} comme une présence qui apaise,\n` +
-`et ${w3}… comme une promesse posée sur les lèvres.\n\n` +
-`Trois mots,\n` +
-`et le cœur ralentit.\n` +
-`Trois mots,\n` +
-`et l’instant devient précieux.`;
+`Tu es ${w1} — ${m1}.\n` +
+`Tu es ${w2} — ${m2}.\n` +
+`Et ${w3}… ${m3}.\n\n` +
+`${outro}\n` +
+`Et l’instant prend ton parfum.`;
   }
 
   // --- Steps ---
@@ -584,12 +601,10 @@ peuvent rester.`
     if(a === "Mystérieuse"){
       l2 =
 `${SON_PRENOM},\n\n` +
-`Je ne sais pas pourquoi,\n` +
-`mais tes mots (${w.join(", ")})\n` +
+`Tes mots (${w.join(", ")})\n` +
 `sonnent comme une porte entrouverte.\n\n` +
 `Comme si, derrière,\n` +
-`il y avait une chambre de lumière faible,\n` +
-`et une vérité qu’on approche doucement.\n\n` +
+`il y avait une vérité qu’on approche doucement.\n\n` +
 `Si tu as senti un frisson doux…\n` +
 `alors ce moment était vivant.`;
     } else if(a === "Lumineuse"){
