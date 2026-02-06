@@ -28,7 +28,7 @@
 
   .container{
     width:92%;
-    max-width:600px;
+    max-width:680px;
     background: var(--glass);
     padding:26px;
     border-radius:22px;
@@ -89,7 +89,7 @@
     opacity:0;
     transition:opacity .5s;
     white-space:pre-wrap;
-    min-height: 120px;
+    min-height: 140px;
   }
 
   .hint{
@@ -274,76 +274,54 @@
   const soundBtn = document.getElementById("soundBtn");
 
   let step = 0;
-  let ambience = null;           // "Douce" | "Mystérieuse" | "Lumineuse"
-  let words = [];                // 3 mots choisis
+  let ambience = null;   // Douce | Mystérieuse | Lumineuse
+  let words = [];        // 3 mots choisis
 
-  // ---------- Mini-son doux (Web Audio, sans fichier) ----------
-  let audioCtx = null;
-  let osc = null;
-  let gain = null;
-  let isSoundOn = false;
+  // --- Mini son (WebAudio) ---
+  let audioCtx = null, osc = null, gain = null, isSoundOn = false;
 
   function startSound(){
     if(isSoundOn) return;
     audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-
     osc = audioCtx.createOscillator();
     gain = audioCtx.createGain();
-
-    // Son très doux
     osc.type = "sine";
-    osc.frequency.value = 196; // G3
+    osc.frequency.value = 174; // un peu plus "mystérieux"
     gain.gain.value = 0.00001;
-
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-
+    osc.connect(gain); gain.connect(audioCtx.destination);
     osc.start();
-
-    // Fade-in rapide
     const now = audioCtx.currentTime;
-    gain.gain.cancelScheduledValues(now);
     gain.gain.setValueAtTime(0.00001, now);
-    gain.gain.linearRampToValueAtTime(0.02, now + 0.35);
-
+    gain.gain.linearRampToValueAtTime(0.02, now + 0.30);
     isSoundOn = true;
     soundBtn.textContent = "🔇 Couper le son";
   }
-
   function stopSound(){
     if(!isSoundOn) return;
     try{
       const now = audioCtx.currentTime;
-      gain.gain.cancelScheduledValues(now);
       gain.gain.setValueAtTime(gain.gain.value, now);
-      gain.gain.linearRampToValueAtTime(0.00001, now + 0.25);
+      gain.gain.linearRampToValueAtTime(0.00001, now + 0.22);
       setTimeout(()=>{
         if(osc){ osc.stop(); osc.disconnect(); }
         if(gain){ gain.disconnect(); }
-        osc = null; gain = null;
-      }, 300);
+        osc=null; gain=null;
+      }, 250);
     }catch(e){}
-    isSoundOn = false;
-    soundBtn.textContent = "🔊 Activer le son";
+    isSoundOn=false;
+    soundBtn.textContent="🔊 Activer le son";
   }
-
   soundBtn.onclick = async () => {
-    // iOS: parfois besoin de "resume" au clic
     if(!isSoundOn){
       startSound();
       if(audioCtx && audioCtx.state === "suspended") await audioCtx.resume();
-    } else {
-      stopSound();
-    }
+    } else stopSound();
   };
 
-  // ---------- UI helpers ----------
+  function setStage(label){ stagePill.textContent = label; }
   function fadeText(txt){
     textEl.style.opacity = 0;
-    setTimeout(()=>{
-      textEl.textContent = txt;
-      textEl.style.opacity = 1;
-    }, 70);
+    setTimeout(()=>{ textEl.textContent = txt; textEl.style.opacity = 1; }, 70);
   }
 
   function typeFastName(){
@@ -353,24 +331,68 @@
     (function tick(){
       if(i < name.length){
         titleEl.textContent += name[i++];
-        setTimeout(tick, 80); // ✅ rapide
+        setTimeout(tick, 80);
       } else {
         showStep0();
       }
     })();
   }
 
-  function setStage(label){
-    stagePill.textContent = label;
+  function resetAll(){
+    step = 0;
+    ambience = null;
+    words = [];
+    extraEl.innerHTML = "";
+    btnEl.style.display = "none";
+    typeFastName();
   }
 
-  // ---------- Steps ----------
+  // --- Poème romantique & mystérieux avec métaphores ---
+  function poemFromWords(name, ambience, words){
+    const w1 = (words[0] || "douce").toLowerCase();
+    const w2 = (words[1] || "vraie").toLowerCase();
+    const w3 = (words[2] || "lumière").toLowerCase();
+
+    // on adapte le vocabulaire selon l'ambiance
+    if(ambience === "Mystérieuse"){
+      return `${name},\n\n` +
+`Tu es ${w1} comme un secret qu’on garde au creux de la nuit,\n` +
+`${w2} comme un signe qu’on devine sans le comprendre,\n` +
+`et ${w3}… comme une étoile qui n’apparaît qu’aux âmes attentives.\n\n` +
+`Trois mots,\n` +
+`et mon silence devient une lettre.\n` +
+`Trois mots,\n` +
+`et l’instant prend ton parfum.`;
+    }
+
+    if(ambience === "Lumineuse"){
+      return `${name},\n\n` +
+`Tu es ${w1} comme l’aube qui effleure les toits,\n` +
+`${w2} comme un sourire qui éclaire sans bruit,\n` +
+`et ${w3}… comme une chaleur qui reste sur la peau.\n\n` +
+`Trois mots,\n` +
+`et le monde paraît plus tendre.\n` +
+`Trois mots,\n` +
+`et j’ai envie d’y croire.`;
+    }
+
+    // Douce (par défaut)
+    return `${name},\n\n` +
+`Tu es ${w1} comme une respiration qu’on retrouve,\n` +
+`${w2} comme une présence qui apaise,\n` +
+`et ${w3}… comme une promesse posée sur les lèvres.\n\n` +
+`Trois mots,\n` +
+`et le cœur ralentit.\n` +
+`Trois mots,\n` +
+`et l’instant devient précieux.`;
+  }
+
+  // --- Steps ---
   function showStep0(){
     step = 0;
     setStage("💌 Début");
     extraEl.innerHTML = "";
     hintEl.textContent = "Lis doucement. Puis continue.";
-
     fadeText(
 `J’ai pensé à toi.
 
@@ -384,7 +406,6 @@ Parce que certains instants,
 même silencieux,
 peuvent rester.`
     );
-
     btnEl.style.display = "block";
     btnEl.textContent = "Continuer";
   }
@@ -393,7 +414,7 @@ peuvent rester.`
     step = 1;
     setStage("🌙 Ambiance");
     titleEl.textContent = "Choisis ton ambiance…";
-    hintEl.textContent = "Ce choix change la suite.";
+    hintEl.textContent = "Ce choix change la poésie.";
     textEl.style.opacity = 1;
     textEl.textContent = "Quelle couleur veux-tu pour cet instant ?";
 
@@ -403,16 +424,15 @@ peuvent rester.`
         <button class="btnSoft" data-a="Mystérieuse">✨ Mystérieuse</button>
         <button class="btnSoft" data-a="Lumineuse">☀️ Lumineuse</button>
       </div>
-      <div class="tiny">Choisis vite, c’est juste une vibe.</div>
+      <div class="tiny">Choisis sans réfléchir.</div>
     `;
 
     extraEl.querySelectorAll("[data-a]").forEach(b=>{
       b.onclick = () => {
         ambience = b.getAttribute("data-a");
-        // petit changement sonore selon ambiance (si son actif)
         if(isSoundOn && osc){
-          const targetFreq = ambience === "Douce" ? 196 : (ambience === "Mystérieuse" ? 174 : 220);
-          osc.frequency.setTargetAtTime(targetFreq, audioCtx.currentTime, 0.08);
+          const f = ambience==="Douce" ? 196 : (ambience==="Mystérieuse" ? 174 : 220);
+          osc.frequency.setTargetAtTime(f, audioCtx.currentTime, 0.08);
         }
         showStep2_3Words();
       };
@@ -427,13 +447,12 @@ peuvent rester.`
     titleEl.textContent = "Trois mots…";
     hintEl.textContent = "Choisis 3 mots qui te décrivent.";
     fadeText(`${SON_PRENOM}, lesquels te ressemblent aujourd’hui ?`);
-
     words = [];
 
     const pool = [
-      "Douce", "Solaire", "Mystérieuse", "Élégante", "Spontanée", "Calme",
-      "Rieuse", "Intense", "Loyale", "Curieuse", "Romantique", "Audacieuse",
-      "Sensible", "Sereine", "Magnétique", "Vraie"
+      "Douce","Solaire","Mystérieuse","Élégante","Spontanée","Calme",
+      "Rieuse","Intense","Loyale","Curieuse","Romantique","Audacieuse",
+      "Sensible","Sereine","Magnétique","Vraie"
     ];
 
     extraEl.innerHTML = `
@@ -443,7 +462,6 @@ peuvent rester.`
 
     const chips = document.getElementById("chips");
     const count = document.getElementById("count");
-
     chips.innerHTML = pool.map(w => `<div class="chip" data-w="${w}">${w}</div>`).join("");
 
     chips.querySelectorAll(".chip").forEach(chip=>{
@@ -459,10 +477,9 @@ peuvent rester.`
           chip.classList.add("selected");
           words.push(w);
         }
-        count.textContent = `${words.length} / 3 sélectionnés`;
 
+        count.textContent = `${words.length} / 3 sélectionnés`;
         if(words.length === 3){
-          // petit flash: on affiche le bouton
           btnEl.style.display = "block";
           btnEl.textContent = "Continuer";
         } else {
@@ -474,16 +491,16 @@ peuvent rester.`
     btnEl.style.display = "none";
   }
 
-  function showStep3_Letter(){
+  function showStep3_Letter1(){
     step = 3;
-    setStage("✉️ Lettre");
+    setStage("✉️ Lettre 1");
     titleEl.textContent = "Une lettre pour toi";
     hintEl.textContent = "Clique sur l’enveloppe.";
-    fadeText("J’ai glissé une petite lettre dedans…");
+    fadeText("J’ai glissé une lettre dedans…");
 
     extraEl.innerHTML = `
       <div class="sealWrap">
-        <div class="envelope" id="env">
+        <div class="envelope" id="env1">
           <div class="flap"></div>
           <div class="paper"></div>
           <div class="wax">✦</div>
@@ -492,78 +509,124 @@ peuvent rester.`
       <div class="tiny">Ouvrir la lettre…</div>
     `;
 
-    document.getElementById("env").onclick = (e) => {
+    document.getElementById("env1").onclick = (e) => {
       e.currentTarget.classList.toggle("open");
-      setTimeout(showLetterText, 220);
+      setTimeout(showLetter1Text, 220);
     };
 
     btnEl.style.display = "none";
   }
 
-  function showLetterText(){
+  function showLetter1Text(){
+    const poem = poemFromWords(SON_PRENOM, ambience, words);
     const w = words.join(", ");
-    let letter = "";
 
-    if(ambience === "Douce"){
-      letter =
-`${SON_PRENOM},
-
-Aujourd’hui tu t’es décrite en trois mots :
-${w}.
-
-Alors je te laisse un moment doux.
-Pas pour impressionner.
-Juste pour que tu te sentes bien, ici.
-
-Si tu souris un peu… c’est déjà parfait.`;
-    } else if(ambience === "Mystérieuse"){
-      letter =
-`${SON_PRENOM},
-
-Tes trois mots :
-${w}.
-
-Alors je te laisse quelque chose de secret.
-Un instant qu’on ne comprend pas,
-qu’on ressent.
-
-Comme une étoile qu’on remarque
-seulement quand on lève la tête.`;
-    } else {
-      letter =
-`${SON_PRENOM},
-
-Tes trois mots :
-${w}.
-
-Alors je te laisse un instant lumineux.
-Un petit élan qui réchauffe,
-et qui rappelle une chose :
-
-Tu mérites le beau. Simplement.`;
-    }
+    const letter =
+`${poem}\n\n` +
+`(Tes trois mots : ${w})\n\n` +
+`Je voulais que cet instant soit une trace.\n` +
+`Une petite énigme douce.\n` +
+`Quelque chose qui reste… même après l’écran.`;
 
     fadeText(letter);
 
     extraEl.innerHTML = `
       <div class="grid">
-        <button class="btnGold" id="keepBtn">Garder ce moment ✨</button>
+        <button class="btnGold" id="bonusBtn">Ouvrir une 2ᵉ lettre ✨</button>
         <button class="btnGreen" id="replyBtn">Me répondre (copier) 💬</button>
       </div>
       <div class="tiny">Optionnel : tu peux juste lire.</div>
     `;
 
-    document.getElementById("keepBtn").onclick = async () => {
-      await navigator.clipboard.writeText("Je garde ce moment. C’était doux ✨");
-      alert("Copié ✅");
-    };
-
+    document.getElementById("bonusBtn").onclick = () => showStep3b_Letter2();
     document.getElementById("replyBtn").onclick = async () => {
       await navigator.clipboard.writeText(
-        `Je viens de lire ton instant… c’était ${ambience.toLowerCase()} et très beau. Mes 3 mots : ${words.join(", ")}. Merci, ça m’a fait sourire.`
+        `Je viens de lire ton instant… c’était ${ambience.toLowerCase()} et très beau.\nMes 3 mots : ${words.join(", ")}.\nMerci, ça m’a fait sourire.`
       );
       alert("Copié ✅ (tu peux l’envoyer)");
     };
+
+    btnEl.style.display = "block";
+    btnEl.textContent = "Dernière page";
+  }
+
+  function showStep3b_Letter2(){
+    step = 33;
+    setStage("✉️ Lettre 2");
+    titleEl.textContent = "Une 2ᵉ lettre…";
+    hintEl.textContent = "Clique sur l’enveloppe.";
+    fadeText("Encore une page… plus intime.");
+
+    extraEl.innerHTML = `
+      <div class="sealWrap">
+        <div class="envelope" id="env2">
+          <div class="flap"></div>
+          <div class="paper"></div>
+          <div class="wax">✧</div>
+        </div>
+      </div>
+      <div class="tiny">Ouvrir la 2ᵉ lettre…</div>
+    `;
+
+    document.getElementById("env2").onclick = (e) => {
+      e.currentTarget.classList.toggle("open");
+      setTimeout(showLetter2Text, 220);
+    };
+
+    btnEl.style.display = "none";
+  }
+
+  function showLetter2Text(){
+    const w = words.map(x => x.toLowerCase());
+    const a = ambience;
+
+    let l2 = "";
+    if(a === "Mystérieuse"){
+      l2 =
+`${SON_PRENOM},\n\n` +
+`Je ne sais pas pourquoi,\n` +
+`mais tes mots (${w.join(", ")})\n` +
+`sonnent comme une porte entrouverte.\n\n` +
+`Comme si, derrière,\n` +
+`il y avait une chambre de lumière faible,\n` +
+`et une vérité qu’on approche doucement.\n\n` +
+`Si tu as senti un frisson doux…\n` +
+`alors ce moment était vivant.`;
+    } else if(a === "Lumineuse"){
+      l2 =
+`${SON_PRENOM},\n\n` +
+`Tes mots (${w.join(", ")})\n` +
+`me font penser à une ville au matin :\n` +
+`tout paraît possible, sans faire de bruit.\n\n` +
+`Garde ce moment.\n` +
+`Comme un rayon qui revient\n` +
+`quand on ferme les yeux.`;
+    } else {
+      l2 =
+`${SON_PRENOM},\n\n` +
+`Tes mots (${w.join(", ")})\n` +
+`me font penser à une main qui rassure :\n` +
+`pas besoin d’expliquer,\n` +
+`juste… être là.\n\n` +
+`Si tu pouvais garder une seule sensation,\n` +
+`je voudrais que ce soit la paix.`;
+    }
+
+    fadeText(l2);
+
+    extraEl.innerHTML = `
+      <div class="grid">
+        <button class="btnGold" id="keepBtn">Garder ce moment (copier) ✨</button>
+        <button class="btnSoft" id="backBtn">Revenir à la 1ʳᵉ lettre</button>
+      </div>
+      <div class="tiny">Tu peux revenir, ou continuer.</div>
+    `;
+
+    document.getElementById("keepBtn").onclick = async () => {
+      await navigator.clipboard.writeText("Je garde ce moment. C’était unique ✨");
+      alert("Copié ✅");
+    };
+    document.getElementById("backBtn").onclick = () => showLetter1Text();
 
     btnEl.style.display = "block";
     btnEl.textContent = "Dernière page";
@@ -574,37 +637,38 @@ Tu mérites le beau. Simplement.`;
     setStage("🌸 Fin");
     titleEl.textContent = "Dernière page…";
     hintEl.textContent = "";
-    extraEl.innerHTML = "";
     btnEl.style.display = "none";
 
-    const vibe =
-      ambience === "Douce" ? "douceur" :
-      ambience === "Mystérieuse" ? "mystère" : "lumière";
+    const poem = poemFromWords(SON_PRENOM, ambience, words);
 
     fadeText(
-`${SON_PRENOM},
-
-Ton ambiance : ${ambience}.
-Tes trois mots : ${words.join(", ")}.
-
-Si tu devais retenir une seule chose :
-ce moment n’attend rien.
-
-Il existe pour te laisser ${vibe}.
-Et pour te rappeler que tu mérites
-des instants uniques…
-et inoubliables.`
+`${poem}\n\n` +
+`Ce moment n’attend rien.\n` +
+`Il existe simplement.\n\n` +
+`Pour te laisser quelque chose de rare :\n` +
+`un instant qui reste…\n` +
+`comme un parfum sur une écharpe.`
     );
+
+    extraEl.innerHTML = `
+      <div class="grid">
+        <button class="btnGreen" id="replayBtn">Rejouer</button>
+      </div>
+      <div class="tiny">Rejouer change les mots, l’ambiance… et la poésie.</div>
+    `;
+
+    document.getElementById("replayBtn").onclick = () => resetAll();
   }
 
-  // ---------- Navigation ----------
+  // --- Navigation ---
   btnEl.onclick = () => {
     if(step === 0) return showStep1_Ambience();
-    if(step === 2) return showStep3_Letter();
-    if(step === 3) return showStep4_Final();
+    if(step === 2) return showStep3_Letter1();
+    if(step === 3 || step === 33) return showStep4_Final();
+    showStep4_Final();
   };
 
-  // ---------- stars ----------
+  // --- stars ---
   const symbols = ["✦","✧","✺","✶"];
   for(let k=0; k<12; k++){
     const s = document.createElement("div");
