@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IceBreaker 💬</title>
+
+<style>
+
+body{
+background: linear-gradient(135deg,#667eea,#764ba2);
+font-family: Arial;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+}
+
+.container{
+background: rgba(0,0,0,0.3);
+padding:30px;
+border-radius:15px;
+text-align:center;
+width:90%;
+max-width:400px;
+}
+
+button{
+margin-top:20px;
+padding:15px;
+border:none;
+border-radius:10px;
+font-size:16px;
+width:100%;
+cursor:pointer;
+}
+
+button:hover{
+background:white;
+color:black;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h2>IceBreaker 💬</h2>
+
+<p id="question">
+Appuie sur le bouton 🙂
+</p>
+
+<button onclick="nouvelleQuestion()">
+Nouvelle question
+</button>
+
+</div>
+
+<script>
+
+const questions = [
+
+"J’hésitais à t’écrire… puis je me suis dit que ça valait le coup 🙂",
+
+"Tu es plutôt spontané(e) ou mystérieux(se) ?",
+
+"Quelle est la chose qui te fait sourire instantanément ?",
+
+"Question importante : café ou chocolat chaud ?",
+
+"Tu crois au hasard ou au destin ?"
+
+];
+
+function nouvelleQuestion(){
+
+let index = Math.floor(Math.random()*questions.length);
+
+document.getElementById("question").innerText = questions[index];
+
+}
+
+</script>
+
+</body>
+</html>
