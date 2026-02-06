@@ -3,21 +3,25 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Un poème ✨</title>
+<title>Un instant ✨</title>
 
 <style>
   :root{
-    --bg1:#1e293b;
+    --bg1:#0b1220;
     --bg2:#020617;
     --glass: rgba(255,255,255,0.06);
     --border: rgba(255,255,255,0.12);
-    --shadow: 0 22px 70px rgba(0,0,0,0.65);
+    --shadow: 0 24px 80px rgba(0,0,0,0.70);
+    --soft: rgba(255,255,255,0.10);
   }
 
   body{
     margin:0;
     font-family:-apple-system, system-ui;
-    background: radial-gradient(circle at top, var(--bg1), var(--bg2));
+    background:
+      radial-gradient(900px 520px at 15% 18%, rgba(168,85,247,0.20), transparent 55%),
+      radial-gradient(780px 520px at 85% 25%, rgba(34,197,94,0.14), transparent 55%),
+      radial-gradient(circle at top, var(--bg1), var(--bg2));
     color:white;
     display:flex;
     justify-content:center;
@@ -28,13 +32,13 @@
 
   .container{
     width:92%;
-    max-width:680px;
+    max-width:720px;
     background: var(--glass);
-    padding:26px;
-    border-radius:22px;
+    padding:24px;
+    border-radius:24px;
     text-align:center;
     box-shadow: var(--shadow);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
     border: 1px solid var(--border);
     position: relative;
   }
@@ -56,7 +60,7 @@
     border:1px solid rgba(255,255,255,.16);
     background: rgba(0,0,0,.18);
     font-size:12px;
-    opacity:.9;
+    opacity:.92;
   }
 
   .soundBtn{
@@ -71,32 +75,74 @@
   }
   .soundBtn:hover{ background: rgba(255,255,255,0.14); transform: translateY(-1px); }
 
-  .title{
+  .heroTitle{
     font-size:34px;
-    margin: 6px 0 10px;
-    min-height:48px;
-    text-shadow: 0 0 12px rgba(255,255,255,0.45);
-    animation: glow 1.6s ease-in-out infinite alternate;
+    margin: 10px 0 6px;
+    letter-spacing: 0.2px;
+    text-shadow: 0 0 18px rgba(255,255,255,0.25);
   }
-  @keyframes glow{
-    from{ text-shadow: 0 0 10px rgba(255,255,255,0.22); }
-    to{ text-shadow: 0 0 22px rgba(255,255,255,0.70); }
+
+  .heroSub{
+    opacity:.86;
+    font-size:14px;
+    line-height:1.5;
+    margin-bottom: 14px;
+  }
+
+  .title{
+    font-size:30px;
+    margin: 8px 0 10px;
+    min-height:42px;
+    text-shadow: 0 0 14px rgba(255,255,255,0.32);
   }
 
   .text{
     line-height:1.75;
     font-size:16px;
-    opacity:0;
-    transition:opacity .35s;
+    opacity:1;
     white-space:pre-wrap;
-    min-height: 180px;
+    min-height: 200px;
+    text-align:left;
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: rgba(0,0,0,0.14);
+    border: 1px solid rgba(255,255,255,0.12);
   }
 
   .hint{
-    margin-top: 8px;
+    margin-top: 10px;
     opacity: .72;
     font-size: 12px;
   }
+
+  .grid{ display:grid; gap:10px; margin-top:14px; }
+
+  button.main{
+    width:100%;
+    padding:14px 14px;
+    border-radius:16px;
+    border:none;
+    background:white;
+    color:black;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.18s;
+    font-weight: 700;
+  }
+  button.main:hover{ background:#e2e8f0; transform:translateY(-1px); }
+
+  .btnSoft{
+    width:100%;
+    padding:14px 14px;
+    border-radius:16px;
+    background: rgba(255,255,255,0.10);
+    color:white;
+    border: 1px solid rgba(255,255,255,0.16);
+    cursor:pointer;
+    transition:.18s;
+    font-size:16px;
+  }
+  .btnSoft:hover{ background: rgba(255,255,255,0.14); transform:translateY(-1px); }
 
   .chips{
     display:flex;
@@ -117,44 +163,15 @@
   }
   .chip:hover{ background: rgba(255,255,255,0.12); transform: translateY(-1px); }
   .chip.selected{
-    background: rgba(34,197,94,0.18);
-    border-color: rgba(34,197,94,0.35);
+    background: rgba(168,85,247,0.18);
+    border-color: rgba(168,85,247,0.35);
   }
 
-  .grid{
-    display:grid;
-    gap:10px;
-    margin-top:14px;
+  .progress{
+    margin-top:10px;
+    font-size:12px;
+    opacity:.78;
   }
-
-  button.main{
-    width:100%;
-    padding:14px 14px;
-    border-radius:14px;
-    border:none;
-    background:white;
-    color:black;
-    font-size:16px;
-    cursor:pointer;
-    transition:0.18s;
-  }
-  button.main:hover{ background:#e2e8f0; transform:scale(1.01); }
-
-  .btnGreen{
-    width:100%;
-    padding:14px 14px;
-    border-radius:14px;
-    background: rgba(34,197,94,0.20);
-    color: white;
-    border: 1px solid rgba(34,197,94,0.35);
-    font-weight: 700;
-    cursor:pointer;
-    transition:.18s;
-    font-size:16px;
-  }
-  .btnGreen:hover{ background: rgba(34,197,94,0.28); transform:scale(1.01); }
-
-  .tiny{ font-size: 12px; opacity: .75; margin-top: 6px; }
 
   .star{
     position:absolute;
@@ -174,18 +191,11 @@
 <body>
 <div class="container">
   <div class="topbar">
-    <div class="pill" id="stagePill">📝 Poème</div>
+    <div class="pill" id="stagePill">✨ Un instant</div>
     <button class="soundBtn" id="soundBtn">🔊 Activer le son</button>
   </div>
 
-  <div class="title" id="title"></div>
-  <div class="text" id="text"></div>
-
-  <div id="extra"></div>
-
-  <div class="grid">
-    <button class="main" id="btn" style="display:none">Voir la dernière page</button>
-  </div>
+  <div id="screen"></div>
 
   <div class="hint" id="hint"></div>
 </div>
@@ -194,11 +204,8 @@
   const SON_PRENOM = "Bambi";
 
   const stagePill = document.getElementById("stagePill");
-  const titleEl = document.getElementById("title");
-  const textEl  = document.getElementById("text");
-  const btnEl   = document.getElementById("btn");
-  const extraEl = document.getElementById("extra");
-  const hintEl  = document.getElementById("hint");
+  const screen = document.getElementById("screen");
+  const hintEl = document.getElementById("hint");
   const soundBtn = document.getElementById("soundBtn");
 
   let step = 0;
@@ -219,7 +226,7 @@
     osc.start();
     const now = audioCtx.currentTime;
     gain.gain.setValueAtTime(0.00001, now);
-    gain.gain.linearRampToValueAtTime(0.02, now + 0.28);
+    gain.gain.linearRampToValueAtTime(0.02, now + 0.25);
     isSoundOn = true;
     soundBtn.textContent = "🔇 Couper le son";
   }
@@ -228,12 +235,12 @@
     try{
       const now = audioCtx.currentTime;
       gain.gain.setValueAtTime(gain.gain.value, now);
-      gain.gain.linearRampToValueAtTime(0.00001, now + 0.22);
+      gain.gain.linearRampToValueAtTime(0.00001, now + 0.20);
       setTimeout(()=>{
         if(osc){ osc.stop(); osc.disconnect(); }
         if(gain){ gain.disconnect(); }
         osc=null; gain=null;
-      }, 250);
+      }, 220);
     }catch(e){}
     isSoundOn=false;
     soundBtn.textContent="🔊 Activer le son";
@@ -245,12 +252,7 @@
     } else stopSound();
   };
 
-  function fadeText(txt){
-    textEl.style.opacity = 0;
-    setTimeout(()=>{ textEl.textContent = txt; textEl.style.opacity = 1; }, 70);
-  }
-
-  // ✅ Métaphores cohérentes (adaptées au mot)
+  // ✅ Métaphores cohérentes
   function metaphorFor(word){
     const w = (word || "").toLowerCase();
     const map = {
@@ -295,48 +297,84 @@
 `et l’instant prend ton parfum.`;
   }
 
-  // --- UI ---
-  function typeName(){
-    const name = SON_PRENOM + "...";
-    titleEl.textContent = "";
+  // --- Typing rapide (poème qui s’écrit) ---
+  function typeInto(el, fullText, speed=16, done=()=>{}){
+    el.textContent = "";
     let i = 0;
     (function tick(){
-      if(i < name.length){
-        titleEl.textContent += name[i++];
-        setTimeout(tick, 80);
-      } else {
-        showPoemScreen();
-      }
+      el.textContent += fullText[i++] || "";
+      if(i <= fullText.length){
+        setTimeout(tick, speed);
+      } else done();
     })();
   }
 
-  function showPoemScreen(){
+  function showHome(){
     step = 0;
-    stagePill.textContent = "📝";
-    hintEl.textContent = "Choisis 3 mots. Le poème se crée tout seul.";
-    btnEl.style.display = "none";
+    stagePill.textContent = "✨ Accueil";
+    hintEl.textContent = "Promis : c’est court, doux… et différent.";
+
+    screen.innerHTML = `
+      <div class="heroTitle">Un instant pour toi</div>
+      <div class="heroSub">
+        <b>${SON_PRENOM}</b>, j’ai glissé quelque chose ici.<br/>
+        Ça se lit comme une petite scène… et ça finit en poésie.
+      </div>
+      <div class="grid">
+        <button class="main" id="openBtn">Ouvrir ✨</button>
+        <button class="btnSoft" id="skipBtn">Aller directement au poème</button>
+      </div>
+      <div class="progress">💫 2 pages : Poème → Dernière page</div>
+    `;
+
+    document.getElementById("openBtn").onclick = showPoemSetup;
+    document.getElementById("skipBtn").onclick = showPoemSetup;
+  }
+
+  function showPoemSetup(){
+    step = 1;
+    stagePill.textContent = "📝 Poème";
+    hintEl.textContent = "Choisis 3 mots. Le poème apparaît immédiatement.";
+
     words = [];
 
-    fadeText(
-`J’ai pensé à toi.\n\n` +
-`Choisis trois mots.\n` +
-`Je les transformerai en poésie.`
-    );
+    screen.innerHTML = `
+      <div class="title">${SON_PRENOM}…</div>
+      <div class="heroSub" style="margin-top:-4px">
+        Choisis <b>trois mots</b> qui te ressemblent.<br/>
+        Je les transforme en poésie.
+      </div>
+      <div class="chips" id="chips"></div>
+      <div class="progress" id="count">0 / 3 sélectionnés</div>
+      <div class="text" id="poemBox">…</div>
+      <div class="grid">
+        <button class="main" id="toFinalBtn" style="display:none">Voir la dernière page</button>
+      </div>
+    `;
 
     const pool = [
-      "Romantique","Mystérieuse","Douce","Solaire","Élégante","Spontanée",
-      "Calme","Rieuse","Intense","Loyale","Curieuse","Audacieuse",
+      "Romantique","Loyale","Douce","Mystérieuse","Solaire","Élégante",
+      "Spontanée","Calme","Rieuse","Intense","Curieuse","Audacieuse",
       "Sensible","Sereine","Magnétique","Vraie"
     ];
 
-    extraEl.innerHTML = `
-      <div class="chips" id="chips"></div>
-      <div class="tiny" id="count">0 / 3 sélectionnés</div>
-    `;
-
     const chips = document.getElementById("chips");
     const count = document.getElementById("count");
+    const poemBox = document.getElementById("poemBox");
+    const toFinalBtn = document.getElementById("toFinalBtn");
+
     chips.innerHTML = pool.map(w => `<div class="chip" data-w="${w}">${w}</div>`).join("");
+
+    function refreshPoem(){
+      if(words.length === 3){
+        const poem = poemFromWords(SON_PRENOM, words);
+        typeInto(poemBox, poem, 12, ()=>{});
+        toFinalBtn.style.display = "block";
+      } else {
+        poemBox.textContent = "…";
+        toFinalBtn.style.display = "none";
+      }
+    }
 
     chips.querySelectorAll(".chip").forEach(chip=>{
       chip.onclick = () => {
@@ -351,55 +389,63 @@
           chip.classList.add("selected");
           words.push(w);
         }
-
         count.textContent = `${words.length} / 3 sélectionnés`;
-
-        if(words.length === 3){
-          const poem = poemFromWords(SON_PRENOM, words);
-          fadeText(poem);
-          btnEl.style.display = "block";
-        } else {
-          btnEl.style.display = "none";
-        }
+        refreshPoem();
+      thinkSound();
       };
     });
+
+    function thinkSound(){
+      if(isSoundOn && osc){
+        const base = 174 + (words.length * 18);
+        osc.frequency.setTargetAtTime(base, audioCtx.currentTime, 0.08);
+      }
+    }
+
+    toFinalBtn.onclick = showFinal;
   }
 
-  function showLastPage(){
-    step = 1;
-    stagePill.textContent = "🌸 Fin";
-    titleEl.textContent = "Dernière page…";
+  function showFinal(){
+    step = 2;
+    stagePill.textContent = "🌸 Dernière page";
     hintEl.textContent = "";
-    btnEl.style.display = "none";
 
     const poem = poemFromWords(SON_PRENOM, words);
 
-    fadeText(
+    screen.innerHTML = `
+      <div class="title">Dernière page…</div>
+      <div class="text" id="finalBox"></div>
+      <div class="grid">
+        <button class="btnSoft" id="copyBtn">Copier le poème</button>
+        <button class="main" id="replayBtn">Rejouer</button>
+      </div>
+      <div class="progress">Un instant qui reste… comme un parfum sur une écharpe.</div>
+    `;
+
+    const finalBox = document.getElementById("finalBox");
+    const finalText =
 `${poem}\n\n` +
 `Ce moment n’attend rien.\n` +
 `Il existe simplement.\n\n` +
 `Pour te laisser quelque chose de rare :\n` +
 `un instant qui reste…\n` +
-`comme un parfum sur une écharpe.`
-    );
+`comme un parfum sur une écharpe.`;
 
-    extraEl.innerHTML = `
-      <div class="grid">
-        <button class="btnGreen" id="replayBtn">Rejouer</button>
-      </div>
-      <div class="tiny">Rejouer change les mots… et la poésie.</div>
-    `;
+    typeInto(finalBox, finalText, 12, ()=>{});
 
-    document.getElementById("replayBtn").onclick = () => {
-      titleEl.textContent = "";
-      extraEl.innerHTML = "";
-      typeName();
+    document.getElementById("copyBtn").onclick = async () => {
+      try{
+        await navigator.clipboard.writeText(finalText);
+        alert("Poème copié ✅");
+      }catch(e){
+        alert("Impossible de copier automatiquement.");
+      }
     };
+
+    document.getElementById("replayBtn").onclick = showHome;
   }
 
-  btnEl.onclick = () => showLastPage();
-
-  // --- étoiles ---
+  // étoiles
   const symbols = ["✦","✧","✺","✶"];
   for(let k=0; k<12; k++){
     const s = document.createElement("div");
@@ -412,9 +458,7 @@
     document.body.appendChild(s);
   }
 
-  // start
-  typeName();
+  showHome();
 </script>
 </body>
 </html>
-
