@@ -1,415 +1,289 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Un petit instant ✨</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pour toi ✨</title>
 
-  <style>
-    :root{
-      --bg1:#0b1020;
-      --bg2:#111a2e;
-      --card: rgba(255,255,255,.075);
-      --border: rgba(255,255,255,.14);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.72);
-      --shadow: 0 18px 60px rgba(0,0,0,.58);
-      --radius: 20px;
-    }
+<style>
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:-apple-system, system-ui, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(1000px 650px at 18% 10%, rgba(168,85,247,.40), transparent 55%),
-        radial-gradient(900px 600px at 85% 18%, rgba(34,197,94,.18), transparent 55%),
-        linear-gradient(180deg, var(--bg1), var(--bg2));
-    }
+body{
+margin:0;
+font-family:-apple-system, system-ui;
+background: linear-gradient(135deg,#0f172a,#1e293b);
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
 
-    .app{
-      min-height:100%;
-      padding: calc(18px + env(safe-area-inset-top)) 16px calc(18px + env(safe-area-inset-bottom));
-      max-width: 620px;
-      margin: 0 auto;
-      display:flex;
-      flex-direction:column;
-      gap: 14px;
-    }
+.container{
+width:90%;
+max-width:500px;
+background: rgba(255,255,255,0.05);
+padding:25px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 20px 50px rgba(0,0,0,0.5);
+}
 
-    header{
-      text-align:center;
-      margin-top:8px;
-      animation: fadeUp .55s ease both;
-    }
-    h1{margin:0; font-size:28px; letter-spacing:.2px}
-    .sub{margin:6px 0 0; color:var(--muted); font-size:14px}
+button{
+width:100%;
+padding:15px;
+margin-top:10px;
+border-radius:12px;
+border:none;
+background:white;
+color:black;
+font-size:16px;
+cursor:pointer;
+}
 
-    .card{
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 18px;
-      overflow:hidden;
-      animation: fadeUp .55s ease both;
-    }
+button:hover{
+background:#e2e8f0;
+}
 
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding: 7px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.18);
-      color: var(--muted);
-      font-size: 12px;
-      backdrop-filter: blur(10px);
-    }
+.title{
+font-size:26px;
+margin-bottom:15px;
+min-height:40px;
+}
 
-    .title{
-      margin: 14px 0 0;
-      font-size: 20px;
-      line-height: 1.25;
-      text-align:center;
-      min-height: 64px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      animation: fadeIn .45s ease both;
-    }
+.poem{
+margin:15px 0;
+line-height:1.6;
+min-height:80px;
+}
 
-    .poem{
-      margin: 10px 0 0;
-      color: rgba(255,255,255,.86);
-      font-size: 14px;
-      line-height: 1.6;
-      text-align:center;
-      white-space: pre-wrap;
-      min-height: 88px;
-    }
+.choice{
+background:rgba(255,255,255,0.1);
+color:white;
+}
 
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      margin-top: 14px;
-    }
+.choice:hover{
+background:rgba(255,255,255,0.2);
+}
 
-    .btn{
-      width:100%;
-      padding: 14px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.18);
-      color: var(--text);
-      font-size: 15px;
-      cursor:pointer;
-      transition: transform .08s ease, background .2s ease, border-color .2s ease;
-      box-shadow: 0 10px 18px rgba(0,0,0,.22);
-      text-align:center;
-    }
-    .btn:hover{ background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.22); }
-    .btn:active{ transform: scale(.99); }
-    .btn.primary{
-      font-weight: 700;
-      background: rgba(255,255,255,.18);
-      border-color: rgba(255,255,255,.28);
-    }
-    .btn.good{
-      font-weight: 700;
-      background: rgba(34,197,94,.20);
-      border-color: rgba(34,197,94,.35);
-    }
+.accept{
+background:#22c55e;
+color:white;
+font-weight:bold;
+}
 
-    .input{
-      width:100%;
-      padding: 14px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.18);
-      color: var(--text);
-      font-size: 15px;
-      outline:none;
-      transition: border-color .2s ease, background .2s ease;
-    }
-    .input:focus{ border-color: rgba(255,255,255,.28); background: rgba(0,0,0,.22); }
-    .input::placeholder{ color: rgba(255,255,255,.45); }
+.accept:hover{
+background:#16a34a;
+}
 
-    .row{ display:flex; gap:10px; margin-top: 12px; }
-    .small{ color: var(--muted); font-size: 12px; text-align:center; margin: 4px 0 0; }
+</style>
 
-    .sep{ height:1px; background: rgba(255,255,255,.12); margin: 14px 0; }
-
-    .summary{
-      line-height: 1.55;
-      font-size: 15px;
-      color: rgba(255,255,255,.92);
-      white-space: pre-wrap;
-      animation: fadeIn .45s ease both;
-    }
-
-    .hint{ margin-top: 10px; color: rgba(255,255,255,.75); font-size: 12px; text-align:center; }
-
-    @keyframes fadeUp{ from{opacity:0; transform: translateY(8px)} to{opacity:1; transform: translateY(0)} }
-    @keyframes fadeIn{ from{opacity:0} to{opacity:1} }
-
-    .blink{
-      display:inline-block;
-      width:10px;
-      margin-left:2px;
-      opacity:.8;
-      animation: blink 1s steps(2, start) infinite;
-    }
-    @keyframes blink{ to{opacity:0} }
-  </style>
 </head>
-
 <body>
-  <main class="app">
-    <header>
-      <h1>Un petit instant ✨</h1>
-      <p class="sub">Un mini-jeu romantique, pour mieux te connaître… et oser un rendez-vous.</p>
-    </header>
 
-    <section class="card" id="screen"></section>
+<div class="container">
 
-    <p class="small">À la fin : un texte WhatsApp prêt à copier + un bouton “Accepter”.</p>
-  </main>
+<div class="title" id="title"></div>
 
-  <script>
-    // ✅ Personnalisation
-    const TON_PRENOM = "Cheikhna";
-    const SON_PRENOM = "Bambi";
+<div class="poem" id="content"></div>
 
-    const screen = document.getElementById("screen");
-    const state = { step: 0, answers: {}, accepted: false };
+<div id="choices"></div>
 
-    const steps = [
-      { type: "intro", tag: "💌 Pour toi" },
-      {
-        type: "poem",
-        tag: "✨ Délicatement",
-        headline: `J’ai pensé à toi, ${SON_PRENOM}…`,
-        poem:
-`Un petit jeu, rien de trop grand,
-juste une parenthèse, doucement.
+</div>
 
-Quelques questions, pour te découvrir,
-et peut-être… un rendez-vous à venir.`
-      },
-      { type:"choice", tag:"🌙 Ambiance", key:"ambiance", q:`${SON_PRENOM}, quelle ambiance te plaît le plus ?`, choices:["Calme & intime","Vivant & spontané","Un mélange des deux"] },
-      { type:"choice", tag:"☕ Moment", key:"moment", q:"Pour un rendez-vous, tu préfères…", choices:["Un café élégant","Une promenade","Un dîner","Un endroit discret"] },
-      { type:"choice", tag:"✨ Attention", key:"plaisir", q:"Qu’est-ce qui te touche le plus ?", choices:["Une belle conversation","Une attention","Rire ensemble","Une ambiance romantique"] },
-      { type:"choice", tag:"🎶 Rythme", key:"rythme", q:"Tu es plutôt…", choices:["Spontanée","J’aime qu’on planifie un peu","Ça dépend de la personne"] },
-      { type:"text", tag:"🌸 Détail", key:"detail", q:"Un petit détail que tu aimes (simple, mais toi).", placeholder:"Ex : chocolat chaud, marcher le soir, une playlist, un parfum, etc." },
-      { type:"result", tag:"🥂 Rendez-vous" }
-    ];
+<script>
 
-    function escapeHtml(s){
-      return String(s).replace(/[&<>"']/g, m => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-      }[m]));
-    }
+const SON_PRENOM = "Bambi";
+const TON_PRENOM = "Cheikhna";
 
-    function typewriter(el, text, speed=18){
-      el.innerHTML = ""; // reset
-      const cursor = document.createElement("span");
-      cursor.className = "blink";
-      cursor.textContent = "▍";
+let step = 0;
 
-      let i = 0;
-      function tick(){
-        el.textContent = text.slice(0, i);
-        if(i < text.length){
-          i++;
-          el.appendChild(cursor);
-          setTimeout(tick, speed);
-        } else {
-          // fin : enlève le curseur après un court délai
-          setTimeout(() => cursor.remove(), 400);
-        }
-      }
-      tick();
-    }
+let answers = {};
 
-    async function copyText(text){
-      try{
-        await navigator.clipboard.writeText(text);
-        alert("Copié ✅ Tu peux coller dans WhatsApp.");
-      } catch(e){
-        alert("Copie automatique impossible. Sélectionne le texte puis copie.");
-      }
-    }
+function typeWriter(element, text, speed=40){
 
-    function render(){
-      const step = steps[state.step];
+element.innerHTML = "";
 
-      if(step.type === "intro"){
-        screen.innerHTML = `
-          <div class="pill">${step.tag}</div>
-          <div class="title">Une petite parenthèse…</div>
-          <div class="poem" id="poemIntro"></div>
-          <div class="grid">
-            <button class="btn primary" id="goBtn">Commencer</button>
-          </div>
-          <div class="hint">C’est simple. Et c’est juste entre nous ✨</div>
-        `;
-        const poemEl = document.getElementById("poemIntro");
-        typewriter(poemEl,
-`J’ai préparé quelque chose de doux pour toi, ${SON_PRENOM}.
-Quelques questions, puis une petite invitation…`, 18);
+let i=0;
 
-        document.getElementById("goBtn").onclick = () => { state.step++; render(); };
-        return;
-      }
+function type(){
 
-      if(step.type === "poem"){
-        screen.innerHTML = `
-          <div class="pill">${escapeHtml(step.tag)}</div>
-          <div class="title" id="headline"></div>
-          <div class="poem" id="poem"></div>
-          <div class="grid">
-            <button class="btn primary" id="startBtn">Continuer</button>
-          </div>
-          <div class="hint">Réponds comme tu le sens.</div>
-        `;
-        typewriter(document.getElementById("headline"), step.headline, 22);
-        // Poème un peu plus lent
-        typewriter(document.getElementById("poem"), step.poem, 14);
+if(i < text.length){
 
-        document.getElementById("startBtn").onclick = () => { state.step++; render(); };
-        return;
-      }
+element.innerHTML += text.charAt(i);
 
-      if(step.type === "choice"){
-        const buttons = step.choices.map(c =>
-          `<button class="btn" data-choice="${escapeHtml(c)}">${escapeHtml(c)}</button>`
-        ).join("");
+i++;
 
-        screen.innerHTML = `
-          <div class="pill">${escapeHtml(step.tag)}</div>
-          <div class="title">${escapeHtml(step.q)}</div>
-          <div class="grid">${buttons}</div>
-          <div class="row">
-            <button class="btn" id="backBtn">Retour</button>
-          </div>
-        `;
+setTimeout(type, speed);
 
-        screen.querySelectorAll("[data-choice]").forEach(btn => {
-          btn.addEventListener("click", () => {
-            state.answers[step.key] = btn.getAttribute("data-choice");
-            state.step++;
-            render();
-          });
-        });
+}
 
-        document.getElementById("backBtn").onclick = () => {
-          state.step = Math.max(0, state.step - 1);
-          render();
-        };
-        return;
-      }
+}
 
-      if(step.type === "text"){
-        screen.innerHTML = `
-          <div class="pill">${escapeHtml(step.tag)}</div>
-          <div class="title">${escapeHtml(step.q)}</div>
-          <div class="grid">
-            <input class="input" id="textInput" placeholder="${escapeHtml(step.placeholder)}" autocomplete="off" />
-            <button class="btn primary" id="nextBtn">Valider</button>
-          </div>
-          <div class="row">
-            <button class="btn" id="backBtn">Retour</button>
-          </div>
-        `;
+type();
 
-        document.getElementById("nextBtn").onclick = () => {
-          const v = document.getElementById("textInput").value.trim();
-          state.answers[step.key] = v || "un petit détail simple";
-          state.step++;
-          render();
-        };
+}
 
-        document.getElementById("backBtn").onclick = () => {
-          state.step = Math.max(0, state.step - 1);
-          render();
-        };
-        return;
-      }
+function showIntro(){
 
-      if(step.type === "result"){
-        const a = state.answers;
+typeWriter(
+document.getElementById("title"),
+SON_PRENOM + "...",
+150
+);
 
-        const invitation =
-`${SON_PRENOM}, j’ai aimé découvrir ces petits détails sur toi.
-Ça me donne envie de te proposer quelque chose de simple et élégant :
-un moment à deux, une vraie conversation, et cette ambiance ${a.ambiance?.toLowerCase() || "qui te ressemble"}.
+setTimeout(()=>{
 
-Si tu en as envie, j’aimerais t’inviter à un rendez-vous — ${a.moment?.toLowerCase() || "un moment doux"}.
-Tu me dis juste quand tu es dispo, et je te propose un créneau.`;
+typeWriter(
+document.getElementById("content"),
+`J’ai pensé à toi.
 
-        const recap =
-`✨ Pour ${SON_PRENOM}
-• Ambiance : ${a.ambiance || "-"}
-• Moment : ${a.moment || "-"}
-• Ce qui te touche : ${a.plaisir || "-"}
-• Rythme : ${a.rythme || "-"}
-• Petit détail : ${a.detail || "-"}\n\n💌 ${invitation}`;
+Et j’ai voulu créer ce petit instant.
 
-        const whatsappInvite =
-`Hey ${SON_PRENOM} 🙂\n\nJ’ai un peu mieux compris ce que tu aimes :\n- Ambiance : ${a.ambiance}\n- Moment : ${a.moment}\n- Ce qui te touche : ${a.plaisir}\n- Rythme : ${a.rythme}\n- Petit détail : ${a.detail}\n\n${invitation}\n\n— ${TON_PRENOM}`;
+Pas pour poser des questions,
+mais pour laisser naître une invitation.`,
+30
+);
 
-        const acceptReply =
-`Oui, j’aimerais bien 🙂\nDis-moi quand tu es dispo et ce que tu as en tête.`;
+document.getElementById("choices").innerHTML =
+`<button onclick="next()">Continuer</button>`;
 
-        const softReply =
-`C’est mignon 🙂\nJe te dis quand je connais mes dispos.`;
+},1200);
 
-        screen.innerHTML = `
-          <div class="pill">${escapeHtml(step.tag)}</div>
-          <div class="title">Merci, ${escapeHtml(SON_PRENOM)} ✨</div>
-          <div class="sep"></div>
-          <div class="summary" id="summary">${escapeHtml(recap)}</div>
-          <div class="sep"></div>
+}
 
-          <div class="grid">
-            <button class="btn primary" id="copyBtn">Copier le message WhatsApp</button>
-            <button class="btn good" id="acceptBtn">Accepter ce rendez-vous</button>
-            <button class="btn" id="restartBtn">Recommencer</button>
-          </div>
+function showQuestion(q, options, key){
 
-          <div class="hint">“Accepter” génère une réponse prête à envoyer.</div>
-        `;
+document.getElementById("title").innerHTML = q;
 
-        document.getElementById("copyBtn").onclick = () => copyText(whatsappInvite);
+let html="";
 
-        document.getElementById("acceptBtn").onclick = async () => {
-          // On affiche 2 réponses possibles à copier (oui / soft)
-          const txt =
-`Réponse “Oui” (directe) :
-${acceptReply}
+options.forEach(o=>{
 
-Réponse “Soft” (si tu veux garder léger) :
-${softReply}`;
-          document.getElementById("summary").textContent = txt;
-          await copyText(acceptReply);
-        };
+html += `<button class="choice" onclick="select('${key}','${o}')">${o}</button>`;
 
-        document.getElementById("restartBtn").onclick = () => {
-          state.step = 0;
-          state.answers = {};
-          render();
-        };
+});
 
-        return;
-      }
-    }
+document.getElementById("choices").innerHTML = html;
 
-    render();
-  </script>
+document.getElementById("content").innerHTML="";
+
+}
+
+function select(key,value){
+
+answers[key]=value;
+
+next();
+
+}
+
+function next(){
+
+step++;
+
+if(step==1){
+
+showQuestion(
+"Quelle ambiance te plaît le plus ?",
+["Calme et intime","Spontanée","Romantique"],
+"ambiance"
+);
+
+}
+
+else if(step==2){
+
+showQuestion(
+"Pour un rendez-vous, tu préfères…",
+["Un café","Une promenade","Un dîner"],
+"moment"
+);
+
+}
+
+else if(step==3){
+
+showQuestion(
+"Qu’est-ce qui te touche le plus ?",
+["Une attention","Une conversation","Un regard"],
+"emotion"
+);
+
+}
+
+else if(step==4){
+
+showFinal();
+
+}
+
+}
+
+function showFinal(){
+
+let invitation =
+`${SON_PRENOM},
+
+J’ai aimé découvrir ces petits détails sur toi.
+
+Ils me donnent envie de te proposer quelque chose de simple et sincère :
+un moment à deux, une vraie conversation,
+et le plaisir de se découvrir autrement.
+
+J’aimerais t’inviter à un rendez-vous.`;
+
+typeWriter(document.getElementById("title"),"Pour toi...",80);
+
+typeWriter(document.getElementById("content"),invitation,25);
+
+let whatsapp =
+
+`Hey ${SON_PRENOM} 🙂
+
+J’ai pensé à toi et j’aimerais t’inviter à un rendez-vous.
+
+Un moment simple, juste toi et moi.
+
+— ${TON_PRENOM}`;
+
+document.getElementById("choices").innerHTML = `
+
+<button onclick="copy('${whatsapp}')">
+Copier le message WhatsApp
+</button>
+
+<button class="accept" onclick="accept()">
+Accepter ce rendez-vous
+</button>
+
+`;
+
+}
+
+function copy(text){
+
+navigator.clipboard.writeText(text);
+
+alert("Message copié");
+
+}
+
+function accept(){
+
+let msg =
+
+`Oui, j’aimerais bien 🙂
+Dis-moi quand tu es disponible.`;
+
+navigator.clipboard.writeText(msg);
+
+alert("Réponse copiée");
+
+}
+
+showIntro();
+
+</script>
+
 </body>
 </html>
