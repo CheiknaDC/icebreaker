@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Paris Discovery ✨</title>
+  <title>Un petit instant ✨</title>
 
   <style>
     :root{
-      --bg1:#0b1220;
+      --bg1:#0b1020;
       --bg2:#111a2e;
-      --card: rgba(255,255,255,.07);
+      --card: rgba(255,255,255,.075);
       --border: rgba(255,255,255,.14);
       --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.70);
-      --shadow: 0 18px 55px rgba(0,0,0,.55);
-      --radius: 18px;
+      --muted: rgba(255,255,255,.72);
+      --shadow: 0 18px 60px rgba(0,0,0,.58);
+      --radius: 20px;
     }
 
     *{box-sizing:border-box}
@@ -24,15 +24,15 @@
       font-family:-apple-system, system-ui, Segoe UI, Roboto, Arial, sans-serif;
       color:var(--text);
       background:
-        radial-gradient(1200px 700px at 15% 10%, rgba(168,85,247,.45), transparent 55%),
-        radial-gradient(900px 600px at 85% 20%, rgba(34,197,94,.28), transparent 55%),
+        radial-gradient(1000px 650px at 18% 10%, rgba(168,85,247,.42), transparent 55%),
+        radial-gradient(900px 600px at 85% 18%, rgba(34,197,94,.22), transparent 55%),
         linear-gradient(180deg, var(--bg1), var(--bg2));
     }
 
     .app{
       min-height:100%;
       padding: calc(18px + env(safe-area-inset-top)) 16px calc(18px + env(safe-area-inset-bottom));
-      max-width: 560px;
+      max-width: 600px;
       margin: 0 auto;
       display:flex;
       flex-direction:column;
@@ -42,6 +42,7 @@
     header{
       text-align:center;
       margin-top:8px;
+      animation: fadeUp .55s ease both;
     }
     h1{margin:0; font-size:28px; letter-spacing:.2px}
     .sub{margin:6px 0 0; color:var(--muted); font-size:14px}
@@ -52,6 +53,8 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 18px;
+      overflow:hidden;
+      animation: fadeUp .55s ease both;
     }
 
     .pill{
@@ -64,9 +67,10 @@
       background: rgba(0,0,0,.18);
       color: var(--muted);
       font-size: 12px;
+      backdrop-filter: blur(10px);
     }
 
-    .q{
+    .title{
       margin: 14px 0 0;
       font-size: 20px;
       line-height: 1.25;
@@ -75,6 +79,17 @@
       display:flex;
       align-items:center;
       justify-content:center;
+      animation: fadeIn .45s ease both;
+    }
+
+    .poem{
+      margin: 10px 0 0;
+      color: rgba(255,255,255,.85);
+      font-size: 14px;
+      line-height: 1.55;
+      text-align:center;
+      white-space: pre-wrap;
+      animation: fadeIn .55s ease both;
     }
 
     .grid{
@@ -93,9 +108,13 @@
       color: var(--text);
       font-size: 15px;
       cursor:pointer;
-      transition: transform .06s ease;
+      transition: transform .08s ease, background .2s ease, border-color .2s ease;
       box-shadow: 0 10px 18px rgba(0,0,0,.22);
       text-align:center;
+    }
+    .btn:hover{
+      background: rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.22);
     }
     .btn:active{transform: scale(.99)}
     .btn.primary{
@@ -113,241 +132,7 @@
       color: var(--text);
       font-size: 15px;
       outline:none;
+      transition: border-color .2s ease, background .2s ease;
     }
-    .input::placeholder{color: rgba(255,255,255,.45)}
-
-    .row{
-      display:flex;
-      gap:10px;
-      margin-top: 12px;
-    }
-
-    .small{
-      color: var(--muted);
-      font-size: 12px;
-      text-align:center;
-      margin: 4px 0 0;
-    }
-
-    .summary{
-      line-height: 1.45;
-      font-size: 15px;
-      color: rgba(255,255,255,.88);
-      white-space: pre-wrap;
-    }
-
-    .sep{
-      height:1px;
-      background: rgba(255,255,255,.12);
-      margin: 14px 0;
-    }
-  </style>
-</head>
-
-<body>
-  <main class="app">
-    <header>
-      <h1>Paris Discovery ✨</h1>
-      <p class="sub">Une façon élégante d’apprendre à se connaître, avant Paris.</p>
-    </header>
-
-    <section class="card" id="screen">
-      <!-- contenu injecté -->
-    </section>
-
-    <p class="small">Astuce : à la fin, tu peux copier le résultat et l’envoyer.</p>
-  </main>
-
-  <script>
-    const state = {
-      step: 0,
-      prenom: "",
-      answers: {}
-    };
-
-    const steps = [
-      {
-        type: "name",
-        tag: "✨ Départ"
-      },
-      {
-        type: "choice",
-        tag: "🌙 Ambiance",
-        key: "moment",
-        q: "Quel moment te ressemble le plus ?",
-        choices: ["Matin doux", "Coucher de soleil", "Nuit & lumières"]
-      },
-      {
-        type: "choice",
-        tag: "☕ Goûts",
-        key: "style",
-        q: "Pour un moment à deux, tu préfères…",
-        choices: ["Un café élégant", "Une promenade", "Un dîner", "Une surprise délicate"]
-      },
-      {
-        type: "choice",
-        tag: "🎶 Activités",
-        key: "activite",
-        q: "Ton activité idéale quand tu as du temps ?",
-        choices: ["Balade & découvertes", "Musée / expo", "Shopping / flâner", "Ciné / chill", "Resto / brunch"]
-      },
-      {
-        type: "choice",
-        tag: "✨ Détails",
-        key: "energie",
-        q: "Tu aimes plutôt…",
-        choices: ["Calme et intime", "Vivant et spontané", "Un mélange des deux"]
-      },
-      {
-        type: "text",
-        tag: "💌 Signature",
-        key: "petitplaisir",
-        q: "Dis-moi un petit plaisir simple que tu aimes (un détail qui te ressemble).",
-        placeholder: "Ex : un chocolat chaud, marcher le soir, écouter une playlist, etc."
-      },
-      {
-        type: "result",
-        tag: "🥂 Paris"
-      }
-    ];
-
-    const screen = document.getElementById("screen");
-
-    function escapeHtml(s){
-      return String(s).replace(/[&<>"']/g, m => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-      }[m]));
-    }
-
-    function render(){
-      const step = steps[state.step];
-
-      if(step.type === "name"){
-        screen.innerHTML = `
-          <div class="pill">${step.tag}</div>
-          <div class="q">Comment tu t’appelles ?</div>
-          <div class="grid">
-            <input class="input" id="nameInput" placeholder="Son prénom" autocomplete="off" />
-            <button class="btn primary" id="startBtn">Continuer</button>
-          </div>
-          <div class="small">Promis, c’est juste pour personnaliser ✨</div>
-        `;
-        document.getElementById("startBtn").onclick = () => {
-          const v = document.getElementById("nameInput").value.trim();
-          state.prenom = v || "toi";
-          state.step++;
-          render();
-        };
-        return;
-      }
-
-      if(step.type === "choice"){
-        const buttons = step.choices.map(c =>
-          `<button class="btn" data-choice="${escapeHtml(c)}">${escapeHtml(c)}</button>`
-        ).join("");
-
-        screen.innerHTML = `
-          <div class="pill">${step.tag}</div>
-          <div class="q">${escapeHtml(step.q)}</div>
-          <div class="grid">${buttons}</div>
-          <div class="row">
-            <button class="btn" id="backBtn">Retour</button>
-          </div>
-        `;
-
-        screen.querySelectorAll("[data-choice]").forEach(btn => {
-          btn.addEventListener("click", () => {
-            state.answers[step.key] = btn.getAttribute("data-choice");
-            state.step++;
-            render();
-          });
-        });
-
-        document.getElementById("backBtn").onclick = () => {
-          state.step = Math.max(0, state.step - 1);
-          render();
-        };
-        return;
-      }
-
-      if(step.type === "text"){
-        screen.innerHTML = `
-          <div class="pill">${step.tag}</div>
-          <div class="q">${escapeHtml(step.q)}</div>
-          <div class="grid">
-            <input class="input" id="textInput" placeholder="${escapeHtml(step.placeholder)}" autocomplete="off" />
-            <button class="btn primary" id="nextBtn">Valider</button>
-          </div>
-          <div class="row">
-            <button class="btn" id="backBtn">Retour</button>
-          </div>
-        `;
-
-        document.getElementById("nextBtn").onclick = () => {
-          const v = document.getElementById("textInput").value.trim();
-          state.answers[step.key] = v || "un petit plaisir simple";
-          state.step++;
-          render();
-        };
-
-        document.getElementById("backBtn").onclick = () => {
-          state.step = Math.max(0, state.step - 1);
-          render();
-        };
-        return;
-      }
-
-      if(step.type === "result"){
-        const a = state.answers;
-        const prenom = state.prenom;
-
-        const recap =
-`✨ Résumé de ${prenom}
-• Moment : ${a.moment || "-"}
-• Style : ${a.style || "-"}
-• Activité : ${a.activite || "-"}
-• Énergie : ${a.energie || "-"}
-• Petit plaisir : ${a.petitplaisir || "-"}
-
-💌 Invitation (classe)
-J’ai l’impression que Paris te plairait encore plus dans une ambiance ${a.energie?.toLowerCase() || "qui te ressemble"}.
-À ta prochaine visite, j’aimerais t’inviter à un moment ${a.style?.toLowerCase() || "simple"} — et te faire découvrir un endroit qui colle à ton énergie.
-Si tu es d’accord, tu me dis juste la période où tu viens, et je m’occupe du reste.`;
-
-        screen.innerHTML = `
-          <div class="pill">${step.tag}</div>
-          <div class="q">Merci, ${escapeHtml(prenom)} ✨</div>
-          <div class="sep"></div>
-          <div class="summary" id="summary">${escapeHtml(recap)}</div>
-          <div class="sep"></div>
-          <div class="grid">
-            <button class="btn primary" id="copyBtn">Copier le message</button>
-            <button class="btn" id="restartBtn">Recommencer</button>
-          </div>
-        `;
-
-        document.getElementById("copyBtn").onclick = async () => {
-          const text = recap;
-          try{
-            await navigator.clipboard.writeText(text);
-            alert("Copié ✅");
-          } catch(e){
-            alert("Impossible de copier automatiquement. Sélectionne et copie le texte.");
-          }
-        };
-
-        document.getElementById("restartBtn").onclick = () => {
-          state.step = 0;
-          state.prenom = "";
-          state.answers = {};
-          render();
-        };
-
-        return;
-      }
-    }
-
-    render();
-  </script>
-</body>
-</html>
+    .input:focus{
+      border-c
