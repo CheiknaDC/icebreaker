@@ -28,40 +28,72 @@
 
   .container{
     width:92%;
-    max-width:560px;
+    max-width:600px;
     background: var(--glass);
-    padding:28px;
+    padding:26px;
     border-radius:22px;
     text-align:center;
     box-shadow: var(--shadow);
     backdrop-filter: blur(10px);
     border: 1px solid var(--border);
+    position: relative;
   }
+
+  .topbar{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    align-items:center;
+    margin-bottom:10px;
+  }
+
+  .pill{
+    display:inline-flex;
+    gap:8px;
+    align-items:center;
+    padding:7px 12px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.16);
+    background: rgba(0,0,0,.18);
+    font-size:12px;
+    opacity:.9;
+  }
+
+  .soundBtn{
+    padding:8px 12px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.16);
+    background: rgba(255,255,255,0.10);
+    color:white;
+    cursor:pointer;
+    font-size:12px;
+    transition:.18s;
+  }
+  .soundBtn:hover{ background: rgba(255,255,255,0.14); transform: translateY(-1px); }
 
   .title{
     font-size:34px;
-    margin-bottom:16px;
-    min-height:52px;
+    margin: 6px 0 10px;
+    min-height:48px;
     text-shadow: 0 0 12px rgba(255,255,255,0.45);
-    animation: glow 2.2s ease-in-out infinite alternate;
+    animation: glow 1.6s ease-in-out infinite alternate;
   }
-
   @keyframes glow{
-    from{ text-shadow: 0 0 10px rgba(255,255,255,0.25); }
-    to{ text-shadow: 0 0 24px rgba(255,255,255,0.75); }
+    from{ text-shadow: 0 0 10px rgba(255,255,255,0.22); }
+    to{ text-shadow: 0 0 22px rgba(255,255,255,0.70); }
   }
 
   .text{
     line-height:1.75;
     font-size:16px;
     opacity:0;
-    transition:opacity 1.6s;
+    transition:opacity .5s;
     white-space:pre-wrap;
     min-height: 120px;
   }
 
   .hint{
-    margin-top: 10px;
+    margin-top: 8px;
     opacity: .72;
     font-size: 12px;
   }
@@ -69,10 +101,10 @@
   .grid{
     display:grid;
     gap:10px;
-    margin-top:16px;
+    margin-top:14px;
   }
 
-  button{
+  button.main{
     width:100%;
     padding:14px 14px;
     border-radius:14px;
@@ -81,43 +113,57 @@
     color:black;
     font-size:16px;
     cursor:pointer;
-    transition:0.25s;
+    transition:0.18s;
   }
-  button:hover{ background:#e2e8f0; transform:scale(1.02); }
+  button.main:hover{ background:#e2e8f0; transform:scale(1.01); }
 
   .btnSoft{
+    width:100%;
+    padding:14px 14px;
+    border-radius:14px;
     background: rgba(255,255,255,0.12);
     color:white;
     border: 1px solid rgba(255,255,255,0.18);
+    cursor:pointer;
+    transition:.18s;
+    font-size:16px;
   }
-  .btnSoft:hover{ background: rgba(255,255,255,0.16); }
+  .btnSoft:hover{ background: rgba(255,255,255,0.16); transform:scale(1.01); }
 
   .btnGold{
+    width:100%;
+    padding:14px 14px;
+    border-radius:14px;
     background: rgba(251,191,36,0.18);
     color: white;
     border: 1px solid rgba(251,191,36,0.30);
     font-weight: 700;
+    cursor:pointer;
+    transition:.18s;
+    font-size:16px;
   }
-  .btnGold:hover{ background: rgba(251,191,36,0.24); }
+  .btnGold:hover{ background: rgba(251,191,36,0.24); transform:scale(1.01); }
 
   .btnGreen{
+    width:100%;
+    padding:14px 14px;
+    border-radius:14px;
     background: rgba(34,197,94,0.20);
     color: white;
     border: 1px solid rgba(34,197,94,0.35);
     font-weight: 700;
+    cursor:pointer;
+    transition:.18s;
+    font-size:16px;
   }
-  .btnGreen:hover{ background: rgba(34,197,94,0.28); }
+  .btnGreen:hover{ background: rgba(34,197,94,0.28); transform:scale(1.01); }
+
+  .tiny{ font-size: 12px; opacity: .75; margin-top: 6px; }
 
   /* Lettre scellée */
-  .sealWrap{
-    display:flex;
-    justify-content:center;
-    margin: 14px 0 6px;
-  }
-
+  .sealWrap{ display:flex; justify-content:center; margin: 10px 0 4px; }
   .envelope{
-    width: 220px;
-    height: 140px;
+    width: 230px; height: 145px;
     border-radius: 18px;
     border: 1px solid rgba(255,255,255,0.18);
     background: rgba(0,0,0,0.18);
@@ -125,59 +171,66 @@
     overflow:hidden;
     box-shadow: 0 14px 40px rgba(0,0,0,0.35);
     cursor:pointer;
-    transition: transform .25s ease;
+    transition: transform .18s ease;
   }
-  .envelope:hover{ transform: translateY(-2px); }
-
+  .envelope:hover{ transform: translateY(-1px); }
   .flap{
-    position:absolute;
-    inset:0;
+    position:absolute; inset:0;
     background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
     clip-path: polygon(0 0, 100% 0, 50% 55%);
     transform-origin: top;
-    transition: transform .6s ease;
+    transition: transform .33s ease;
   }
-
   .paper{
-    position:absolute;
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
-    height: 110px;
-    border-radius: 14px;
+    position:absolute; left: 10px; right: 10px; bottom: 10px;
+    height: 115px; border-radius: 14px;
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.16);
-    transform: translateY(70px);
-    transition: transform .75s ease;
+    transform: translateY(64px);
+    transition: transform .38s ease;
   }
-
   .wax{
-    position:absolute;
-    left: 50%;
-    top: 62px;
+    position:absolute; left: 50%; top: 64px;
     transform: translateX(-50%);
-    width: 46px;
-    height: 46px;
-    border-radius: 999px;
+    width: 48px; height: 48px; border-radius: 999px;
     background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.25), rgba(168,85,247,0.38));
     border: 1px solid rgba(255,255,255,0.18);
-    box-shadow: 0 10px 22px rgba(0,0,0,0.25);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight: 800;
-    letter-spacing:.5px;
-    opacity:.95;
+    display:flex; align-items:center; justify-content:center;
+    font-weight: 800; opacity:.95;
   }
-
   .open .flap{ transform: rotateX(165deg); }
   .open .paper{ transform: translateY(0px); }
 
-  .heart{
+  /* “3 mots” */
+  .chips{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+    margin-top:12px;
+  }
+  .chip{
+    padding:10px 12px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,0.16);
+    background: rgba(255,255,255,0.08);
+    cursor:pointer;
+    font-size:14px;
+    transition:.15s;
+    user-select:none;
+  }
+  .chip:hover{ background: rgba(255,255,255,0.12); transform: translateY(-1px); }
+  .chip.selected{
+    background: rgba(34,197,94,0.18);
+    border-color: rgba(34,197,94,0.35);
+  }
+
+  /* étoiles flottantes */
+  .star{
     position:absolute;
     color:white;
-    animation: float 7s infinite linear;
-    opacity:0.14;
+    animation: float 6s infinite linear;
+    opacity:0.12;
     user-select:none;
     pointer-events:none;
   }
@@ -185,71 +238,140 @@
     from{ transform:translateY(110vh); }
     to{ transform:translateY(-15vh); }
   }
-
-  .tiny{
-    font-size: 12px;
-    opacity: .75;
-    margin-top: 8px;
-  }
 </style>
 </head>
 
 <body>
 <div class="container">
+  <div class="topbar">
+    <div class="pill" id="stagePill">💌 Un instant</div>
+    <button class="soundBtn" id="soundBtn">🔊 Activer le son</button>
+  </div>
+
   <div class="title" id="title"></div>
   <div class="text" id="text"></div>
 
   <div id="extra"></div>
 
   <div class="grid">
-    <button id="btn" style="display:none">Continuer</button>
+    <button class="main" id="btn" style="display:none">Continuer</button>
   </div>
 
   <div class="hint" id="hint"></div>
 </div>
 
 <script>
+  // ✅ Personnalisation
   const SON_PRENOM = "Bambi";
   const TON_PRENOM = "Cheikhna";
 
+  const stagePill = document.getElementById("stagePill");
   const titleEl = document.getElementById("title");
   const textEl  = document.getElementById("text");
   const btnEl   = document.getElementById("btn");
   const extraEl = document.getElementById("extra");
   const hintEl  = document.getElementById("hint");
+  const soundBtn = document.getElementById("soundBtn");
 
   let step = 0;
-  let ambience = "Douce";
+  let ambience = null;           // "Douce" | "Mystérieuse" | "Lumineuse"
+  let words = [];                // 3 mots choisis
 
-  const name = SON_PRENOM + "...";
+  // ---------- Mini-son doux (Web Audio, sans fichier) ----------
+  let audioCtx = null;
+  let osc = null;
+  let gain = null;
+  let isSoundOn = false;
 
-  function fadeInText(txt){
+  function startSound(){
+    if(isSoundOn) return;
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+
+    osc = audioCtx.createOscillator();
+    gain = audioCtx.createGain();
+
+    // Son très doux
+    osc.type = "sine";
+    osc.frequency.value = 196; // G3
+    gain.gain.value = 0.00001;
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+
+    // Fade-in rapide
+    const now = audioCtx.currentTime;
+    gain.gain.cancelScheduledValues(now);
+    gain.gain.setValueAtTime(0.00001, now);
+    gain.gain.linearRampToValueAtTime(0.02, now + 0.35);
+
+    isSoundOn = true;
+    soundBtn.textContent = "🔇 Couper le son";
+  }
+
+  function stopSound(){
+    if(!isSoundOn) return;
+    try{
+      const now = audioCtx.currentTime;
+      gain.gain.cancelScheduledValues(now);
+      gain.gain.setValueAtTime(gain.gain.value, now);
+      gain.gain.linearRampToValueAtTime(0.00001, now + 0.25);
+      setTimeout(()=>{
+        if(osc){ osc.stop(); osc.disconnect(); }
+        if(gain){ gain.disconnect(); }
+        osc = null; gain = null;
+      }, 300);
+    }catch(e){}
+    isSoundOn = false;
+    soundBtn.textContent = "🔊 Activer le son";
+  }
+
+  soundBtn.onclick = async () => {
+    // iOS: parfois besoin de "resume" au clic
+    if(!isSoundOn){
+      startSound();
+      if(audioCtx && audioCtx.state === "suspended") await audioCtx.resume();
+    } else {
+      stopSound();
+    }
+  };
+
+  // ---------- UI helpers ----------
+  function fadeText(txt){
     textEl.style.opacity = 0;
     setTimeout(()=>{
       textEl.textContent = txt;
       textEl.style.opacity = 1;
-    }, 120);
+    }, 70);
   }
 
-  function typeName(){
+  function typeFastName(){
+    const name = SON_PRENOM + "...";
     titleEl.textContent = "";
     let i = 0;
-    function tick(){
+    (function tick(){
       if(i < name.length){
         titleEl.textContent += name[i++];
-        setTimeout(tick, 180);
+        setTimeout(tick, 80); // ✅ rapide
       } else {
-        setTimeout(showStep0, 550);
+        showStep0();
       }
-    }
-    tick();
+    })();
   }
 
+  function setStage(label){
+    stagePill.textContent = label;
+  }
+
+  // ---------- Steps ----------
   function showStep0(){
     step = 0;
+    setStage("💌 Début");
     extraEl.innerHTML = "";
-    hintEl.textContent = "Lis doucement. Prends ton temps.";
-    fadeInText(
+    hintEl.textContent = "Lis doucement. Puis continue.";
+
+    fadeText(
 `J’ai pensé à toi.
 
 Et j’ai voulu créer ce petit instant.
@@ -267,14 +389,13 @@ peuvent rester.`
     btnEl.textContent = "Continuer";
   }
 
-  function showStep1(){
+  function showStep1_Ambience(){
     step = 1;
-    titleEl.textContent = "Choisis une ambiance…";
+    setStage("🌙 Ambiance");
+    titleEl.textContent = "Choisis ton ambiance…";
     hintEl.textContent = "Ce choix change la suite.";
     textEl.style.opacity = 1;
-    textEl.textContent =
-`Si cet instant avait une couleur…
-laquelle te ressemble aujourd’hui ?`;
+    textEl.textContent = "Quelle couleur veux-tu pour cet instant ?";
 
     extraEl.innerHTML = `
       <div class="grid">
@@ -282,30 +403,83 @@ laquelle te ressemble aujourd’hui ?`;
         <button class="btnSoft" data-a="Mystérieuse">✨ Mystérieuse</button>
         <button class="btnSoft" data-a="Lumineuse">☀️ Lumineuse</button>
       </div>
-      <div class="tiny">Tu peux choisir sans réfléchir.</div>
+      <div class="tiny">Choisis vite, c’est juste une vibe.</div>
     `;
 
     extraEl.querySelectorAll("[data-a]").forEach(b=>{
       b.onclick = () => {
         ambience = b.getAttribute("data-a");
-        showStep2();
+        // petit changement sonore selon ambiance (si son actif)
+        if(isSoundOn && osc){
+          const targetFreq = ambience === "Douce" ? 196 : (ambience === "Mystérieuse" ? 174 : 220);
+          osc.frequency.setTargetAtTime(targetFreq, audioCtx.currentTime, 0.08);
+        }
+        showStep2_3Words();
       };
     });
 
     btnEl.style.display = "none";
   }
 
-  function showStep2(){
+  function showStep2_3Words(){
     step = 2;
+    setStage("🧩 3 mots");
+    titleEl.textContent = "Trois mots…";
+    hintEl.textContent = "Choisis 3 mots qui te décrivent.";
+    fadeText(`${SON_PRENOM}, lesquels te ressemblent aujourd’hui ?`);
+
+    words = [];
+
+    const pool = [
+      "Douce", "Solaire", "Mystérieuse", "Élégante", "Spontanée", "Calme",
+      "Rieuse", "Intense", "Loyale", "Curieuse", "Romantique", "Audacieuse",
+      "Sensible", "Sereine", "Magnétique", "Vraie"
+    ];
+
+    extraEl.innerHTML = `
+      <div class="chips" id="chips"></div>
+      <div class="tiny" id="count">0 / 3 sélectionnés</div>
+    `;
+
+    const chips = document.getElementById("chips");
+    const count = document.getElementById("count");
+
+    chips.innerHTML = pool.map(w => `<div class="chip" data-w="${w}">${w}</div>`).join("");
+
+    chips.querySelectorAll(".chip").forEach(chip=>{
+      chip.onclick = () => {
+        const w = chip.getAttribute("data-w");
+        const isSel = chip.classList.contains("selected");
+
+        if(isSel){
+          chip.classList.remove("selected");
+          words = words.filter(x => x !== w);
+        } else {
+          if(words.length >= 3) return;
+          chip.classList.add("selected");
+          words.push(w);
+        }
+        count.textContent = `${words.length} / 3 sélectionnés`;
+
+        if(words.length === 3){
+          // petit flash: on affiche le bouton
+          btnEl.style.display = "block";
+          btnEl.textContent = "Continuer";
+        } else {
+          btnEl.style.display = "none";
+        }
+      };
+    });
+
+    btnEl.style.display = "none";
+  }
+
+  function showStep3_Letter(){
+    step = 3;
+    setStage("✉️ Lettre");
     titleEl.textContent = "Une lettre pour toi";
     hintEl.textContent = "Clique sur l’enveloppe.";
-
-    const intro =
-`J’ai glissé une petite lettre dedans.
-Rien à prouver. Rien à répondre.
-Juste un instant à vivre.`;
-
-    fadeInText(intro);
+    fadeText("J’ai glissé une petite lettre dedans…");
 
     extraEl.innerHTML = `
       <div class="sealWrap">
@@ -318,136 +492,133 @@ Juste un instant à vivre.`;
       <div class="tiny">Ouvrir la lettre…</div>
     `;
 
-    const env = document.getElementById("env");
-    env.onclick = () => {
-      env.classList.toggle("open");
-      setTimeout(showLetterText, 520);
+    document.getElementById("env").onclick = (e) => {
+      e.currentTarget.classList.toggle("open");
+      setTimeout(showLetterText, 220);
     };
 
     btnEl.style.display = "none";
   }
 
   function showLetterText(){
-    const a = ambience;
-
+    const w = words.join(", ");
     let letter = "";
-    if(a === "Douce"){
+
+    if(ambience === "Douce"){
       letter =
 `${SON_PRENOM},
 
-Je voulais que tu te sentes en sécurité ici.
-Que ce moment te fasse respirer.
-Comme une lumière basse, un silence qui apaise,
-et une pensée qui te dit : “tu comptes”.
+Aujourd’hui tu t’es décrite en trois mots :
+${w}.
+
+Alors je te laisse un moment doux.
+Pas pour impressionner.
+Juste pour que tu te sentes bien, ici.
 
 Si tu souris un peu… c’est déjà parfait.`;
-    } else if(a === "Mystérieuse"){
+    } else if(ambience === "Mystérieuse"){
       letter =
 `${SON_PRENOM},
 
-Il y a des instants qui ressemblent à un secret.
-On ne les explique pas.
-On les ressent.
+Tes trois mots :
+${w}.
 
-J’ai voulu en créer un, juste là,
-entre le silence et la curiosité…
-comme une étoile qu’on remarque seulement quand on lève la tête.`;
+Alors je te laisse quelque chose de secret.
+Un instant qu’on ne comprend pas,
+qu’on ressent.
+
+Comme une étoile qu’on remarque
+seulement quand on lève la tête.`;
     } else {
       letter =
 `${SON_PRENOM},
 
-Je voulais quelque chose de lumineux.
-Un petit élan qui réchauffe.
-Un instant simple qui dit :
-“Tu mérites la douceur, et les choses belles.”
+Tes trois mots :
+${w}.
 
-Garde ce moment. Comme un sourire dans la poche.`;
+Alors je te laisse un instant lumineux.
+Un petit élan qui réchauffe,
+et qui rappelle une chose :
+
+Tu mérites le beau. Simplement.`;
     }
 
-    fadeInText(letter);
+    fadeText(letter);
 
     extraEl.innerHTML = `
       <div class="grid">
         <button class="btnGold" id="keepBtn">Garder ce moment ✨</button>
         <button class="btnGreen" id="replyBtn">Me répondre (copier) 💬</button>
       </div>
-      <div class="tiny">Tu peux juste lire… ou envoyer un petit mot.</div>
+      <div class="tiny">Optionnel : tu peux juste lire.</div>
     `;
 
-    const keepText =
-`Je garde ce moment. C’était doux ✨`;
-
-    const replyText =
-`Bambi… je viens de lire ton instant.
-C’était ${ambience.toLowerCase()}… et vraiment touchant.
-Merci.
-
-— ${SON_PRENOM ? "" : ""}`;
-
-    // (réponse courte, sans signature bizarre)
-    const replyText2 =
-`Je viens de lire ton instant… c’était ${ambience.toLowerCase()} et très beau.
-Merci, ça m’a fait sourire.`;
-
     document.getElementById("keepBtn").onclick = async () => {
-      await navigator.clipboard.writeText(keepText);
+      await navigator.clipboard.writeText("Je garde ce moment. C’était doux ✨");
       alert("Copié ✅");
     };
 
     document.getElementById("replyBtn").onclick = async () => {
-      await navigator.clipboard.writeText(replyText2);
-      alert("Copié ✅ (tu peux me l’envoyer)");
+      await navigator.clipboard.writeText(
+        `Je viens de lire ton instant… c’était ${ambience.toLowerCase()} et très beau. Mes 3 mots : ${words.join(", ")}. Merci, ça m’a fait sourire.`
+      );
+      alert("Copié ✅ (tu peux l’envoyer)");
     };
 
     btnEl.style.display = "block";
     btnEl.textContent = "Dernière page";
   }
 
-  function showStep3(){
-    step = 3;
+  function showStep4_Final(){
+    step = 4;
+    setStage("🌸 Fin");
     titleEl.textContent = "Dernière page…";
     hintEl.textContent = "";
-
     extraEl.innerHTML = "";
     btnEl.style.display = "none";
 
-    fadeInText(
+    const vibe =
+      ambience === "Douce" ? "douceur" :
+      ambience === "Mystérieuse" ? "mystère" : "lumière";
+
+    fadeText(
 `${SON_PRENOM},
 
-Si tu devais retenir une seule chose…
-c’est celle-ci :
+Ton ambiance : ${ambience}.
+Tes trois mots : ${words.join(", ")}.
 
-Tu mérites des instants doux.
-Des instants vrais.
-Des instants qui restent.
+Si tu devais retenir une seule chose :
+ce moment n’attend rien.
 
-Et si un jour tu as envie d’en revivre un…
-il suffit d’un mot.`
+Il existe pour te laisser ${vibe}.
+Et pour te rappeler que tu mérites
+des instants uniques…
+et inoubliables.`
     );
   }
 
+  // ---------- Navigation ----------
   btnEl.onclick = () => {
-    if(step === 0) return showStep1();
-    if(step === 2) return showStep3();
-    // fallback
-    showStep3();
+    if(step === 0) return showStep1_Ambience();
+    if(step === 2) return showStep3_Letter();
+    if(step === 3) return showStep4_Final();
   };
 
-  // étoiles flottantes
+  // ---------- stars ----------
   const symbols = ["✦","✧","✺","✶"];
-  for(let k=0; k<14; k++){
+  for(let k=0; k<12; k++){
     const s = document.createElement("div");
-    s.className = "heart";
+    s.className = "star";
     s.textContent = symbols[Math.floor(Math.random()*symbols.length)];
     s.style.left = Math.random()*100 + "vw";
-    s.style.animationDuration = (4 + Math.random()*7) + "s";
-    s.style.fontSize = (10 + Math.random()*22) + "px";
-    s.style.opacity = (0.08 + Math.random()*0.14).toFixed(2);
+    s.style.animationDuration = (3 + Math.random()*5) + "s";
+    s.style.fontSize = (10 + Math.random()*20) + "px";
+    s.style.opacity = (0.07 + Math.random()*0.12).toFixed(2);
     document.body.appendChild(s);
   }
 
   // start
-  typeName();
+  typeFastName();
 </script>
 </body>
 </html>
