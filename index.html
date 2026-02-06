@@ -1,63 +1,12 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IceBreaker 💬</title>
-
-<style>
-
-body{
-background: linear-gradient(135deg,#667eea,#764ba2);
-font-family: Arial;
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-margin:0;
-}
-
-.container{
-background: rgba(0,0,0,0.3);
-padding:30px;
-border-radius:15px;
-text-align:center;
-width:90%;
-max-width:400px;
-}
-
-button{
-margin-top:20px;
-padding:15px;
-border:none;
-border-radius:10px;
-font-size:16px;
-width:100%;
-cursor:pointer;
-}
-
-button:hover{
-background:white;
-color:black;
-}
-
-</style>
-
-</head>
-<body>
-
 <div class="container">
 
-<h2>IceBreaker 💬</h2>
+<h2>Paris Discovery ✨</h2>
 
-<p id="question">
-Appuie sur le bouton 🙂
-</p>
+<p id="question"></p>
 
-<button onclick="nouvelleQuestion()">
-Nouvelle question
-</button>
+<div id="choices"></div>
+
+<button onclick="nextQuestion()">Suivant</button>
 
 </div>
 
@@ -65,27 +14,68 @@ Nouvelle question
 
 const questions = [
 
-"J’hésitais à t’écrire… puis je me suis dit que ça valait le coup 🙂",
+{
+question: "Quel est ton moment préféré de la journée ?",
+choices: ["Le matin", "Le coucher de soleil", "La nuit"]
+},
 
-"Tu es plutôt spontané(e) ou mystérieux(se) ?",
+{
+question: "Tu préfères quel type de moment ?",
+choices: ["Un café élégant", "Une promenade", "Un dîner", "Une surprise"]
+},
 
-"Quelle est la chose qui te fait sourire instantanément ?",
-
-"Question importante : café ou chocolat chaud ?",
-
-"Tu crois au hasard ou au destin ?"
+{
+question: "Qu’est-ce qui t’attire le plus à Paris ?",
+choices: ["La vue", "Les rues", "Les cafés", "L’ambiance"]
+}
 
 ];
 
-function nouvelleQuestion(){
+let index = 0;
 
-let index = Math.floor(Math.random()*questions.length);
+function showQuestion(){
 
-document.getElementById("question").innerText = questions[index];
+let q = questions[index];
+
+document.getElementById("question").innerText = q.question;
+
+let html = "";
+
+q.choices.forEach(choice => {
+
+html += `<button onclick="selectChoice('${choice}')">${choice}</button>`;
+
+});
+
+document.getElementById("choices").innerHTML = html;
 
 }
 
-</script>
+function selectChoice(choice){
 
-</body>
-</html>
+index++;
+
+if(index < questions.length){
+
+showQuestion();
+
+}else{
+
+document.getElementById("question").innerText =
+"Merci pour tes réponses. J’aimerais transformer ces réponses en un vrai moment à Paris, avec toi.";
+
+document.getElementById("choices").innerHTML = "";
+
+}
+
+}
+
+function nextQuestion(){
+
+showQuestion();
+
+}
+
+showQuestion();
+
+</script>
