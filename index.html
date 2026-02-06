@@ -1,212 +1,182 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Un instant ✨</title>
 
 <style>
+  body{
+    margin:0;
+    font-family:-apple-system, system-ui;
+    background: radial-gradient(circle at top, #1e293b, #020617);
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    overflow:hidden;
+  }
 
-body{
-margin:0;
-font-family:-apple-system, system-ui;
-background: radial-gradient(circle at top, #1e293b, #020617);
-color:white;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-overflow:hidden;
-}
+  .container{
+    width:90%;
+    max-width:520px;
+    background: rgba(255,255,255,0.05);
+    padding:30px;
+    border-radius:22px;
+    text-align:center;
+    box-shadow:0 22px 70px rgba(0,0,0,0.65);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.10);
+  }
 
-.container{
-width:90%;
-max-width:500px;
-background: rgba(255,255,255,0.05);
-padding:30px;
-border-radius:20px;
-text-align:center;
-box-shadow:0 20px 60px rgba(0,0,0,0.6);
-backdrop-filter: blur(10px);
-}
+  .title{
+    font-size:34px;
+    margin-bottom:18px;
+    min-height:52px;
+    text-shadow: 0 0 12px rgba(255,255,255,0.45);
+    animation: glow 2.2s ease-in-out infinite alternate;
+  }
 
-.title{
-font-size:32px;
-margin-bottom:20px;
-min-height:50px;
-text-shadow: 0 0 10px rgba(255,255,255,0.4);
-animation: glow 2s ease-in-out infinite alternate;
-}
+  @keyframes glow{
+    from{ text-shadow: 0 0 10px rgba(255,255,255,0.28); }
+    to{ text-shadow: 0 0 22px rgba(255,255,255,0.75); }
+  }
 
-@keyframes glow{
-from{
-text-shadow: 0 0 10px rgba(255,255,255,0.3);
-}
-to{
-text-shadow: 0 0 20px rgba(255,255,255,0.8);
-}
-}
+  .text{
+    line-height:1.75;
+    font-size:16px;
+    opacity:0;
+    transition:opacity 2s;
+    white-space:pre-wrap;
+  }
 
-.text{
-line-height:1.7;
-font-size:16px;
-opacity:0;
-transition:opacity 2s;
-}
+  button{
+    width:100%;
+    padding:15px;
+    margin-top:20px;
+    border-radius:14px;
+    border:none;
+    background:white;
+    color:black;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+  }
 
-button{
-width:100%;
-padding:15px;
-margin-top:20px;
-border-radius:12px;
-border:none;
-background:white;
-color:black;
-font-size:16px;
-cursor:pointer;
-transition:0.3s;
-}
+  button:hover{
+    background:#e2e8f0;
+    transform:scale(1.02);
+  }
 
-button:hover{
-background:#e2e8f0;
-transform:scale(1.02);
-}
+  .heart{
+    position:absolute;
+    color:white;
+    animation: float 7s infinite linear;
+    opacity:0.16;
+    user-select:none;
+    pointer-events:none;
+  }
 
-.heart{
-position:absolute;
-color:white;
-animation: float 6s infinite linear;
-opacity:0.2;
-}
-
-@keyframes float{
-from{
-transform:translateY(100vh);
-}
-to{
-transform:translateY(-10vh);
-}
-}
-
+  @keyframes float{
+    from{ transform:translateY(110vh); }
+    to{ transform:translateY(-15vh); }
+  }
 </style>
-
 </head>
+
 <body>
 
 <div class="container">
-
-<div class="title" id="title"></div>
-
-<div class="text" id="text"></div>
-
-<button id="btn" style="display:none">Continuer</button>
-
+  <div class="title" id="title"></div>
+  <div class="text" id="text"></div>
+  <button id="btn" style="display:none">Continuer</button>
 </div>
 
 <script>
+  const SON_PRENOM = "Bambi";
 
-const name = "Bambi...";
-const message =
+  const name = SON_PRENOM + "...";
 
+  // ✅ Changement demandé : plus "invitation" -> "moment unique et inoubliable"
+  const message =
 `J’ai pensé à toi.
 
 Et j’ai voulu créer ce petit instant.
 
-Pas pour poser des questions.
-Pas pour attendre une réponse.
-
-Juste pour que, pendant quelques secondes,
-tu ressentes quelque chose de doux.
+Pas pour poser des questions,
+mais pour que tu ressentes quelque chose de doux —
+un moment unique, simple… et inoubliable.
 
 Parce que certains instants,
 même silencieux,
-peuvent rester.`
+peuvent rester.`;
 
-let i=0;
+  let i = 0;
 
-function typeName(){
+  function typeName(){
+    if(i < name.length){
+      document.getElementById("title").innerHTML += name[i];
+      i++;
+      setTimeout(typeName, 180);
+    } else {
+      setTimeout(showMessage, 800);
+    }
+  }
 
-if(i < name.length){
+  function showMessage(){
+    const textEl = document.getElementById("text");
+    textEl.innerHTML = message;
+    textEl.style.opacity = 1;
 
-document.getElementById("title").innerHTML += name[i];
+    // Affiche le bouton après quelques secondes
+    setTimeout(()=>{
+      document.getElementById("btn").style.display = "block";
+    }, 2600);
+  }
 
-i++;
+  document.getElementById("btn").onclick = function(){
+    showSecondPart();
+  };
 
-setTimeout(typeName,180);
-
-}
-else{
-
-setTimeout(showMessage,800);
-
-}
-
-}
-
-function showMessage(){
-
-const textEl = document.getElementById("text");
-
-textEl.innerHTML = message;
-
-textEl.style.opacity = 1;
-
-setTimeout(()=>{
-
-document.getElementById("btn").style.display="block";
-
-},3000);
-
-}
-
-document.getElementById("btn").onclick = function(){
-
-showSecondPart();
-
-};
-
-function showSecondPart(){
-
-const msg =
-
+  function showSecondPart(){
+    const msg =
 `Si ce moment t’a fait sourire,
 alors il a rempli son rôle.
 
 Il n’attend rien.
+Il ne demande rien.
 
 Il existe simplement.
 
-Et parfois,
+Et parfois…
 c’est déjà beaucoup.`;
 
-document.getElementById("title").innerHTML="Un instant...";
-document.getElementById("text").innerHTML=msg;
+    document.getElementById("title").innerHTML = "Un instant...";
+    document.getElementById("text").style.opacity = 0;
 
-}
+    setTimeout(()=>{
+      document.getElementById("text").innerHTML = msg;
+      document.getElementById("text").style.opacity = 1;
+      document.getElementById("btn").style.display = "none";
+    }, 450);
+  }
 
-typeName();
+  // Lance l'animation
+  typeName();
 
-
-// petits cœurs flottants
-
-for(let i=0;i<10;i++){
-
-let heart=document.createElement("div");
-
-heart.innerHTML="✦";
-
-heart.className="heart";
-
-heart.style.left=Math.random()*100+"vw";
-
-heart.style.animationDuration=(3+Math.random()*5)+"s";
-
-heart.style.fontSize=(10+Math.random()*20)+"px";
-
-document.body.appendChild(heart);
-
-}
-
+  // Petites étoiles flottantes
+  const symbols = ["✦","✧","✺","✶"];
+  for(let k=0; k<12; k++){
+    const s = document.createElement("div");
+    s.className = "heart";
+    s.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+    s.style.left = Math.random()*100 + "vw";
+    s.style.animationDuration = (4 + Math.random()*6) + "s";
+    s.style.fontSize = (10 + Math.random()*22) + "px";
+    s.style.opacity = (0.10 + Math.random()*0.12).toFixed(2);
+    document.body.appendChild(s);
+  }
 </script>
 
 </body>
