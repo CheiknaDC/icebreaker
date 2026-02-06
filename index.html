@@ -135,4 +135,266 @@
       transition: border-color .2s ease, background .2s ease;
     }
     .input:focus{
-      border-c
+      border-color: rgba(255,255,255,.28);
+      background: rgba(0,0,0,.22);
+    }
+    .input::placeholder{color: rgba(255,255,255,.45)}
+
+    .row{
+      display:flex;
+      gap:10px;
+      margin-top: 12px;
+    }
+
+    .small{
+      color: var(--muted);
+      font-size: 12px;
+      text-align:center;
+      margin: 4px 0 0;
+    }
+
+    .sep{
+      height:1px;
+      background: rgba(255,255,255,.12);
+      margin: 14px 0;
+    }
+
+    .summary{
+      line-height: 1.5;
+      font-size: 15px;
+      color: rgba(255,255,255,.9);
+      white-space: pre-wrap;
+      animation: fadeIn .45s ease both;
+    }
+
+    .hint{
+      margin-top: 10px;
+      color: rgba(255,255,255,.75);
+      font-size: 12px;
+      text-align:center;
+    }
+
+    @keyframes fadeUp{
+      from{opacity:0; transform: translateY(8px)}
+      to{opacity:1; transform: translateY(0)}
+    }
+    @keyframes fadeIn{
+      from{opacity:0}
+      to{opacity:1}
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <header>
+      <h1>Un petit instant ✨</h1>
+      <p class="sub">Un mini-jeu romantique, pour apprendre à se connaître… et oser un rendez-vous.</p>
+    </header>
+
+    <section class="card" id="screen"></section>
+
+    <p class="small">À la fin : un texte WhatsApp prêt à copier.</p>
+  </main>
+
+  <script>
+    // ✨ Mets TON prénom ici (ce sera la signature dans le message WhatsApp)
+    const TON_PRENOM = "Cheikhna";
+
+    const state = { step: 0, prenom: "", answers: {} };
+    const screen = document.getElementById("screen");
+
+    const steps = [
+      { type: "intro", tag: "💌 Invitation" },
+      {
+        type: "name",
+        tag: "✨ Départ",
+        headline: "J’ai pensé à toi…",
+        poem:
+`J’ai écrit quelques lignes, rien de trop grand,
+juste un prétexte délicat, pour te découvrir.
+
+Si tu veux, réponds simplement.
+Promis : c’est doux, et sincère.`
+      },
+      { type:"choice", tag:"🌙 Ambiance", key:"ambiance", q:"Quel genre d’ambiance te plaît le plus ?", choices:["Calme & intime","Vivant & spontané","Un mélange des deux"] },
+      { type:"choice", tag:"☕ Goûts", key:"moment", q:"Pour un rendez-vous, tu préfères…", choices:["Un café élégant","Une promenade","Un dîner","Un endroit discret"] },
+      { type:"choice", tag:"🎶 Détails", key:"rythme", q:"Tu es plutôt…", choices:["Spontanée","J’aime qu’on planifie un peu","Ça dépend de la personne"] },
+      { type:"choice", tag:"✨ Plaisirs", key:"plaisir", q:"Qu’est-ce qui te fait plaisir facilement ?", choices:["Une belle conversation","Une attention","Rire ensemble","Une ambiance romantique"] },
+      { type:"text", tag:"🌸 Petite touche", key:"detail", q:"Un petit détail que tu aimes (simple, mais toi).", placeholder:"Ex : chocolat chaud, marcher le soir, une playlist, un parfum, etc." },
+      { type:"result", tag:"🥂 Rendez-vous" }
+    ];
+
+    function escapeHtml(s){
+      return String(s).replace(/[&<>"']/g, m => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[m]));
+    }
+
+    function render(){
+      const step = steps[state.step];
+
+      if(step.type === "intro"){
+        screen.innerHTML = `
+          <div class="pill">${step.tag}</div>
+          <div class="title">Une petite parenthèse…</div>
+          <div class="poem">
+Je t’ai préparé quelque chose de simple et élégant.
+Un mini-jeu pour apprendre à se connaître,
+et peut-être oser un rendez-vous.
+          </div>
+          <div class="grid">
+            <button class="btn primary" id="goBtn">Commencer</button>
+          </div>
+          <div class="hint">Tu peux répondre en toute simplicité ✨</div>
+        `;
+        document.getElementById("goBtn").onclick = () => { state.step++; render(); };
+        return;
+      }
+
+      if(step.type === "name"){
+        screen.innerHTML = `
+          <div class="pill">${escapeHtml(step.tag)}</div>
+          <div class="title">${escapeHtml(step.headline)}</div>
+          <div class="poem">${escapeHtml(step.poem)}</div>
+          <div class="sep"></div>
+          <div class="title" style="min-height:auto; font-size:16px; color:rgba(255,255,255,.86);">
+            Pour personnaliser… quel est ton prénom ?
+          </div>
+          <div class="grid">
+            <input class="input" id="nameInput" placeholder="Ton prénom" autocomplete="off" />
+            <button class="btn primary" id="startBtn">Continuer</button>
+          </div>
+          <div class="small">Promis, c’est juste pour rendre ça plus joli.</div>
+        `;
+        document.getElementById("startBtn").onclick = () => {
+          const v = document.getElementById("nameInput").value.trim();
+          state.prenom = v || "toi";
+          state.step++;
+          render();
+        };
+        return;
+      }
+
+      if(step.type === "choice"){
+        const buttons = step.choices.map(c =>
+          `<button class="btn" data-choice="${escapeHtml(c)}">${escapeHtml(c)}</button>`
+        ).join("");
+
+        screen.innerHTML = `
+          <div class="pill">${escapeHtml(step.tag)}</div>
+          <div class="title">${escapeHtml(step.q)}</div>
+          <div class="grid">${buttons}</div>
+          <div class="row">
+            <button class="btn" id="backBtn">Retour</button>
+          </div>
+        `;
+
+        screen.querySelectorAll("[data-choice]").forEach(btn => {
+          btn.addEventListener("click", () => {
+            state.answers[step.key] = btn.getAttribute("data-choice");
+            state.step++;
+            render();
+          });
+        });
+
+        document.getElementById("backBtn").onclick = () => {
+          state.step = Math.max(0, state.step - 1);
+          render();
+        };
+        return;
+      }
+
+      if(step.type === "text"){
+        screen.innerHTML = `
+          <div class="pill">${escapeHtml(step.tag)}</div>
+          <div class="title">${escapeHtml(step.q)}</div>
+          <div class="grid">
+            <input class="input" id="textInput" placeholder="${escapeHtml(step.placeholder)}" autocomplete="off" />
+            <button class="btn primary" id="nextBtn">Valider</button>
+          </div>
+          <div class="row">
+            <button class="btn" id="backBtn">Retour</button>
+          </div>
+        `;
+
+        document.getElementById("nextBtn").onclick = () => {
+          const v = document.getElementById("textInput").value.trim();
+          state.answers[step.key] = v || "un petit détail simple";
+          state.step++;
+          render();
+        };
+
+        document.getElementById("backBtn").onclick = () => {
+          state.step = Math.max(0, state.step - 1);
+          render();
+        };
+        return;
+      }
+
+      if(step.type === "result"){
+        const a = state.answers;
+        const prenom = state.prenom;
+
+        const invitation =
+`J’ai aimé découvrir ces petits détails sur toi.
+Ça me donne envie de te proposer quelque chose de simple et sincère :
+un moment à deux, juste une vraie conversation — et le plaisir de se découvrir autrement.
+
+Si tu en as envie, j’aimerais t’inviter à un rendez-vous.
+On choisit une ambiance ${a.ambiance?.toLowerCase() || "qui te ressemble"} et un moment ${a.moment?.toLowerCase() || "élégant"}.
+Tu me dis juste quand tu es dispo, et je m’occupe du reste.`;
+
+        const recap =
+`✨ Réponses de ${prenom}
+• Ambiance : ${a.ambiance || "-"}
+• Moment : ${a.moment || "-"}
+• Rythme : ${a.rythme || "-"}
+• Ce qui lui fait plaisir : ${a.plaisir || "-"}
+• Petit détail : ${a.detail || "-"}\n\n💌 ${invitation}`;
+
+        const whatsappReady =
+`Hey ${prenom} 🙂\n\nJ’ai trouvé ton “profil” super doux :\n- Ambiance : ${a.ambiance}\n- Moment : ${a.moment}\n- Rythme : ${a.rythme}\n- Ce qui te fait plaisir : ${a.plaisir}\n- Petit détail : ${a.detail}\n\n${invitation}\n\n— ${TON_PRENOM}`;
+
+        screen.innerHTML = `
+          <div class="pill">${escapeHtml(step.tag)}</div>
+          <div class="title">Merci, ${escapeHtml(prenom)} ✨</div>
+          <div class="sep"></div>
+          <div class="summary" id="summary">${escapeHtml(recap)}</div>
+          <div class="sep"></div>
+          <div class="grid">
+            <button class="btn primary" id="copyBtn">Copier le texte WhatsApp</button>
+            <button class="btn" id="showBtn">Voir le texte WhatsApp</button>
+            <button class="btn" id="restartBtn">Recommencer</button>
+          </div>
+          <div class="hint">Le bouton copie un message prêt à coller dans WhatsApp.</div>
+        `;
+
+        document.getElementById("copyBtn").onclick = async () => {
+          try{
+            await navigator.clipboard.writeText(whatsappReady);
+            alert("Copié ✅ Tu peux coller dans WhatsApp.");
+          } catch(e){
+            alert("Copie automatique impossible. Clique sur “Voir le texte WhatsApp” puis copie manuellement.");
+          }
+        };
+
+        document.getElementById("showBtn").onclick = () => {
+          document.getElementById("summary").textContent = whatsappReady;
+        };
+
+        document.getElementById("restartBtn").onclick = () => {
+          state.step = 0;
+          state.prenom = "";
+          state.answers = {};
+          render();
+        };
+
+        return;
+      }
+    }
+
+    render();
+  </script>
+</body>
+</html>
