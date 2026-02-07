@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Un petit instant ✨</title>
 
+<!-- ✍️ Police manuscrite + police lisible pour UI -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
 :root{
   --bg1:#050b18;
@@ -17,7 +22,7 @@
 
 body{
   margin:0;
-  font-family:-apple-system, system-ui;
+  font-family: Inter, -apple-system, system-ui, Arial, sans-serif;
   color:white;
   height:100vh;
   overflow:hidden;
@@ -34,14 +39,14 @@ body{
   z-index:0;
 }
 
-/* ✨ Bokeh (bulles de lumière) */
+/* ✨ Bokeh (bulles) */
 #bokeh{
   position:fixed;
   inset:0;
   width:100%;
   height:100%;
   display:block;
-  z-index:1; /* au-dessus des fleurs */
+  z-index:1;
   pointer-events:none;
   opacity:0.70;
 }
@@ -160,12 +165,16 @@ body{
   margin-bottom:10px;
 }
 
+/* ✍️ TITRES en manuscrit */
 .title{
-  font-size:30px;
-  margin:10px 0 8px;
+  font-family: "Great Vibes", cursive;
+  font-size: 44px;
+  margin: 10px 0 6px;
   text-shadow: 0 0 26px rgba(255,255,255,0.18);
+  letter-spacing: 0.6px;
 }
 
+/* sous-texte lisible */
 .sub{
   opacity:.90;
   font-size:14px;
@@ -173,22 +182,24 @@ body{
   line-height:1.55;
 }
 
-/* Carte */
+/* ✍️ CARTES en manuscrit */
 .card{
   text-align:left;
   padding:14px;
   border-radius:18px;
   background: rgba(0,0,0,0.14);
   border:1px solid rgba(255,255,255,0.12);
-  line-height:1.75;
-  font-size:16px;
   box-shadow: 0 16px 50px rgba(0,0,0,0.35);
+  font-family: "Great Vibes", cursive;
+  font-size: 26px;
+  line-height: 1.55;
+  letter-spacing: 0.4px;
 }
 
 /* ✅ Animation de tous les textes */
 .line{
   opacity:0;
-  transform: translateY(8px);
+  transform: translateY(10px);
   animation: lineIn .55s ease forwards;
 }
 @keyframes lineIn{ to{ opacity:1; transform: translateY(0); } }
@@ -204,12 +215,13 @@ body{
 .grid{ display:grid; gap:10px; margin-top:14px; }
 
 button{
+  font-family: Inter, -apple-system, system-ui, Arial, sans-serif;
   padding:14px;
   border-radius:16px;
   border:none;
   font-size:16px;
   cursor:pointer;
-  font-weight:750;
+  font-weight:700;
   transition: transform .18s ease, filter .18s ease, background .18s ease;
 }
 
@@ -226,7 +238,11 @@ button{
 }
 .soft:hover{ transform: translateY(-1px) scale(1.01); background: rgba(255,255,255,0.14); }
 
-.hint{ margin-top:10px; opacity:.68; font-size:12px; }
+.hint{
+  margin-top:10px;
+  opacity:.68;
+  font-size:12px;
+}
 
 @media (prefers-reduced-motion: reduce){
   .lights{ animation:none; }
@@ -259,10 +275,14 @@ function escapeHtml(str){
 }
 
 /* =========================
-   🌸 Pluie de fleurs (Canvas)
+   🌸 Petals canvas
    ========================= */
 const petalsCanvas = document.getElementById("petals");
 const petalsCtx = petalsCanvas.getContext("2d", { alpha:true });
+
+/* ✨ Bokeh canvas */
+const bokehCanvas = document.getElementById("bokeh");
+const bokehCtx = bokehCanvas.getContext("2d", { alpha:true });
 
 let W=0,H=0,DPR=Math.min(2, window.devicePixelRatio || 1);
 
@@ -282,12 +302,11 @@ function resizeAll(){
   bokehCanvas.style.height = H + "px";
   bokehCtx.setTransform(DPR,0,0,DPR,0,0);
 }
-
 window.addEventListener("resize", resizeAll, { passive:true });
 
-const PETAL_COUNT = () => Math.floor(Math.max(36, Math.min(80, W * 0.11)));
+/* petals */
+const PETAL_COUNT = () => Math.floor(Math.max(34, Math.min(78, W * 0.11)));
 let petals = [];
-
 function makePetal(){
   const size = rand(10, 22);
   return {
@@ -304,13 +323,11 @@ function makePetal(){
     hue: rand(320, 360)
   };
 }
-
 function resetPetals(){
   petals = [];
   const n = PETAL_COUNT();
   for(let i=0;i<n;i++) petals.push(makePetal());
 }
-
 function drawPetal(p){
   petalsCtx.save();
   petalsCtx.translate(p.x, p.y);
@@ -334,19 +351,12 @@ function drawPetal(p){
   petalsCtx.strokeStyle = `rgba(255,255,255,${p.a*0.14})`;
   petalsCtx.lineWidth = 1;
   petalsCtx.stroke();
-
   petalsCtx.restore();
 }
 
-/* =========================
-   ✨ Bokeh (Canvas)
-   ========================= */
-const bokehCanvas = document.getElementById("bokeh");
-const bokehCtx = bokehCanvas.getContext("2d", { alpha:true });
-
+/* bokeh */
 const BOKEH_COUNT = () => Math.floor(Math.max(12, Math.min(26, W * 0.03)));
 let bokehs = [];
-
 function makeBokeh(){
   const r = rand(18, 60);
   return {
@@ -361,16 +371,13 @@ function makeBokeh(){
     ps: rand(0.006, 0.014)
   };
 }
-
 function resetBokeh(){
   bokehs = [];
   const n = BOKEH_COUNT();
   for(let i=0;i<n;i++) bokehs.push(makeBokeh());
 }
 
-/* =========================
-   Loop
-   ========================= */
+/* init */
 function init(){
   resizeAll();
   resetPetals();
@@ -442,7 +449,7 @@ function loop(now){
 requestAnimationFrame(loop);
 
 /* =========================
-   ✅ App + animations + shine
+   App
    ========================= */
 const SON_PRENOM = "Bambi";
 const app = document.getElementById("app");
