@@ -18,8 +18,8 @@
     margin:0;
     font-family:-apple-system, system-ui;
     background:
-      radial-gradient(900px 520px at 15% 18%, rgba(168,85,247,0.20), transparent 55%),
-      radial-gradient(780px 520px at 85% 25%, rgba(34,197,94,0.14), transparent 55%),
+      radial-gradient(900px 520px at 15% 18%, rgba(168,85,247,0.18), transparent 55%),
+      radial-gradient(780px 520px at 85% 25%, rgba(34,197,94,0.12), transparent 55%),
       radial-gradient(circle at top, var(--bg1), var(--bg2));
     color:white;
     display:flex;
@@ -56,10 +56,10 @@
   }
 
   .title{
-    font-size:30px;
+    font-size:28px;
     margin: 8px 0 6px;
     letter-spacing: 0.2px;
-    text-shadow: 0 0 18px rgba(255,255,255,0.25);
+    text-shadow: 0 0 18px rgba(255,255,255,0.22);
   }
 
   .sub{
@@ -75,7 +75,7 @@
     border-radius: 16px;
     background: rgba(0,0,0,0.14);
     border: 1px solid rgba(255,255,255,0.12);
-    min-height: 160px;
+    min-height: 150px;
     white-space:pre-wrap;
     line-height:1.75;
     font-size:16px;
@@ -107,7 +107,7 @@
     cursor:pointer;
     transition:.18s;
     font-size:16px;
-    font-weight: 650;
+    font-weight: 700;
   }
   .btnSoft:hover{ background: rgba(255,255,255,0.14); transform:translateY(-1px); }
 
@@ -137,12 +137,11 @@
 
 <script>
   const SON_PRENOM = "Bambi"; // intégré, on ne lui demande pas
-
   const app = document.getElementById("app");
 
-  let mood = null;
+  let choice = null;
 
-  function stars(){
+  function addStars(){
     const symbols = ["✦","✧","✺","✶"];
     for(let k=0; k<12; k++){
       const s = document.createElement("div");
@@ -155,131 +154,106 @@
       document.body.appendChild(s);
     }
   }
-  stars();
+  addStars();
 
-  function screenHome(){
-    mood = null;
+  function screen1(){
+    choice = null;
     app.innerHTML = `
-      <div class="pill">💬 Petit check-in</div>
-      <div class="title">Comment va la plus belle des Allemandes ? 🇩🇪✨</div>
+      <div class="pill">💬 Petit message</div>
+      <div class="title">Salam la plus belle des Allemandes 🇩🇪✨</div>
       <div class="sub">
-        ${SON_PRENOM}, j’ai fait ce mini truc juste pour prendre de tes nouvelles.<br>
-        Promis : pas d’interrogatoire, juste un sourire 😄
+        J’espère que tu vas bien.<br>
+        Je passe juste prendre de tes nouvelles — simplement.
       </div>
 
       <div class="card">
+Franchement, c’est tout.
 Je voulais juste savoir comment tu vas.
-Et accessoirement… vérifier si l’Allemagne te traite bien 😌
-(Parce que sinon je vais déposer une plainte officielle auprès du ministère du charme.)
+
+Tu choisis un bouton…
+et je te laisse tranquille 😄
+(promis, je ne fais pas un interrogatoire)
       </div>
 
       <div class="grid">
-        <button class="main" id="go">Ok, je continue 😄</button>
-      </div>
-      <div class="hint">2 étapes, simple et fun.</div>
-    `;
-    document.getElementById("go").onclick = screenMood;
-  }
-
-  function screenMood(){
-    app.innerHTML = `
-      <div class="pill">🎛️ Humeur du jour</div>
-      <div class="title">Alors… comment tu vas ?</div>
-      <div class="sub">Choisis juste ce qui te ressemble aujourd’hui 👇</div>
-
-      <div class="grid">
-        <button class="btnSoft" data-m="top">😄 Ça va super</button>
-        <button class="btnSoft" data-m="bof">😮‍💨 Bof / fatiguée</button>
-        <button class="btnSoft" data-m="mystere">😌 Mode mystérieuse</button>
+        <button class="btnSoft" id="ok">😄 Ça va super</button>
+        <button class="btnSoft" id="meh">😮‍💨 Bof / fatiguée</button>
       </div>
 
-      <div class="hint">Après ton choix, je te laisse un petit message (drôle + mignon).</div>
+      <div class="hint">Deux choix, zéro pression.</div>
     `;
 
-    app.querySelectorAll("[data-m]").forEach(btn=>{
-      btn.onclick = () => {
-        mood = btn.getAttribute("data-m");
-        screenFinal();
-      };
-    });
+    document.getElementById("ok").onclick = () => { choice = "ok"; screen2(); };
+    document.getElementById("meh").onclick = () => { choice = "meh"; screen2(); };
   }
 
-  function finalTextForMood(m){
-    if(m === "top"){
+  function contentForChoice(c){
+    if(c === "ok"){
       return {
-        msg:
-`Haha j’adore 😄
-Du coup je note officiellement : “${SON_PRENOM} est en forme aujourd’hui”.
+        title: "Voilà ce que je voulais entendre 😄",
+        text:
+`C’est tout ce que je voulais entendre.
+Si tu vas bien… alors tout va bien.
 
-Et je te préviens :
-si tu continues comme ça, je vais devenir accro à tes bonnes vibes.
+(Et si quelqu’un te dérange aujourd’hui,
+je viens négocier calmement… très calmement 😌)
 
-Sinon, raconte-moi : c’est quoi le meilleur truc de ta journée ?`,
+Ça me fait plaisir.
+Tu fais quoi de beau ces jours-ci ?`,
         copy:
-`Je vais super bien 😄 Et toi ? Le meilleur truc de ma journée c’est : ...`
+`Ça va super 😄 Et toi ? Ces jours-ci je fais : ...`
       };
     }
-    if(m === "bof"){
-      return {
-        msg:
-`Ok… viens, je t’envoie un mini câlin à distance 🤝✨
-
-Prescription du jour :
-1) de l’eau 💧
-2) un truc sucré 🍫
-3) et un message de toi (effet immédiat)
-
-Qu’est-ce qui t’a fatiguée aujourd’hui ?`,
-        copy:
-`Je suis un peu fatiguée 😮‍💨 Mais ça va. Et toi ? Aujourd’hui c’est surtout : ...`
-      };
-    }
-    // mystère
     return {
-      msg:
-`Ouh… mode mystérieuse 😌
-Je respecte. Mais je vais tenter une négociation :
+      title: "Ok… viens, mini réconfort ✨",
+      text:
+`Ok… je note 😮‍💨
 
-Tu me donnes 1 indice sur ta journée,
-et moi je te donne 1 compliment (sans débat possible).
+Alors je t’envoie un mini “pack réconfort” :
+☕ une boisson chaude
+🍫 un truc sucré
+😴 et une sieste (si possible)
 
-Deal ? 😄`,
+Et si la fatigue te cherche…
+dis-lui que t’es déjà prise 😄
+
+Qu’est-ce qui t’a fatiguée ?`,
       copy:
-`Je suis en mode mystérieuse 😌 Mon indice du jour : ... Et toi ?`
+`Je suis un peu fatiguée 😮‍💨 Mais ça va. Et toi ? Aujourd’hui c’est surtout : ...`
     };
   }
 
-  function screenFinal(){
-    const t = finalTextForMood(mood);
+  function screen2(){
+    const c = contentForChoice(choice);
 
     app.innerHTML = `
       <div class="pill">🌸 Dernière page</div>
-      <div class="title">Petit message pour toi</div>
-      <div class="sub">Tu peux juste sourire… ou répondre 😄</div>
+      <div class="title">${c.title}</div>
+      <div class="sub">Tu peux répondre si tu veux, sinon juste sourire 🙂</div>
 
-      <div class="card">${t.msg}</div>
+      <div class="card">${c.text}</div>
 
       <div class="grid">
-        <button class="main" id="copy">Copier ma réponse 💬</button>
+        <button class="main" id="copy">Copier une réponse WhatsApp 💬</button>
         <button class="btnSoft" id="replay">Rejouer</button>
       </div>
 
-      <div class="hint">Le bouton “Copier” te met un message prêt à coller sur WhatsApp.</div>
+      <div class="hint">Le bouton “Copier” te met un message prêt à coller.</div>
     `;
 
     document.getElementById("copy").onclick = async () => {
       try{
-        await navigator.clipboard.writeText(t.copy);
+        await navigator.clipboard.writeText(c.copy);
         alert("Copié ✅ Tu peux coller ça sur WhatsApp.");
       }catch(e){
-        alert("Impossible de copier automatiquement. (iPhone : essaye Safari)");
+        alert("Impossible de copier automatiquement (essaie Safari).");
       }
     };
 
-    document.getElementById("replay").onclick = screenHome;
+    document.getElementById("replay").onclick = screen1;
   }
 
-  screenHome();
+  screen1();
 </script>
 </body>
 </html>
