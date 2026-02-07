@@ -26,7 +26,6 @@ body{
   justify-content:center;
   align-items:center;
   height:100vh;
-  overflow:hidden;
 }
 
 .container{
@@ -125,48 +124,36 @@ button{
 const SON_PRENOM = "Bambi";
 const app = document.getElementById("app");
 
-let choice = null;
-
-// ACCUEIL
 function accueil(){
 app.innerHTML = `
 <div class="pill">✨ Un petit instant</div>
 
 <div class="title">${SON_PRENOM}…</div>
 
-<div class="sub">
-J’ai pensé à toi, alors j’ai laissé quelque chose ici.
-</div>
-
 <div class="card">
-Pas un long message.
+Je me suis demandé comment tu allais.
 
-Juste un instant simple.
+Alors j’ai créé ce petit instant.
 
-Quelque chose de léger.
+Pas pour interrompre ta soirée,
+juste pour apparaître doucement dedans.
 
-Et peut-être… un petit sourire.
+Tu peux ouvrir.
 </div>
 
 <div class="grid">
 <button class="main" onclick="pagePrincipale()">Ouvrir</button>
 </div>
-
-<div class="hint">Promis, ça prend 5 secondes.</div>
 `;
 }
 
-
-// PAGE PRINCIPALE
 function pagePrincipale(){
 app.innerHTML = `
 <div class="pill">💬 Prendre de tes nouvelles</div>
 
 <div class="title">Salam la plus belle des Allemandes 🇩🇪✨</div>
 
-<div class="sub">
-J’espère que tu vas bien.
-</div>
+<div class="sub">J’espère que tu vas bien.</div>
 
 <div class="card">
 Je me suis demandé comment tu allais, aujourd’hui.
@@ -180,13 +167,9 @@ Juste choisis celle qui te ressemble le plus.
 <button class="soft" onclick="reponse('bien')">😄 Ça va super</button>
 <button class="soft" onclick="reponse('fatigue')">😮‍💨 Bof / fatiguée</button>
 </div>
-
-<div class="hint">Juste un clic.</div>
 `;
 }
 
-
-// REPONSE
 function reponse(type){
 
 if(type === "bien"){
@@ -208,7 +191,7 @@ Dis-moi juste un petit moment cool de ta journée.
 </div>
 
 <div class="grid">
-<button class="main" onclick="copier()">Copier une réponse WhatsApp 💬</button>
+<button class="main" onclick="copierBien()">Copier une réponse WhatsApp 💬</button>
 <button class="soft" onclick="accueil()">Rejouer</button>
 </div>
 `;
@@ -217,23 +200,18 @@ Dis-moi juste un petit moment cool de ta journée.
 else{
 
 app.innerHTML = `
-<div class="pill">🌸 Dernière page</div>
+<div class="pill">🌙 Dernière page</div>
 
-<div class="title">Alors pause obligatoire ✨</div>
+<div class="title">Message reçu.</div>
 
 <div class="card">
-Ok… je note.
+Ok… alors je vais faire comme si je n’avais rien vu.
 
-Prescription officielle :
+Mais entre nous,
+la fatigue a choisi la mauvaise personne aujourd’hui 😌
 
-☕ quelque chose de chaud  
-🍫 quelque chose de bon  
-😴 et un peu de repos  
-
-Et si la fatigue insiste,
-dis-lui que tu es occupée à être incroyable 😌
-
-Qu’est-ce qui t’a fatiguée ?
+Dis-moi juste :
+qu’est-ce qui t’a volé ton énergie ?
 </div>
 
 <div class="grid">
@@ -245,9 +223,7 @@ Qu’est-ce qui t’a fatiguée ?
 
 }
 
-
-// COPIER
-function copier(){
+function copierBien(){
 navigator.clipboard.writeText("Ça va super 😄 Et toi ?");
 alert("Message copié ✅");
 }
@@ -257,8 +233,6 @@ navigator.clipboard.writeText("Je suis un peu fatiguée 😮‍💨 Et toi ?");
 alert("Message copié ✅");
 }
 
-
-// START
 accueil();
 </script>
 
