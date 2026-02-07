@@ -3,16 +3,15 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Un instant ✨</title>
+<title>Petit check-in ✨</title>
 
 <style>
   :root{
     --bg1:#0b1220;
     --bg2:#020617;
-    --glass: rgba(255,255,255,0.06);
+    --glass: rgba(255,255,255,0.07);
     --border: rgba(255,255,255,0.12);
     --shadow: 0 24px 80px rgba(0,0,0,0.70);
-    --soft: rgba(255,255,255,0.10);
   }
 
   body{
@@ -34,21 +33,13 @@
     width:92%;
     max-width:720px;
     background: var(--glass);
-    padding:24px;
+    padding:22px;
     border-radius:24px;
     text-align:center;
     box-shadow: var(--shadow);
     backdrop-filter: blur(12px);
     border: 1px solid var(--border);
     position: relative;
-  }
-
-  .topbar{
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    align-items:center;
-    margin-bottom:10px;
   }
 
   .pill{
@@ -61,65 +52,40 @@
     background: rgba(0,0,0,.18);
     font-size:12px;
     opacity:.92;
-  }
-
-  .soundBtn{
-    padding:8px 12px;
-    border-radius:999px;
-    border:1px solid rgba(255,255,255,.16);
-    background: rgba(255,255,255,0.10);
-    color:white;
-    cursor:pointer;
-    font-size:12px;
-    transition:.18s;
-  }
-  .soundBtn:hover{ background: rgba(255,255,255,0.14); transform: translateY(-1px); }
-
-  .heroTitle{
-    font-size:34px;
-    margin: 10px 0 6px;
-    letter-spacing: 0.2px;
-    text-shadow: 0 0 18px rgba(255,255,255,0.25);
-  }
-
-  .heroSub{
-    opacity:.86;
-    font-size:14px;
-    line-height:1.5;
-    margin-bottom: 14px;
+    margin-bottom:10px;
   }
 
   .title{
     font-size:30px;
-    margin: 8px 0 10px;
-    min-height:42px;
-    text-shadow: 0 0 14px rgba(255,255,255,0.32);
+    margin: 8px 0 6px;
+    letter-spacing: 0.2px;
+    text-shadow: 0 0 18px rgba(255,255,255,0.25);
   }
 
-  .text{
-    line-height:1.75;
-    font-size:16px;
-    opacity:1;
-    white-space:pre-wrap;
-    min-height: 200px;
+  .sub{
+    opacity:.88;
+    font-size:14px;
+    line-height:1.55;
+    margin-bottom: 12px;
+  }
+
+  .card{
     text-align:left;
     padding: 12px 14px;
     border-radius: 16px;
     background: rgba(0,0,0,0.14);
     border: 1px solid rgba(255,255,255,0.12);
-  }
-
-  .hint{
-    margin-top: 10px;
-    opacity: .72;
-    font-size: 12px;
+    min-height: 160px;
+    white-space:pre-wrap;
+    line-height:1.75;
+    font-size:16px;
   }
 
   .grid{ display:grid; gap:10px; margin-top:14px; }
 
   button.main{
     width:100%;
-    padding:14px 14px;
+    padding:14px;
     border-radius:16px;
     border:none;
     background:white;
@@ -127,13 +93,13 @@
     font-size:16px;
     cursor:pointer;
     transition:0.18s;
-    font-weight: 700;
+    font-weight: 800;
   }
   button.main:hover{ background:#e2e8f0; transform:translateY(-1px); }
 
   .btnSoft{
     width:100%;
-    padding:14px 14px;
+    padding:14px;
     border-radius:16px;
     background: rgba(255,255,255,0.10);
     color:white;
@@ -141,36 +107,14 @@
     cursor:pointer;
     transition:.18s;
     font-size:16px;
+    font-weight: 650;
   }
   .btnSoft:hover{ background: rgba(255,255,255,0.14); transform:translateY(-1px); }
 
-  .chips{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    justify-content:center;
-    margin-top:12px;
-  }
-  .chip{
-    padding:10px 12px;
-    border-radius:999px;
-    border:1px solid rgba(255,255,255,0.16);
-    background: rgba(255,255,255,0.08);
-    cursor:pointer;
-    font-size:14px;
-    transition:.15s;
-    user-select:none;
-  }
-  .chip:hover{ background: rgba(255,255,255,0.12); transform: translateY(-1px); }
-  .chip.selected{
-    background: rgba(168,85,247,0.18);
-    border-color: rgba(168,85,247,0.35);
-  }
-
-  .progress{
-    margin-top:10px;
-    font-size:12px;
-    opacity:.78;
+  .hint{
+    margin-top: 10px;
+    opacity: .72;
+    font-size: 12px;
   }
 
   .star{
@@ -189,276 +133,153 @@
 </head>
 
 <body>
-<div class="container">
-  <div class="topbar">
-    <div class="pill" id="stagePill">✨ Un instant</div>
-    <button class="soundBtn" id="soundBtn">🔊 Activer le son</button>
-  </div>
-
-  <div id="screen"></div>
-
-  <div class="hint" id="hint"></div>
-</div>
+<div class="container" id="app"></div>
 
 <script>
-  const SON_PRENOM = "Bambi";
+  const SON_PRENOM = "Bambi"; // intégré, on ne lui demande pas
 
-  const stagePill = document.getElementById("stagePill");
-  const screen = document.getElementById("screen");
-  const hintEl = document.getElementById("hint");
-  const soundBtn = document.getElementById("soundBtn");
+  const app = document.getElementById("app");
 
-  let step = 0;
-  let words = [];
+  let mood = null;
 
-  // --- Son optionnel ---
-  let audioCtx = null, osc = null, gain = null, isSoundOn = false;
-
-  function startSound(){
-    if(isSoundOn) return;
-    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-    osc = audioCtx.createOscillator();
-    gain = audioCtx.createGain();
-    osc.type = "sine";
-    osc.frequency.value = 174;
-    gain.gain.value = 0.00001;
-    osc.connect(gain); gain.connect(audioCtx.destination);
-    osc.start();
-    const now = audioCtx.currentTime;
-    gain.gain.setValueAtTime(0.00001, now);
-    gain.gain.linearRampToValueAtTime(0.02, now + 0.25);
-    isSoundOn = true;
-    soundBtn.textContent = "🔇 Couper le son";
-  }
-  function stopSound(){
-    if(!isSoundOn) return;
-    try{
-      const now = audioCtx.currentTime;
-      gain.gain.setValueAtTime(gain.gain.value, now);
-      gain.gain.linearRampToValueAtTime(0.00001, now + 0.20);
-      setTimeout(()=>{
-        if(osc){ osc.stop(); osc.disconnect(); }
-        if(gain){ gain.disconnect(); }
-        osc=null; gain=null;
-      }, 220);
-    }catch(e){}
-    isSoundOn=false;
-    soundBtn.textContent="🔊 Activer le son";
-  }
-  soundBtn.onclick = async () => {
-    if(!isSoundOn){
-      startSound();
-      if(audioCtx && audioCtx.state === "suspended") await audioCtx.resume();
-    } else stopSound();
-  };
-
-  // ✅ Métaphores cohérentes
-  function metaphorFor(word){
-    const w = (word || "").toLowerCase();
-    const map = {
-      "romantique": "comme une lettre scellée qu’on ouvre lentement",
-      "loyale": "comme une main qui ne lâche pas, même quand la nuit tombe",
-      "douce": "comme une pluie tiède qui apaise sans faire de bruit",
-      "mystérieuse": "comme une lueur derrière un rideau, qu’on devine sans la saisir",
-      "solaire": "comme un matin clair qui réchauffe tout autour de lui",
-      "élégante": "comme un parfum rare, discret mais inoubliable",
-      "spontanée": "comme un éclat de rire qui arrive sans prévenir",
-      "calme": "comme un lac tranquille où l’on respire mieux",
-      "rieuse": "comme une lumière qui danse sur les murs",
-      "intense": "comme un feu doux qui ne s’éteint pas",
-      "curieuse": "comme une porte entrouverte sur mille possibles",
-      "audacieuse": "comme un pas en avant, même quand le cœur hésite",
-      "sensible": "comme une peau qui ressent le monde plus fort",
-      "sereine": "comme une paix qu’on n’explique pas, qu’on reconnaît",
-      "magnétique": "comme une gravité discrète qui attire sans effort",
-      "vraie": "comme un regard franc, sans masque et sans détour"
-    };
-    return map[w] || "comme un secret qu’on garde au creux de la nuit";
-  }
-
-  function poemFromWords(name, words){
-    const pick = (i, fallback) => (words[i] ? words[i].toLowerCase() : fallback);
-
-    const w1 = pick(0, "romantique");
-    const w2 = pick(1, "mystérieuse");
-    const w3 = pick(2, "douce");
-
-    const m1 = metaphorFor(w1);
-    const m2 = metaphorFor(w2);
-    const m3 = metaphorFor(w3);
-
-    return `${name},\n\n` +
-`Tu es ${w1} — ${m1}.\n` +
-`Tu es ${w2} — ${m2}.\n` +
-`Et ${w3}… ${m3}.\n\n` +
-`Trois mots…\n` +
-`et mon silence devient une lettre.\n` +
-`Trois mots…\n` +
-`et l’instant prend ton parfum.`;
-  }
-
-  // --- Typing rapide (poème qui s’écrit) ---
-  function typeInto(el, fullText, speed=16, done=()=>{}){
-    el.textContent = "";
-    let i = 0;
-    (function tick(){
-      el.textContent += fullText[i++] || "";
-      if(i <= fullText.length){
-        setTimeout(tick, speed);
-      } else done();
-    })();
-  }
-
-  function showHome(){
-    step = 0;
-    stagePill.textContent = "✨ Accueil";
-    hintEl.textContent = "Promis : c’est court, doux… et différent.";
-
-    screen.innerHTML = `
-      <div class="heroTitle">Un instant pour toi</div>
-      <div class="heroSub">
-        <b>${SON_PRENOM}</b>, j’ai glissé quelque chose ici.<br/>
-        Ça se lit comme une petite scène… et ça finit en poésie.
-      </div>
-      <div class="grid">
-        <button class="main" id="openBtn">Ouvrir ✨</button>
-        <button class="btnSoft" id="skipBtn">Aller directement au poème</button>
-      </div>
-      <div class="progress">💫 2 pages : Poème → Dernière page</div>
-    `;
-
-    document.getElementById("openBtn").onclick = showPoemSetup;
-    document.getElementById("skipBtn").onclick = showPoemSetup;
-  }
-
-  function showPoemSetup(){
-    step = 1;
-    stagePill.textContent = "📝 Poème";
-    hintEl.textContent = "Choisis 3 mots. Le poème apparaît immédiatement.";
-
-    words = [];
-
-    screen.innerHTML = `
-      <div class="title">${SON_PRENOM}…</div>
-      <div class="heroSub" style="margin-top:-4px">
-        Choisis <b>trois mots</b> qui te ressemblent.<br/>
-        Je les transforme en poésie.
-      </div>
-      <div class="chips" id="chips"></div>
-      <div class="progress" id="count">0 / 3 sélectionnés</div>
-      <div class="text" id="poemBox">…</div>
-      <div class="grid">
-        <button class="main" id="toFinalBtn" style="display:none">Voir la dernière page</button>
-      </div>
-    `;
-
-    const pool = [
-      "Romantique","Loyale","Douce","Mystérieuse","Solaire","Élégante",
-      "Spontanée","Calme","Rieuse","Intense","Curieuse","Audacieuse",
-      "Sensible","Sereine","Magnétique","Vraie"
-    ];
-
-    const chips = document.getElementById("chips");
-    const count = document.getElementById("count");
-    const poemBox = document.getElementById("poemBox");
-    const toFinalBtn = document.getElementById("toFinalBtn");
-
-    chips.innerHTML = pool.map(w => `<div class="chip" data-w="${w}">${w}</div>`).join("");
-
-    function refreshPoem(){
-      if(words.length === 3){
-        const poem = poemFromWords(SON_PRENOM, words);
-        typeInto(poemBox, poem, 12, ()=>{});
-        toFinalBtn.style.display = "block";
-      } else {
-        poemBox.textContent = "…";
-        toFinalBtn.style.display = "none";
-      }
+  function stars(){
+    const symbols = ["✦","✧","✺","✶"];
+    for(let k=0; k<12; k++){
+      const s = document.createElement("div");
+      s.className = "star";
+      s.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+      s.style.left = Math.random()*100 + "vw";
+      s.style.animationDuration = (3 + Math.random()*5) + "s";
+      s.style.fontSize = (10 + Math.random()*20) + "px";
+      s.style.opacity = (0.07 + Math.random()*0.12).toFixed(2);
+      document.body.appendChild(s);
     }
+  }
+  stars();
 
-    chips.querySelectorAll(".chip").forEach(chip=>{
-      chip.onclick = () => {
-        const w = chip.getAttribute("data-w");
-        const isSel = chip.classList.contains("selected");
+  function screenHome(){
+    mood = null;
+    app.innerHTML = `
+      <div class="pill">💬 Petit check-in</div>
+      <div class="title">Comment va la plus belle des Allemandes ? 🇩🇪✨</div>
+      <div class="sub">
+        ${SON_PRENOM}, j’ai fait ce mini truc juste pour prendre de tes nouvelles.<br>
+        Promis : pas d’interrogatoire, juste un sourire 😄
+      </div>
 
-        if(isSel){
-          chip.classList.remove("selected");
-          words = words.filter(x => x !== w);
-        } else {
-          if(words.length >= 3) return;
-          chip.classList.add("selected");
-          words.push(w);
-        }
-        count.textContent = `${words.length} / 3 sélectionnés`;
-        refreshPoem();
-      thinkSound();
+      <div class="card">
+Je voulais juste savoir comment tu vas.
+Et accessoirement… vérifier si l’Allemagne te traite bien 😌
+(Parce que sinon je vais déposer une plainte officielle auprès du ministère du charme.)
+      </div>
+
+      <div class="grid">
+        <button class="main" id="go">Ok, je continue 😄</button>
+      </div>
+      <div class="hint">2 étapes, simple et fun.</div>
+    `;
+    document.getElementById("go").onclick = screenMood;
+  }
+
+  function screenMood(){
+    app.innerHTML = `
+      <div class="pill">🎛️ Humeur du jour</div>
+      <div class="title">Alors… comment tu vas ?</div>
+      <div class="sub">Choisis juste ce qui te ressemble aujourd’hui 👇</div>
+
+      <div class="grid">
+        <button class="btnSoft" data-m="top">😄 Ça va super</button>
+        <button class="btnSoft" data-m="bof">😮‍💨 Bof / fatiguée</button>
+        <button class="btnSoft" data-m="mystere">😌 Mode mystérieuse</button>
+      </div>
+
+      <div class="hint">Après ton choix, je te laisse un petit message (drôle + mignon).</div>
+    `;
+
+    app.querySelectorAll("[data-m]").forEach(btn=>{
+      btn.onclick = () => {
+        mood = btn.getAttribute("data-m");
+        screenFinal();
       };
     });
-
-    function thinkSound(){
-      if(isSoundOn && osc){
-        const base = 174 + (words.length * 18);
-        osc.frequency.setTargetAtTime(base, audioCtx.currentTime, 0.08);
-      }
-    }
-
-    toFinalBtn.onclick = showFinal;
   }
 
-  function showFinal(){
-    step = 2;
-    stagePill.textContent = "🌸 Dernière page";
-    hintEl.textContent = "";
+  function finalTextForMood(m){
+    if(m === "top"){
+      return {
+        msg:
+`Haha j’adore 😄
+Du coup je note officiellement : “${SON_PRENOM} est en forme aujourd’hui”.
 
-    const poem = poemFromWords(SON_PRENOM, words);
+Et je te préviens :
+si tu continues comme ça, je vais devenir accro à tes bonnes vibes.
 
-    screen.innerHTML = `
-      <div class="title">Dernière page…</div>
-      <div class="text" id="finalBox"></div>
+Sinon, raconte-moi : c’est quoi le meilleur truc de ta journée ?`,
+        copy:
+`Je vais super bien 😄 Et toi ? Le meilleur truc de ma journée c’est : ...`
+      };
+    }
+    if(m === "bof"){
+      return {
+        msg:
+`Ok… viens, je t’envoie un mini câlin à distance 🤝✨
+
+Prescription du jour :
+1) de l’eau 💧
+2) un truc sucré 🍫
+3) et un message de toi (effet immédiat)
+
+Qu’est-ce qui t’a fatiguée aujourd’hui ?`,
+        copy:
+`Je suis un peu fatiguée 😮‍💨 Mais ça va. Et toi ? Aujourd’hui c’est surtout : ...`
+      };
+    }
+    // mystère
+    return {
+      msg:
+`Ouh… mode mystérieuse 😌
+Je respecte. Mais je vais tenter une négociation :
+
+Tu me donnes 1 indice sur ta journée,
+et moi je te donne 1 compliment (sans débat possible).
+
+Deal ? 😄`,
+      copy:
+`Je suis en mode mystérieuse 😌 Mon indice du jour : ... Et toi ?`
+    };
+  }
+
+  function screenFinal(){
+    const t = finalTextForMood(mood);
+
+    app.innerHTML = `
+      <div class="pill">🌸 Dernière page</div>
+      <div class="title">Petit message pour toi</div>
+      <div class="sub">Tu peux juste sourire… ou répondre 😄</div>
+
+      <div class="card">${t.msg}</div>
+
       <div class="grid">
-        <button class="btnSoft" id="copyBtn">Copier le poème</button>
-        <button class="main" id="replayBtn">Rejouer</button>
+        <button class="main" id="copy">Copier ma réponse 💬</button>
+        <button class="btnSoft" id="replay">Rejouer</button>
       </div>
-      <div class="progress">Un instant qui reste… comme un parfum sur une écharpe.</div>
+
+      <div class="hint">Le bouton “Copier” te met un message prêt à coller sur WhatsApp.</div>
     `;
 
-    const finalBox = document.getElementById("finalBox");
-    const finalText =
-`${poem}\n\n` +
-`Ce moment n’attend rien.\n` +
-`Il existe simplement.\n\n` +
-`Pour te laisser quelque chose de rare :\n` +
-`un instant qui reste…\n` +
-`comme un parfum sur une écharpe.`;
-
-    typeInto(finalBox, finalText, 12, ()=>{});
-
-    document.getElementById("copyBtn").onclick = async () => {
+    document.getElementById("copy").onclick = async () => {
       try{
-        await navigator.clipboard.writeText(finalText);
-        alert("Poème copié ✅");
+        await navigator.clipboard.writeText(t.copy);
+        alert("Copié ✅ Tu peux coller ça sur WhatsApp.");
       }catch(e){
-        alert("Impossible de copier automatiquement.");
+        alert("Impossible de copier automatiquement. (iPhone : essaye Safari)");
       }
     };
 
-    document.getElementById("replayBtn").onclick = showHome;
+    document.getElementById("replay").onclick = screenHome;
   }
 
-  // étoiles
-  const symbols = ["✦","✧","✺","✶"];
-  for(let k=0; k<12; k++){
-    const s = document.createElement("div");
-    s.className = "star";
-    s.textContent = symbols[Math.floor(Math.random()*symbols.length)];
-    s.style.left = Math.random()*100 + "vw";
-    s.style.animationDuration = (3 + Math.random()*5) + "s";
-    s.style.fontSize = (10 + Math.random()*20) + "px";
-    s.style.opacity = (0.07 + Math.random()*0.12).toFixed(2);
-    document.body.appendChild(s);
-  }
-
-  showHome();
+  screenHome();
 </script>
 </body>
 </html>
