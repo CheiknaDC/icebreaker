@@ -1,299 +1,266 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Un petit instant ✨</title>
 
 <style>
-  :root{
-    --bg1:#0b1220;
-    --bg2:#020617;
-    --glass: rgba(255,255,255,0.07);
-    --border: rgba(255,255,255,0.12);
-    --shadow: 0 24px 80px rgba(0,0,0,0.70);
-  }
+:root{
+  --bg1:#0b1220;
+  --bg2:#020617;
+  --glass: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.12);
+  --shadow: 0 24px 80px rgba(0,0,0,0.70);
+}
 
-  body{
-    margin:0;
-    font-family:-apple-system, system-ui;
-    background:
-      radial-gradient(900px 520px at 15% 18%, rgba(168,85,247,0.20), transparent 55%),
-      radial-gradient(780px 520px at 85% 25%, rgba(34,197,94,0.12), transparent 55%),
-      radial-gradient(circle at top, var(--bg1), var(--bg2));
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    overflow:hidden;
-  }
+body{
+  margin:0;
+  font-family:-apple-system, system-ui;
+  background:
+    radial-gradient(900px 520px at 15% 18%, rgba(168,85,247,0.20), transparent 55%),
+    radial-gradient(780px 520px at 85% 25%, rgba(34,197,94,0.12), transparent 55%),
+    radial-gradient(circle at top, var(--bg1), var(--bg2));
+  color:white;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  overflow:hidden;
+}
 
-  .container{
-    width:92%;
-    max-width:720px;
-    background: var(--glass);
-    padding:22px;
-    border-radius:24px;
-    text-align:center;
-    box-shadow: var(--shadow);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--border);
-    position: relative;
-  }
+.container{
+  width:92%;
+  max-width:720px;
+  background: var(--glass);
+  padding:22px;
+  border-radius:24px;
+  text-align:center;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+}
 
-  .pill{
-    display:inline-flex;
-    gap:8px;
-    align-items:center;
-    padding:7px 12px;
-    border-radius:999px;
-    border:1px solid rgba(255,255,255,.16);
-    background: rgba(0,0,0,.18);
-    font-size:12px;
-    opacity:.92;
-    margin-bottom:10px;
-  }
+.pill{
+  display:inline-block;
+  padding:7px 12px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.16);
+  background: rgba(0,0,0,.18);
+  font-size:12px;
+  margin-bottom:10px;
+}
 
-  .title{
-    font-size:30px;
-    margin: 10px 0 6px;
-    letter-spacing: 0.2px;
-    text-shadow: 0 0 18px rgba(255,255,255,0.22);
-    min-height: 42px;
-  }
+.title{
+  font-size:30px;
+  margin: 10px 0 6px;
+  text-shadow: 0 0 18px rgba(255,255,255,0.22);
+}
 
-  .sub{
-    opacity:.88;
-    font-size:14px;
-    line-height:1.55;
-    margin-bottom: 12px;
-  }
+.sub{
+  opacity:.88;
+  font-size:14px;
+  margin-bottom: 12px;
+}
 
-  .card{
-    text-align:left;
-    padding: 12px 14px;
-    border-radius: 16px;
-    background: rgba(0,0,0,0.14);
-    border: 1px solid rgba(255,255,255,0.12);
-    min-height: 150px;
-    white-space:pre-wrap;
-    line-height:1.75;
-    font-size:16px;
-  }
+.card{
+  text-align:left;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(0,0,0,0.14);
+  border: 1px solid rgba(255,255,255,0.12);
+  white-space:pre-wrap;
+  line-height:1.7;
+  font-size:16px;
+}
 
-  .grid{ display:grid; gap:10px; margin-top:14px; }
+.grid{
+  display:grid;
+  gap:10px;
+  margin-top:14px;
+}
 
-  button.main{
-    width:100%;
-    padding:14px;
-    border-radius:16px;
-    border:none;
-    background:white;
-    color:black;
-    font-size:16px;
-    cursor:pointer;
-    transition:0.18s;
-    font-weight: 800;
-  }
-  button.main:hover{ background:#e2e8f0; transform:translateY(-1px); }
+button{
+  padding:14px;
+  border-radius:16px;
+  border:none;
+  font-size:16px;
+  cursor:pointer;
+  font-weight:700;
+  transition:0.2s;
+}
 
-  .btnSoft{
-    width:100%;
-    padding:14px;
-    border-radius:16px;
-    background: rgba(255,255,255,0.10);
-    color:white;
-    border: 1px solid rgba(255,255,255,0.16);
-    cursor:pointer;
-    transition:.18s;
-    font-size:16px;
-    font-weight: 700;
-  }
-  .btnSoft:hover{ background: rgba(255,255,255,0.14); transform:translateY(-1px); }
+.main{
+  background:white;
+  color:black;
+}
 
-  .hint{
-    margin-top: 10px;
-    opacity: .72;
-    font-size: 12px;
-  }
+.main:hover{
+  background:#e2e8f0;
+}
 
-  .star{
-    position:absolute;
-    color:white;
-    animation: float 6s infinite linear;
-    opacity:0.12;
-    user-select:none;
-    pointer-events:none;
-  }
-  @keyframes float{
-    from{ transform:translateY(110vh); }
-    to{ transform:translateY(-15vh); }
-  }
+.soft{
+  background: rgba(255,255,255,0.10);
+  color:white;
+  border:1px solid rgba(255,255,255,0.16);
+}
+
+.soft:hover{
+  background: rgba(255,255,255,0.16);
+}
+
+.hint{
+  margin-top: 10px;
+  opacity: .65;
+  font-size: 12px;
+}
 </style>
 </head>
 
 <body>
+
 <div class="container" id="app"></div>
 
 <script>
-  const SON_PRENOM = "Bambi"; // intégré, on ne lui demande pas
-  const app = document.getElementById("app");
-  let choice = null;
+const SON_PRENOM = "Bambi";
+const app = document.getElementById("app");
 
-  // étoiles
-  (function addStars(){
-    const symbols = ["✦","✧","✺","✶"];
-    for(let k=0; k<12; k++){
-      const s = document.createElement("div");
-      s.className = "star";
-      s.textContent = symbols[Math.floor(Math.random()*symbols.length)];
-      s.style.left = Math.random()*100 + "vw";
-      s.style.animationDuration = (3 + Math.random()*5) + "s";
-      s.style.fontSize = (10 + Math.random()*20) + "px";
-      s.style.opacity = (0.07 + Math.random()*0.12).toFixed(2);
-      document.body.appendChild(s);
-    }
-  })();
+let choice = null;
 
-  function typeTitle(el, text, speed=55, done=()=>{}){
-    el.textContent = "";
-    let i = 0;
-    (function t(){
-      el.textContent += text[i++] || "";
-      if(i <= text.length) setTimeout(t, speed);
-      else done();
-    })();
-  }
+// ACCUEIL
+function accueil(){
+app.innerHTML = `
+<div class="pill">✨ Un petit instant</div>
 
-  // 1) Accueil attractif + romantique
-  function screen0(){
-    choice = null;
-    app.innerHTML = `
-      <div class="pill">✨ Un petit instant</div>
-      <div class="title" id="t"></div>
-      <div class="sub">
-        J’ai pensé à toi… et j’ai eu envie de te laisser quelque chose de simple.
-      </div>
+<div class="title">${SON_PRENOM}…</div>
 
-      <div class="card">
-Pas une grande déclaration.
+<div class="sub">
+J’ai pensé à toi, alors j’ai laissé quelque chose ici.
+</div>
+
+<div class="card">
 Pas un long message.
 
-Juste un “comment tu vas ?”
-mais en plus doux.
+Juste un instant simple.
 
-Prête ? 🙂
-      </div>
+Quelque chose de léger.
 
-      <div class="grid">
-        <button class="main" id="start">Ouvrir</button>
-      </div>
+Et peut-être… un petit sourire.
+</div>
 
-      <div class="hint">2 clics, et c’est fini.</div>
-    `;
+<div class="grid">
+<button class="main" onclick="pagePrincipale()">Ouvrir</button>
+</div>
 
-    const t = document.getElementById("t");
-    typeTitle(t, `${SON_PRENOM}…`, 70);
-    document.getElementById("start").onclick = screen1;
-  }
+<div class="hint">Promis, ça prend 5 secondes.</div>
+`;
+}
 
-  // 2) Page 1 (ta phrase + texte fluide + 2 boutons)
-  function screen1(){
-    app.innerHTML = `
-      <div class="pill">💬 Prendre de tes nouvelles</div>
-      <div class="title">Salam la plus belle des Allemandes 🇩🇪✨</div>
-      <div class="sub">
-        J’espère que tu vas bien. Je passe juste prendre de tes nouvelles — simplement.
-      </div>
 
-      <div class="card">
+// PAGE PRINCIPALE
+function pagePrincipale(){
+app.innerHTML = `
+<div class="pill">💬 Prendre de tes nouvelles</div>
+
+<div class="title">Salam la plus belle des Allemandes 🇩🇪✨</div>
+
+<div class="sub">
+J’espère que tu vas bien.
+</div>
+
+<div class="card">
 Je me suis demandé comment tu allais, aujourd’hui.
 
 Alors j’ai laissé deux petites réponses possibles.
 
 Juste choisis celle qui te ressemble le plus.
-      </div>
+</div>
 
-      <div class="grid">
-        <button class="btnSoft" id="ok">😄 Ça va super</button>
-        <button class="btnSoft" id="meh">😮‍💨 Bof / fatiguée</button>
-      </div>
+<div class="grid">
+<button class="soft" onclick="reponse('bien')">😄 Ça va super</button>
+<button class="soft" onclick="reponse('fatigue')">😮‍💨 Bof / fatiguée</button>
+</div>
 
-      <div class="hint">Zéro pression.</div>
-    `;
+<div class="hint">Juste un clic.</div>
+`;
+}
 
-    document.getElementById("ok").onclick = () => { choice = "ok"; screen2(); };
-    document.getElementById("meh").onclick = () => { choice = "meh"; screen2(); };
-  }
 
-  // 3) Dernière page (selon choix)
-  function finalContent(c){
-    if(c === "ok"){
-      return {
-        title: "Ça… c’est une excellente nouvelle 😄",
-        text:
-`C’est tout ce que je voulais entendre.
+// REPONSE
+function reponse(type){
+
+if(type === "bien"){
+app.innerHTML = `
+<div class="pill">🌸 Dernière page</div>
+
+<div class="title">Ça, c’est une bonne nouvelle 😄</div>
+
+<div class="card">
+C’est exactement ce que je voulais entendre.
+
 Si tu vas bien… alors tout va bien.
 
-Petite info inutile mais importante :
+Petite précision, totalement inutile mais essentielle :
 si ton sourire fait des dégâts aujourd’hui,
-je ne veux rien savoir 😌
+je décline toute responsabilité 😌
 
-Tu me racontes juste un truc cool de ta journée ?`,
-        copy:
-`Ça va super 😄 Et toi ? Aujourd’hui un truc cool c’est : ...`
-      };
-    }
-    return {
-      title: "Viens, je t’envoie un mini réconfort ✨",
-      text:
-`Ok… je note 😮‍💨
+Dis-moi juste un petit moment cool de ta journée.
+</div>
 
-Je t’envoie un petit “kit de survie” :
-☕ chaud
-🍫 sucré
-😴 et une pause
+<div class="grid">
+<button class="main" onclick="copier()">Copier une réponse WhatsApp 💬</button>
+<button class="soft" onclick="accueil()">Rejouer</button>
+</div>
+`;
+}
 
-Et si la fatigue te parle trop…
-dis-lui que tu es déjà en rendez-vous avec ton lit 😄
+else{
 
-Qu’est-ce qui t’a fatiguée aujourd’hui ?`,
-      copy:
-`Je suis un peu fatiguée 😮‍💨 Mais ça va. Et toi ? Aujourd’hui c’est surtout : ...`
-    };
-  }
+app.innerHTML = `
+<div class="pill">🌸 Dernière page</div>
 
-  function screen2(){
-    const c = finalContent(choice);
-    app.innerHTML = `
-      <div class="pill">🌸 Dernière page</div>
-      <div class="title">${c.title}</div>
-      <div class="sub">Si tu veux répondre : je te prépare un message prêt à coller.</div>
+<div class="title">Alors pause obligatoire ✨</div>
 
-      <div class="card">${c.text}</div>
+<div class="card">
+Ok… je note.
 
-      <div class="grid">
-        <button class="main" id="copy">Copier une réponse WhatsApp 💬</button>
-        <button class="btnSoft" id="replay">Rejouer</button>
-      </div>
+Prescription officielle :
 
-      <div class="hint">Tu copies, tu colles, et c’est parfait.</div>
-    `;
+☕ quelque chose de chaud  
+🍫 quelque chose de bon  
+😴 et un peu de repos  
 
-    document.getElementById("copy").onclick = async () => {
-      try{
-        await navigator.clipboard.writeText(c.copy);
-        alert("Copié ✅ Tu peux coller ça sur WhatsApp.");
-      }catch(e){
-        alert("Impossible de copier automatiquement (essaie Safari).");
-      }
-    };
+Et si la fatigue insiste,
+dis-lui que tu es occupée à être incroyable 😌
 
-    document.getElementById("replay").onclick = screen0;
-  }
+Qu’est-ce qui t’a fatiguée ?
+</div>
 
-  screen0();
+<div class="grid">
+<button class="main" onclick="copierFatigue()">Copier une réponse WhatsApp 💬</button>
+<button class="soft" onclick="accueil()">Rejouer</button>
+</div>
+`;
+}
+
+}
+
+
+// COPIER
+function copier(){
+navigator.clipboard.writeText("Ça va super 😄 Et toi ?");
+alert("Message copié ✅");
+}
+
+function copierFatigue(){
+navigator.clipboard.writeText("Je suis un peu fatiguée 😮‍💨 Et toi ?");
+alert("Message copié ✅");
+}
+
+
+// START
+accueil();
 </script>
+
 </body>
 </html>
