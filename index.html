@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Petit check-in ✨</title>
+<title>Un petit instant ✨</title>
 
 <style>
   :root{
@@ -18,7 +18,7 @@
     margin:0;
     font-family:-apple-system, system-ui;
     background:
-      radial-gradient(900px 520px at 15% 18%, rgba(168,85,247,0.18), transparent 55%),
+      radial-gradient(900px 520px at 15% 18%, rgba(168,85,247,0.20), transparent 55%),
       radial-gradient(780px 520px at 85% 25%, rgba(34,197,94,0.12), transparent 55%),
       radial-gradient(circle at top, var(--bg1), var(--bg2));
     color:white;
@@ -56,10 +56,11 @@
   }
 
   .title{
-    font-size:28px;
-    margin: 8px 0 6px;
+    font-size:30px;
+    margin: 10px 0 6px;
     letter-spacing: 0.2px;
     text-shadow: 0 0 18px rgba(255,255,255,0.22);
+    min-height: 42px;
   }
 
   .sub{
@@ -138,10 +139,10 @@
 <script>
   const SON_PRENOM = "Bambi"; // intégré, on ne lui demande pas
   const app = document.getElementById("app");
-
   let choice = null;
 
-  function addStars(){
+  // étoiles
+  (function addStars(){
     const symbols = ["✦","✧","✺","✶"];
     for(let k=0; k<12; k++){
       const s = document.createElement("div");
@@ -153,26 +154,65 @@
       s.style.opacity = (0.07 + Math.random()*0.12).toFixed(2);
       document.body.appendChild(s);
     }
-  }
-  addStars();
+  })();
 
-  function screen1(){
+  function typeTitle(el, text, speed=55, done=()=>{}){
+    el.textContent = "";
+    let i = 0;
+    (function t(){
+      el.textContent += text[i++] || "";
+      if(i <= text.length) setTimeout(t, speed);
+      else done();
+    })();
+  }
+
+  // 1) Accueil attractif + romantique
+  function screen0(){
     choice = null;
     app.innerHTML = `
-      <div class="pill">💬 Petit message</div>
-      <div class="title">Salam la plus belle des Allemandes 🇩🇪✨</div>
+      <div class="pill">✨ Un petit instant</div>
+      <div class="title" id="t"></div>
       <div class="sub">
-        J’espère que tu vas bien.<br>
-        Je passe juste prendre de tes nouvelles — simplement.
+        J’ai pensé à toi… et j’ai eu envie de te laisser quelque chose de simple.
       </div>
 
       <div class="card">
-Franchement, c’est tout.
-Je voulais juste savoir comment tu vas.
+Pas une grande déclaration.
+Pas un long message.
 
-Tu choisis un bouton…
-et je te laisse tranquille 😄
-(promis, je ne fais pas un interrogatoire)
+Juste un “comment tu vas ?”
+mais en plus doux.
+
+Prête ? 🙂
+      </div>
+
+      <div class="grid">
+        <button class="main" id="start">Ouvrir</button>
+      </div>
+
+      <div class="hint">2 clics, et c’est fini.</div>
+    `;
+
+    const t = document.getElementById("t");
+    typeTitle(t, `${SON_PRENOM}…`, 70);
+    document.getElementById("start").onclick = screen1;
+  }
+
+  // 2) Page 1 (ta phrase + texte fluide + 2 boutons)
+  function screen1(){
+    app.innerHTML = `
+      <div class="pill">💬 Prendre de tes nouvelles</div>
+      <div class="title">Salam la plus belle des Allemandes 🇩🇪✨</div>
+      <div class="sub">
+        J’espère que tu vas bien. Je passe juste prendre de tes nouvelles — simplement.
+      </div>
+
+      <div class="card">
+Je me suis demandé comment tu allais, aujourd’hui.
+
+Alors j’ai laissé deux petites réponses possibles.
+
+Juste choisis celle qui te ressemble le plus.
       </div>
 
       <div class="grid">
@@ -180,56 +220,56 @@ et je te laisse tranquille 😄
         <button class="btnSoft" id="meh">😮‍💨 Bof / fatiguée</button>
       </div>
 
-      <div class="hint">Deux choix, zéro pression.</div>
+      <div class="hint">Zéro pression.</div>
     `;
 
     document.getElementById("ok").onclick = () => { choice = "ok"; screen2(); };
     document.getElementById("meh").onclick = () => { choice = "meh"; screen2(); };
   }
 
-  function contentForChoice(c){
+  // 3) Dernière page (selon choix)
+  function finalContent(c){
     if(c === "ok"){
       return {
-        title: "Voilà ce que je voulais entendre 😄",
+        title: "Ça… c’est une excellente nouvelle 😄",
         text:
 `C’est tout ce que je voulais entendre.
 Si tu vas bien… alors tout va bien.
 
-(Et si quelqu’un te dérange aujourd’hui,
-je viens négocier calmement… très calmement 😌)
+Petite info inutile mais importante :
+si ton sourire fait des dégâts aujourd’hui,
+je ne veux rien savoir 😌
 
-Ça me fait plaisir.
-Tu fais quoi de beau ces jours-ci ?`,
+Tu me racontes juste un truc cool de ta journée ?`,
         copy:
-`Ça va super 😄 Et toi ? Ces jours-ci je fais : ...`
+`Ça va super 😄 Et toi ? Aujourd’hui un truc cool c’est : ...`
       };
     }
     return {
-      title: "Ok… viens, mini réconfort ✨",
+      title: "Viens, je t’envoie un mini réconfort ✨",
       text:
 `Ok… je note 😮‍💨
 
-Alors je t’envoie un mini “pack réconfort” :
-☕ une boisson chaude
-🍫 un truc sucré
-😴 et une sieste (si possible)
+Je t’envoie un petit “kit de survie” :
+☕ chaud
+🍫 sucré
+😴 et une pause
 
-Et si la fatigue te cherche…
-dis-lui que t’es déjà prise 😄
+Et si la fatigue te parle trop…
+dis-lui que tu es déjà en rendez-vous avec ton lit 😄
 
-Qu’est-ce qui t’a fatiguée ?`,
+Qu’est-ce qui t’a fatiguée aujourd’hui ?`,
       copy:
 `Je suis un peu fatiguée 😮‍💨 Mais ça va. Et toi ? Aujourd’hui c’est surtout : ...`
     };
   }
 
   function screen2(){
-    const c = contentForChoice(choice);
-
+    const c = finalContent(choice);
     app.innerHTML = `
       <div class="pill">🌸 Dernière page</div>
       <div class="title">${c.title}</div>
-      <div class="sub">Tu peux répondre si tu veux, sinon juste sourire 🙂</div>
+      <div class="sub">Si tu veux répondre : je te prépare un message prêt à coller.</div>
 
       <div class="card">${c.text}</div>
 
@@ -238,7 +278,7 @@ Qu’est-ce qui t’a fatiguée ?`,
         <button class="btnSoft" id="replay">Rejouer</button>
       </div>
 
-      <div class="hint">Le bouton “Copier” te met un message prêt à coller.</div>
+      <div class="hint">Tu copies, tu colles, et c’est parfait.</div>
     `;
 
     document.getElementById("copy").onclick = async () => {
@@ -250,10 +290,10 @@ Qu’est-ce qui t’a fatiguée ?`,
       }
     };
 
-    document.getElementById("replay").onclick = screen1;
+    document.getElementById("replay").onclick = screen0;
   }
 
-  screen1();
+  screen0();
 </script>
 </body>
 </html>
