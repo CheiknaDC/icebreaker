@@ -9,7 +9,6 @@
 :root{
   --bg1:#050b18;
   --bg2:#020617;
-  --glass: rgba(255,255,255,0.07);
   --border: rgba(255,255,255,0.14);
   --shadow: 0 28px 90px rgba(0,0,0,0.75);
 }
@@ -35,11 +34,23 @@ body{
   z-index:0;
 }
 
-/* ✨ Jeux de lumière */
+/* ✨ Bokeh (bulles de lumière) */
+#bokeh{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+  z-index:1; /* au-dessus des fleurs */
+  pointer-events:none;
+  opacity:0.70;
+}
+
+/* ✨ Jeux de lumière (aurora) */
 .lights{
   position:fixed;
   inset:-20vmax;
-  z-index:1;
+  z-index:2;
   pointer-events:none;
   filter: blur(24px);
   opacity:0.85;
@@ -59,7 +70,7 @@ body{
 .grain{
   position:fixed;
   inset:0;
-  z-index:2;
+  z-index:3;
   pointer-events:none;
   opacity:0.10;
   background-image:
@@ -70,7 +81,7 @@ body{
 
 .wrap{
   position:relative;
-  z-index:3;
+  z-index:4;
   height:100vh;
   display:flex;
   align-items:center;
@@ -91,7 +102,7 @@ body{
   overflow:hidden;
 }
 
-/* ✅ Vague de lumière (overlay) */
+/* ✅ Vague de lumière */
 .container .shine{
   position:absolute;
   inset:0;
@@ -106,11 +117,9 @@ body{
     transparent 100%);
   filter: blur(2px);
 }
-
 .container.shine-run .shine{
   animation: shineMove 700ms ease-out forwards;
 }
-
 @keyframes shineMove{
   0%   { opacity:0; transform: translateX(-140%) rotate(10deg); }
   15%  { opacity:1; }
@@ -164,7 +173,7 @@ body{
   line-height:1.55;
 }
 
-/* ✅ Carte */
+/* Carte */
 .card{
   text-align:left;
   padding:14px;
@@ -176,30 +185,23 @@ body{
   box-shadow: 0 16px 50px rgba(0,0,0,0.35);
 }
 
-/* ✅ Animation de TOUS les textes */
+/* ✅ Animation de tous les textes */
 .line{
   opacity:0;
   transform: translateY(8px);
   animation: lineIn .55s ease forwards;
-  will-change: transform, opacity;
 }
 @keyframes lineIn{ to{ opacity:1; transform: translateY(0); } }
 
-.grid{
-  display:grid;
-  gap:10px;
-  margin-top:14px;
-}
-
-/* ✅ petit “tap” premium */
-.tap{
-  animation: tap 170ms ease-out;
-}
+/* ✅ mini “tap” */
+.tap{ animation: tap 170ms ease-out; }
 @keyframes tap{
   0%{ transform: scale(1); }
   50%{ transform: scale(0.985); }
   100%{ transform: scale(1); }
 }
+
+.grid{ display:grid; gap:10px; margin-top:14px; }
 
 button{
   padding:14px;
@@ -209,7 +211,6 @@ button{
   cursor:pointer;
   font-weight:750;
   transition: transform .18s ease, filter .18s ease, background .18s ease;
-  will-change: transform;
 }
 
 .main{
@@ -225,15 +226,10 @@ button{
 }
 .soft:hover{ transform: translateY(-1px) scale(1.01); background: rgba(255,255,255,0.14); }
 
-.hint{
-  margin-top:10px;
-  opacity:.68;
-  font-size:12px;
-}
+.hint{ margin-top:10px; opacity:.68; font-size:12px; }
 
 @media (prefers-reduced-motion: reduce){
   .lights{ animation:none; }
-  button{ transition:none; }
   .line{ opacity:1; transform:none; animation:none; }
   .container.shine-run .shine{ animation:none; opacity:0; }
 }
@@ -242,6 +238,7 @@ button{
 
 <body>
 <canvas id="petals"></canvas>
+<canvas id="bokeh"></canvas>
 <div class="lights"></div>
 <div class="grain"></div>
 
@@ -254,36 +251,51 @@ button{
 
 <script>
 /* =========================
+   Utils
+   ========================= */
+function rand(a,b){ return a + Math.random()*(b-a); }
+function escapeHtml(str){
+  return str.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+}
+
+/* =========================
    🌸 Pluie de fleurs (Canvas)
    ========================= */
-const canvas = document.getElementById("petals");
-const ctx = canvas.getContext("2d", { alpha:true });
+const petalsCanvas = document.getElementById("petals");
+const petalsCtx = petalsCanvas.getContext("2d", { alpha:true });
 
 let W=0,H=0,DPR=Math.min(2, window.devicePixelRatio || 1);
-function resize(){
+
+function resizeAll(){
   W = Math.floor(window.innerWidth);
   H = Math.floor(window.innerHeight);
-  canvas.width = Math.floor(W * DPR);
-  canvas.height = Math.floor(H * DPR);
-  canvas.style.width = W + "px";
-  canvas.style.height = H + "px";
-  ctx.setTransform(DPR,0,0,DPR,0,0);
+
+  petalsCanvas.width  = Math.floor(W * DPR);
+  petalsCanvas.height = Math.floor(H * DPR);
+  petalsCanvas.style.width = W + "px";
+  petalsCanvas.style.height = H + "px";
+  petalsCtx.setTransform(DPR,0,0,DPR,0,0);
+
+  bokehCanvas.width  = Math.floor(W * DPR);
+  bokehCanvas.height = Math.floor(H * DPR);
+  bokehCanvas.style.width = W + "px";
+  bokehCanvas.style.height = H + "px";
+  bokehCtx.setTransform(DPR,0,0,DPR,0,0);
 }
-window.addEventListener("resize", resize, { passive:true });
-resize();
 
-function rand(a,b){ return a + Math.random()*(b-a); }
+window.addEventListener("resize", resizeAll, { passive:true });
 
-const PETAL_COUNT = Math.floor(Math.max(40, Math.min(90, W * 0.12)));
-const petals = [];
+const PETAL_COUNT = () => Math.floor(Math.max(36, Math.min(80, W * 0.11)));
+let petals = [];
+
 function makePetal(){
   const size = rand(10, 22);
   return {
     x: rand(0, W),
     y: rand(-H, H),
     s: size,
-    vy: rand(0.8, 2.2),
-    vx: rand(-0.25, 0.25),
+    vy: rand(0.85, 2.1),
+    vx: rand(-0.22, 0.22),
     rot: rand(0, Math.PI*2),
     vr: rand(-0.02, 0.02),
     sway: rand(0.6, 1.8),
@@ -292,55 +304,99 @@ function makePetal(){
     hue: rand(320, 360)
   };
 }
-for(let i=0;i<PETAL_COUNT;i++) petals.push(makePetal());
+
+function resetPetals(){
+  petals = [];
+  const n = PETAL_COUNT();
+  for(let i=0;i<n;i++) petals.push(makePetal());
+}
 
 function drawPetal(p){
-  ctx.save();
-  ctx.translate(p.x, p.y);
-  ctx.rotate(p.rot);
+  petalsCtx.save();
+  petalsCtx.translate(p.x, p.y);
+  petalsCtx.rotate(p.rot);
 
   const w = p.s * 0.75;
   const h = p.s;
 
-  const grad = ctx.createRadialGradient(0, -h*0.2, 0, 0, 0, h);
+  const grad = petalsCtx.createRadialGradient(0, -h*0.2, 0, 0, 0, h);
   grad.addColorStop(0, `hsla(${p.hue}, 80%, 82%, ${p.a})`);
   grad.addColorStop(1, `hsla(${p.hue}, 70%, 65%, ${p.a*0.55})`);
 
-  ctx.fillStyle = grad;
-  ctx.beginPath();
-  ctx.moveTo(0, -h*0.6);
-  ctx.quadraticCurveTo(w*0.9, -h*0.2, 0, h*0.6);
-  ctx.quadraticCurveTo(-w*0.9, -h*0.2, 0, -h*0.6);
-  ctx.closePath();
-  ctx.fill();
+  petalsCtx.fillStyle = grad;
+  petalsCtx.beginPath();
+  petalsCtx.moveTo(0, -h*0.6);
+  petalsCtx.quadraticCurveTo(w*0.9, -h*0.2, 0, h*0.6);
+  petalsCtx.quadraticCurveTo(-w*0.9, -h*0.2, 0, -h*0.6);
+  petalsCtx.closePath();
+  petalsCtx.fill();
 
-  ctx.strokeStyle = `rgba(255,255,255,${p.a*0.15})`;
-  ctx.lineWidth = 1;
-  ctx.stroke();
+  petalsCtx.strokeStyle = `rgba(255,255,255,${p.a*0.14})`;
+  petalsCtx.lineWidth = 1;
+  petalsCtx.stroke();
 
-  ctx.restore();
+  petalsCtx.restore();
 }
 
+/* =========================
+   ✨ Bokeh (Canvas)
+   ========================= */
+const bokehCanvas = document.getElementById("bokeh");
+const bokehCtx = bokehCanvas.getContext("2d", { alpha:true });
+
+const BOKEH_COUNT = () => Math.floor(Math.max(12, Math.min(26, W * 0.03)));
+let bokehs = [];
+
+function makeBokeh(){
+  const r = rand(18, 60);
+  return {
+    x: rand(0, W),
+    y: rand(0, H),
+    r,
+    vy: rand(-0.10, -0.35),
+    vx: rand(-0.06, 0.06),
+    a: rand(0.04, 0.12),
+    hue: rand(200, 330),
+    phase: rand(0, Math.PI*2),
+    ps: rand(0.006, 0.014)
+  };
+}
+
+function resetBokeh(){
+  bokehs = [];
+  const n = BOKEH_COUNT();
+  for(let i=0;i<n;i++) bokehs.push(makeBokeh());
+}
+
+/* =========================
+   Loop
+   ========================= */
+function init(){
+  resizeAll();
+  resetPetals();
+  resetBokeh();
+}
+init();
+
 let last = performance.now();
-function tick(now){
+function loop(now){
   const dt = Math.min(32, now-last);
   last = now;
 
-  ctx.clearRect(0,0,W,H);
-
+  // petals
+  petalsCtx.clearRect(0,0,W,H);
   for(const p of petals){
     p.phase += 0.01 * (dt/16);
     p.rot += p.vr * (dt/16);
     p.y += p.vy * (dt/16);
-    p.x += (p.vx + Math.sin(p.phase)*0.25*p.sway) * (dt/16);
-
+    p.x += (p.vx + Math.sin(p.phase)*0.22*p.sway) * (dt/16);
     drawPetal(p);
 
     if(p.y > H + 40){
-      p.y = rand(-120, -20);
+      p.y = rand(-140, -20);
       p.x = rand(0, W);
-      p.vy = rand(0.8, 2.4);
-      p.vx = rand(-0.25, 0.25);
+      p.vy = rand(0.9, 2.3);
+      p.vx = rand(-0.22, 0.22);
       p.s = rand(10, 22);
       p.a = rand(0.35, 0.85);
       p.hue = rand(320, 360);
@@ -349,21 +405,48 @@ function tick(now){
     if(p.x > W + 60) p.x = -60;
   }
 
-  requestAnimationFrame(tick);
+  // bokeh
+  bokehCtx.clearRect(0,0,W,H);
+  for(const b of bokehs){
+    b.phase += b.ps * (dt/16);
+    b.y += b.vy * (dt/16);
+    b.x += b.vx * (dt/16);
+
+    const pulse = 0.65 + 0.35*Math.sin(b.phase);
+    const a = b.a * pulse;
+
+    const g = bokehCtx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
+    g.addColorStop(0, `hsla(${b.hue}, 85%, 78%, ${a})`);
+    g.addColorStop(1, `hsla(${b.hue}, 85%, 78%, 0)`);
+
+    bokehCtx.fillStyle = g;
+    bokehCtx.beginPath();
+    bokehCtx.arc(b.x, b.y, b.r, 0, Math.PI*2);
+    bokehCtx.fill();
+
+    if(b.y < -b.r - 20){
+      b.y = H + b.r + 20;
+      b.x = rand(0, W);
+      b.r = rand(18, 60);
+      b.vy = rand(-0.10, -0.35);
+      b.vx = rand(-0.06, 0.06);
+      b.a = rand(0.04, 0.12);
+      b.hue = rand(200, 330);
+      b.phase = rand(0, Math.PI*2);
+      b.ps = rand(0.006, 0.014);
+    }
+  }
+
+  requestAnimationFrame(loop);
 }
-requestAnimationFrame(tick);
+requestAnimationFrame(loop);
 
 /* =========================
-   ✅ App + animations partout
-   + vague de lumière au clic
+   ✅ App + animations + shine
    ========================= */
 const SON_PRENOM = "Bambi";
 const app = document.getElementById("app");
 const container = document.getElementById("container");
-
-function escapeHtml(str){
-  return str.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
-}
 
 function animatedCard(text, baseDelay=0){
   const lines = text.split("\n");
@@ -377,14 +460,12 @@ function animatedCard(text, baseDelay=0){
   `;
 }
 
-/* ✅ Lance la vague de lumière */
 function shine(){
   container.classList.remove("shine-run");
-  void container.offsetWidth; // reflow
+  void container.offsetWidth;
   container.classList.add("shine-run");
 }
 
-/* ✅ Effet tap sur bouton + vague */
 function bindFancyClicks(){
   document.querySelectorAll("button").forEach(btn=>{
     btn.addEventListener("click", ()=>{
