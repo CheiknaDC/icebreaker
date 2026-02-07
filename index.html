@@ -14,7 +14,7 @@
   --shadow: 0 28px 90px rgba(0,0,0,0.75);
 }
 
-*{ box-sizing: border-box; }
+*{ box-sizing:border-box; }
 
 body{
   margin:0;
@@ -25,8 +25,8 @@ body{
   background: radial-gradient(circle at top, var(--bg1), var(--bg2));
 }
 
-/* ✅ Canvas pluie d'étoiles */
-#stars{
+/* 🌸 Pluie de fleurs */
+#petals{
   position:fixed;
   inset:0;
   width:100%;
@@ -35,7 +35,7 @@ body{
   z-index:0;
 }
 
-/* ✅ Jeux de lumière (blobs / aurora) */
+/* ✨ Jeux de lumière */
 .lights{
   position:fixed;
   inset:-20vmax;
@@ -55,7 +55,7 @@ body{
   to  { transform: translate3d( 2%,  1%, 0) scale(1.06); }
 }
 
-/* Un très léger grain premium */
+/* Grain */
 .grain{
   position:fixed;
   inset:0;
@@ -64,11 +64,10 @@ body{
   opacity:0.10;
   background-image:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
-  background-size: 220px 220px;
+  background-size:220px 220px;
   mix-blend-mode: overlay;
 }
 
-/* Conteneur */
 .wrap{
   position:relative;
   z-index:3;
@@ -76,45 +75,67 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  padding: 20px;
+  padding:20px;
 }
 
-/* Carte glass premium */
 .container{
   width:min(720px, 92vw);
   background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
-  border: 1px solid var(--border);
-  border-radius: 26px;
+  border:1px solid var(--border);
+  border-radius:26px;
   box-shadow: var(--shadow);
   backdrop-filter: blur(14px);
-  padding: 22px;
+  padding:22px;
   text-align:center;
   position:relative;
   overflow:hidden;
 }
 
-/* Reflet subtil en haut */
+/* ✅ Vague de lumière (overlay) */
+.container .shine{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:0;
+  transform: translateX(-140%) rotate(10deg);
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255,255,255,0.00) 35%,
+    rgba(255,255,255,0.22) 50%,
+    rgba(255,255,255,0.00) 65%,
+    transparent 100%);
+  filter: blur(2px);
+}
+
+.container.shine-run .shine{
+  animation: shineMove 700ms ease-out forwards;
+}
+
+@keyframes shineMove{
+  0%   { opacity:0; transform: translateX(-140%) rotate(10deg); }
+  15%  { opacity:1; }
+  100% { opacity:0; transform: translateX(140%) rotate(10deg); }
+}
+
 .container::before{
   content:"";
   position:absolute;
   inset:-40% -30% auto -30%;
-  height: 60%;
+  height:60%;
   background: radial-gradient(closest-side, rgba(255,255,255,0.20), transparent 70%);
   transform: rotate(-8deg);
   opacity:0.20;
   pointer-events:none;
 }
-
-/* Liseré lumineux */
 .container::after{
   content:"";
   position:absolute;
   inset:0;
-  border-radius: 26px;
+  border-radius:26px;
   pointer-events:none;
   background:
-    linear-gradient(90deg, rgba(168,85,247,0.14), transparent 20%, transparent 80%, rgba(34,197,94,0.12));
-  opacity:0.55;
+    linear-gradient(90deg, rgba(255,182,193,0.10), transparent 22%, transparent 78%, rgba(168,85,247,0.12));
+  opacity:0.60;
   mix-blend-mode: screen;
 }
 
@@ -132,33 +153,52 @@ body{
 
 .title{
   font-size:30px;
-  margin: 10px 0 8px;
+  margin:10px 0 8px;
   text-shadow: 0 0 26px rgba(255,255,255,0.18);
 }
 
 .sub{
   opacity:.90;
   font-size:14px;
-  margin-bottom: 12px;
+  margin-bottom:12px;
   line-height:1.55;
 }
 
+/* ✅ Carte */
 .card{
   text-align:left;
-  padding: 14px;
-  border-radius: 18px;
+  padding:14px;
+  border-radius:18px;
   background: rgba(0,0,0,0.14);
-  border: 1px solid rgba(255,255,255,0.12);
-  white-space:pre-wrap;
+  border:1px solid rgba(255,255,255,0.12);
   line-height:1.75;
   font-size:16px;
   box-shadow: 0 16px 50px rgba(0,0,0,0.35);
 }
 
+/* ✅ Animation de TOUS les textes */
+.line{
+  opacity:0;
+  transform: translateY(8px);
+  animation: lineIn .55s ease forwards;
+  will-change: transform, opacity;
+}
+@keyframes lineIn{ to{ opacity:1; transform: translateY(0); } }
+
 .grid{
   display:grid;
   gap:10px;
   margin-top:14px;
+}
+
+/* ✅ petit “tap” premium */
+.tap{
+  animation: tap 170ms ease-out;
+}
+@keyframes tap{
+  0%{ transform: scale(1); }
+  50%{ transform: scale(0.985); }
+  100%{ transform: scale(1); }
 }
 
 button{
@@ -186,36 +226,40 @@ button{
 .soft:hover{ transform: translateY(-1px) scale(1.01); background: rgba(255,255,255,0.14); }
 
 .hint{
-  margin-top: 10px;
-  opacity: .68;
-  font-size: 12px;
+  margin-top:10px;
+  opacity:.68;
+  font-size:12px;
 }
 
-/* Respecte les préférences d’accessibilité */
 @media (prefers-reduced-motion: reduce){
   .lights{ animation:none; }
   button{ transition:none; }
+  .line{ opacity:1; transform:none; animation:none; }
+  .container.shine-run .shine{ animation:none; opacity:0; }
 }
 </style>
 </head>
 
 <body>
-<canvas id="stars"></canvas>
+<canvas id="petals"></canvas>
 <div class="lights"></div>
 <div class="grain"></div>
 
 <div class="wrap">
-  <div class="container" id="app"></div>
+  <div class="container" id="container">
+    <div class="shine"></div>
+    <div id="app"></div>
+  </div>
 </div>
 
 <script>
 /* =========================
-   ✅ Pluie d’étoiles (Canvas)
+   🌸 Pluie de fleurs (Canvas)
    ========================= */
-const canvas = document.getElementById("stars");
-const ctx = canvas.getContext("2d", { alpha: true });
+const canvas = document.getElementById("petals");
+const ctx = canvas.getContext("2d", { alpha:true });
 
-let W = 0, H = 0, DPR = Math.min(2, window.devicePixelRatio || 1);
+let W=0,H=0,DPR=Math.min(2, window.devicePixelRatio || 1);
 function resize(){
   W = Math.floor(window.innerWidth);
   H = Math.floor(window.innerHeight);
@@ -223,28 +267,59 @@ function resize(){
   canvas.height = Math.floor(H * DPR);
   canvas.style.width = W + "px";
   canvas.style.height = H + "px";
-  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
 }
 window.addEventListener("resize", resize, { passive:true });
 resize();
 
-const STAR_COUNT = Math.floor(Math.max(120, Math.min(220, W * 0.25)));
-const stars = [];
 function rand(a,b){ return a + Math.random()*(b-a); }
 
-function makeStar(){
+const PETAL_COUNT = Math.floor(Math.max(40, Math.min(90, W * 0.12)));
+const petals = [];
+function makePetal(){
+  const size = rand(10, 22);
   return {
     x: rand(0, W),
     y: rand(-H, H),
-    r: rand(0.6, 1.8),
-    vy: rand(0.7, 2.6),
-    vx: rand(-0.15, 0.15),
-    tw: rand(0, Math.PI*2),
-    tws: rand(0.015, 0.05),
-    a: rand(0.25, 0.9)
+    s: size,
+    vy: rand(0.8, 2.2),
+    vx: rand(-0.25, 0.25),
+    rot: rand(0, Math.PI*2),
+    vr: rand(-0.02, 0.02),
+    sway: rand(0.6, 1.8),
+    phase: rand(0, Math.PI*2),
+    a: rand(0.35, 0.85),
+    hue: rand(320, 360)
   };
 }
-for(let i=0;i<STAR_COUNT;i++) stars.push(makeStar());
+for(let i=0;i<PETAL_COUNT;i++) petals.push(makePetal());
+
+function drawPetal(p){
+  ctx.save();
+  ctx.translate(p.x, p.y);
+  ctx.rotate(p.rot);
+
+  const w = p.s * 0.75;
+  const h = p.s;
+
+  const grad = ctx.createRadialGradient(0, -h*0.2, 0, 0, 0, h);
+  grad.addColorStop(0, `hsla(${p.hue}, 80%, 82%, ${p.a})`);
+  grad.addColorStop(1, `hsla(${p.hue}, 70%, 65%, ${p.a*0.55})`);
+
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.moveTo(0, -h*0.6);
+  ctx.quadraticCurveTo(w*0.9, -h*0.2, 0, h*0.6);
+  ctx.quadraticCurveTo(-w*0.9, -h*0.2, 0, -h*0.6);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.strokeStyle = `rgba(255,255,255,${p.a*0.15})`;
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  ctx.restore();
+}
 
 let last = performance.now();
 function tick(now){
@@ -253,45 +328,25 @@ function tick(now){
 
   ctx.clearRect(0,0,W,H);
 
-  // Lueur générale très légère
-  const g = ctx.createRadialGradient(W*0.5, H*0.15, 0, W*0.5, H*0.15, Math.max(W,H));
-  g.addColorStop(0, "rgba(255,255,255,0.05)");
-  g.addColorStop(1, "rgba(255,255,255,0)");
-  ctx.fillStyle = g;
-  ctx.fillRect(0,0,W,H);
+  for(const p of petals){
+    p.phase += 0.01 * (dt/16);
+    p.rot += p.vr * (dt/16);
+    p.y += p.vy * (dt/16);
+    p.x += (p.vx + Math.sin(p.phase)*0.25*p.sway) * (dt/16);
 
-  for(const s of stars){
-    s.tw += s.tws;
-    const flicker = 0.55 + 0.45*Math.sin(s.tw);
-    const alpha = s.a * flicker;
+    drawPetal(p);
 
-    // petite traînée (pluie)
-    ctx.beginPath();
-    ctx.strokeStyle = `rgba(255,255,255,${alpha*0.35})`;
-    ctx.lineWidth = s.r;
-    ctx.moveTo(s.x, s.y);
-    ctx.lineTo(s.x - s.vx*10, s.y - s.vy*10);
-    ctx.stroke();
-
-    // étoile
-    ctx.beginPath();
-    ctx.fillStyle = `rgba(255,255,255,${alpha})`;
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
-    ctx.fill();
-
-    s.y += s.vy * (dt/16);
-    s.x += s.vx * (dt/16);
-
-    if(s.y > H + 30){
-      s.y = rand(-120, -20);
-      s.x = rand(0, W);
-      s.vy = rand(0.8, 2.9);
-      s.vx = rand(-0.18, 0.18);
-      s.r  = rand(0.6, 1.9);
-      s.a  = rand(0.25, 0.9);
+    if(p.y > H + 40){
+      p.y = rand(-120, -20);
+      p.x = rand(0, W);
+      p.vy = rand(0.8, 2.4);
+      p.vx = rand(-0.25, 0.25);
+      p.s = rand(10, 22);
+      p.a = rand(0.35, 0.85);
+      p.hue = rand(320, 360);
     }
-    if(s.x < -40) s.x = W + 40;
-    if(s.x > W + 40) s.x = -40;
+    if(p.x < -60) p.x = W + 60;
+    if(p.x > W + 60) p.x = -60;
   }
 
   requestAnimationFrame(tick);
@@ -299,58 +354,96 @@ function tick(now){
 requestAnimationFrame(tick);
 
 /* =========================
-   ✅ Ton app (contenu identique)
+   ✅ App + animations partout
+   + vague de lumière au clic
    ========================= */
 const SON_PRENOM = "Bambi";
 const app = document.getElementById("app");
+const container = document.getElementById("container");
+
+function escapeHtml(str){
+  return str.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+}
+
+function animatedCard(text, baseDelay=0){
+  const lines = text.split("\n");
+  return `
+    <div class="card">
+      ${lines.map((l, i) => {
+        const safe = l === "" ? "&nbsp;" : escapeHtml(l);
+        return `<div class="line" style="animation-delay:${baseDelay + i*120}ms">${safe}</div>`;
+      }).join("")}
+    </div>
+  `;
+}
+
+/* ✅ Lance la vague de lumière */
+function shine(){
+  container.classList.remove("shine-run");
+  void container.offsetWidth; // reflow
+  container.classList.add("shine-run");
+}
+
+/* ✅ Effet tap sur bouton + vague */
+function bindFancyClicks(){
+  document.querySelectorAll("button").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      btn.classList.remove("tap");
+      void btn.offsetWidth;
+      btn.classList.add("tap");
+      shine();
+    }, { passive:true });
+  });
+}
 
 function accueil(){
-  app.innerHTML = `
-    <div class="pill">✨ Un petit instant</div>
-    <div class="title">${SON_PRENOM}…</div>
-
-    <div class="card">Je me suis demandé comment tu allais.
+  const text =
+`Je me suis demandé comment tu allais.
 
 Alors j’ai créé ce petit instant.
 
 Pas pour interrompre ta soirée,
 juste pour apparaître doucement dedans.
 
-Tu peux ouvrir.</div>
+Tu peux ouvrir.`;
 
+  app.innerHTML = `
+    <div class="pill">✨ Un petit instant</div>
+    <div class="title">${SON_PRENOM}…</div>
+    ${animatedCard(text)}
     <div class="grid">
       <button class="main" onclick="pagePrincipale()">Ouvrir</button>
     </div>
     <div class="hint">Simple, doux… et rapide.</div>
   `;
+  bindFancyClicks();
 }
 
 function pagePrincipale(){
+  const text =
+`Je me suis demandé comment tu allais, aujourd’hui.
+
+Alors j’ai laissé deux petites réponses possibles.
+
+Juste choisis celle qui te ressemble le plus.`;
+
   app.innerHTML = `
     <div class="pill">💬 Prendre de tes nouvelles</div>
     <div class="title">Salam la plus belle des Allemandes 🇩🇪✨</div>
     <div class="sub">J’espère que tu vas bien.</div>
-
-    <div class="card">Je me suis demandé comment tu allais, aujourd’hui.
-
-Alors j’ai laissé deux petites réponses possibles.
-
-Juste choisis celle qui te ressemble le plus.</div>
-
+    ${animatedCard(text)}
     <div class="grid">
       <button class="soft" onclick="reponse('bien')">😄 Ça va super</button>
       <button class="soft" onclick="reponse('fatigue')">😮‍💨 Bof / fatiguée</button>
     </div>
   `;
+  bindFancyClicks();
 }
 
 function reponse(type){
   if(type === "bien"){
-    app.innerHTML = `
-      <div class="pill">🌸 Dernière page</div>
-      <div class="title">Ça, c’est une bonne nouvelle 😄</div>
-
-      <div class="card">C’est exactement ce que je voulais entendre.
+    const text =
+`C’est exactement ce que je voulais entendre.
 
 Si tu vas bien… alors tout va bien.
 
@@ -358,8 +451,12 @@ Petite précision, totalement inutile mais essentielle :
 si ton sourire fait des dégâts aujourd’hui,
 je décline toute responsabilité 😌
 
-Dis-moi juste un petit moment cool de ta journée.</div>
+Dis-moi juste un petit moment cool de ta journée.`;
 
+    app.innerHTML = `
+      <div class="pill">🌸 Dernière page</div>
+      <div class="title">Ça, c’est une bonne nouvelle 😄</div>
+      ${animatedCard(text)}
       <div class="grid">
         <button class="main" onclick="copierBien()">Copier une réponse WhatsApp 💬</button>
         <button class="soft" onclick="accueil()">Rejouer</button>
@@ -367,18 +464,19 @@ Dis-moi juste un petit moment cool de ta journée.</div>
       <div class="hint">Tu copies, tu colles, et c’est parfait.</div>
     `;
   } else {
-    app.innerHTML = `
-      <div class="pill">🌙 Dernière page</div>
-      <div class="title">Message reçu.</div>
-
-      <div class="card">Ok… alors je vais faire comme si je n’avais rien vu.
+    const text =
+`Ok… alors je vais faire comme si je n’avais rien vu.
 
 Mais entre nous,
 la fatigue a choisi la mauvaise personne aujourd’hui 😌
 
 Dis-moi juste :
-qu’est-ce qui t’a volé ton énergie ?</div>
+qu’est-ce qui t’a volé ton énergie ?`;
 
+    app.innerHTML = `
+      <div class="pill">🌙 Dernière page</div>
+      <div class="title">Message reçu.</div>
+      ${animatedCard(text)}
       <div class="grid">
         <button class="main" onclick="copierFatigue()">Copier une réponse WhatsApp 💬</button>
         <button class="soft" onclick="accueil()">Rejouer</button>
@@ -386,13 +484,13 @@ qu’est-ce qui t’a volé ton énergie ?</div>
       <div class="hint">Petit check-in, grand sourire.</div>
     `;
   }
+  bindFancyClicks();
 }
 
 function copierBien(){
   navigator.clipboard.writeText("Ça va super 😄 Et toi ?");
   alert("Message copié ✅");
 }
-
 function copierFatigue(){
   navigator.clipboard.writeText("Je suis un peu fatiguée 😮‍💨 Et toi ?");
   alert("Message copié ✅");
@@ -400,6 +498,5 @@ function copierFatigue(){
 
 accueil();
 </script>
-
 </body>
 </html>
