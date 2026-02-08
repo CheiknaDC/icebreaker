@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Un petit instant ✨</title>
 
-<!-- ✍️ Police manuscrite + police lisible pour UI -->
+<!-- ✍️ Manuscrite lisible + UI -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -48,10 +48,10 @@ body{
   display:block;
   z-index:1;
   pointer-events:none;
-  opacity:0.70;
+  opacity:0.68;
 }
 
-/* ✨ Jeux de lumière (aurora) */
+/* ✨ Jeux de lumière */
 .lights{
   position:fixed;
   inset:-20vmax;
@@ -84,6 +84,7 @@ body{
   mix-blend-mode: overlay;
 }
 
+/* ✅ iPhone safe-area + centrage */
 .wrap{
   position:relative;
   z-index:4;
@@ -91,23 +92,28 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:20px;
+  padding:
+    max(14px, env(safe-area-inset-top))
+    max(14px, env(safe-area-inset-right))
+    max(14px, env(safe-area-inset-bottom))
+    max(14px, env(safe-area-inset-left));
 }
 
+/* ✅ Carte plus compacte iPhone */
 .container{
-  width:min(720px, 92vw);
-  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+  width: min(560px, 92vw);
+  background: linear-gradient(180deg, rgba(255,255,255,0.085), rgba(255,255,255,0.04));
   border:1px solid var(--border);
-  border-radius:26px;
+  border-radius:24px;
   box-shadow: var(--shadow);
   backdrop-filter: blur(14px);
-  padding:22px;
+  padding: 18px;
   text-align:center;
   position:relative;
   overflow:hidden;
 }
 
-/* ✅ Vague de lumière */
+/* Vague */
 .container .shine{
   position:absolute;
   inset:0;
@@ -138,14 +144,14 @@ body{
   height:60%;
   background: radial-gradient(closest-side, rgba(255,255,255,0.20), transparent 70%);
   transform: rotate(-8deg);
-  opacity:0.20;
+  opacity:0.18;
   pointer-events:none;
 }
 .container::after{
   content:"";
   position:absolute;
   inset:0;
-  border-radius:26px;
+  border-radius:24px;
   pointer-events:none;
   background:
     linear-gradient(90deg, rgba(255,182,193,0.10), transparent 22%, transparent 78%, rgba(168,85,247,0.12));
@@ -157,46 +163,48 @@ body{
   display:inline-flex;
   gap:8px;
   align-items:center;
-  padding:8px 12px;
+  padding:7px 11px;
   border-radius:999px;
   border:1px solid rgba(255,255,255,.16);
   background: rgba(0,0,0,.18);
   font-size:12px;
-  margin-bottom:10px;
+  margin-bottom:8px;
 }
 
-/* ✍️ TITRES en manuscrit */
+/* ✍️ Titres manuscrits lisibles */
 .title{
-  font-family: "Great Vibes", cursive;
-  font-size: 44px;
-  margin: 10px 0 6px;
-  text-shadow: 0 0 26px rgba(255,255,255,0.18);
-  letter-spacing: 0.6px;
+  font-family: "Dancing Script", cursive;
+  font-weight: 700;
+  font-size: clamp(30px, 7vw, 42px);
+  margin: 8px 0 6px;
+  text-shadow: 0 0 22px rgba(255,255,255,0.18);
 }
 
-/* sous-texte lisible */
+/* sous-texte */
 .sub{
   opacity:.90;
   font-size:14px;
-  margin-bottom:12px;
+  margin-bottom:10px;
   line-height:1.55;
 }
 
-/* ✍️ CARTES en manuscrit */
+/* ✍️ Carte manuscrite lisible */
 .card{
   text-align:left;
   padding:14px;
   border-radius:18px;
   background: rgba(0,0,0,0.14);
   border:1px solid rgba(255,255,255,0.12);
-  box-shadow: 0 16px 50px rgba(0,0,0,0.35);
-  font-family: "Great Vibes", cursive;
-  font-size: 26px;
+  box-shadow: 0 14px 46px rgba(0,0,0,0.34);
+
+  font-family: "Dancing Script", cursive;
+  font-weight: 600;
+  font-size: clamp(18px, 4.6vw, 22px);
   line-height: 1.55;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.2px;
 }
 
-/* ✅ Animation de tous les textes */
+/* Animation lignes */
 .line{
   opacity:0;
   transform: translateY(10px);
@@ -204,15 +212,10 @@ body{
 }
 @keyframes lineIn{ to{ opacity:1; transform: translateY(0); } }
 
-/* ✅ mini “tap” */
-.tap{ animation: tap 170ms ease-out; }
-@keyframes tap{
-  0%{ transform: scale(1); }
-  50%{ transform: scale(0.985); }
-  100%{ transform: scale(1); }
-}
+.grid{ display:grid; gap:10px; margin-top:12px; }
 
-.grid{ display:grid; gap:10px; margin-top:14px; }
+.tap{ animation: tap 170ms ease-out; }
+@keyframes tap{ 0%{transform:scale(1)} 50%{transform:scale(.985)} 100%{transform:scale(1)} }
 
 button{
   font-family: Inter, -apple-system, system-ui, Arial, sans-serif;
@@ -238,11 +241,7 @@ button{
 }
 .soft:hover{ transform: translateY(-1px) scale(1.01); background: rgba(255,255,255,0.14); }
 
-.hint{
-  margin-top:10px;
-  opacity:.68;
-  font-size:12px;
-}
+.hint{ margin-top:8px; opacity:.68; font-size:12px; }
 
 @media (prefers-reduced-motion: reduce){
   .lights{ animation:none; }
@@ -275,12 +274,11 @@ function escapeHtml(str){
 }
 
 /* =========================
-   🌸 Petals canvas
+   Canvas setup
    ========================= */
 const petalsCanvas = document.getElementById("petals");
 const petalsCtx = petalsCanvas.getContext("2d", { alpha:true });
 
-/* ✨ Bokeh canvas */
 const bokehCanvas = document.getElementById("bokeh");
 const bokehCtx = bokehCanvas.getContext("2d", { alpha:true });
 
@@ -304,22 +302,24 @@ function resizeAll(){
 }
 window.addEventListener("resize", resizeAll, { passive:true });
 
-/* petals */
-const PETAL_COUNT = () => Math.floor(Math.max(34, Math.min(78, W * 0.11)));
+/* =========================
+   🌸 Petals
+   ========================= */
+const PETAL_COUNT = () => Math.floor(Math.max(26, Math.min(58, W * 0.085))); // léger pour iPhone
 let petals = [];
 function makePetal(){
-  const size = rand(10, 22);
+  const size = rand(10, 20);
   return {
     x: rand(0, W),
     y: rand(-H, H),
     s: size,
-    vy: rand(0.85, 2.1),
-    vx: rand(-0.22, 0.22),
+    vy: rand(0.85, 2.0),
+    vx: rand(-0.20, 0.20),
     rot: rand(0, Math.PI*2),
     vr: rand(-0.02, 0.02),
-    sway: rand(0.6, 1.8),
+    sway: rand(0.6, 1.6),
     phase: rand(0, Math.PI*2),
-    a: rand(0.35, 0.85),
+    a: rand(0.35, 0.82),
     hue: rand(320, 360)
   };
 }
@@ -348,27 +348,29 @@ function drawPetal(p){
   petalsCtx.closePath();
   petalsCtx.fill();
 
-  petalsCtx.strokeStyle = `rgba(255,255,255,${p.a*0.14})`;
+  petalsCtx.strokeStyle = `rgba(255,255,255,${p.a*0.12})`;
   petalsCtx.lineWidth = 1;
   petalsCtx.stroke();
   petalsCtx.restore();
 }
 
-/* bokeh */
-const BOKEH_COUNT = () => Math.floor(Math.max(12, Math.min(26, W * 0.03)));
+/* =========================
+   ✨ Bokeh
+   ========================= */
+const BOKEH_COUNT = () => Math.floor(Math.max(10, Math.min(18, W * 0.02))); // léger pour iPhone
 let bokehs = [];
 function makeBokeh(){
-  const r = rand(18, 60);
+  const r = rand(18, 54);
   return {
     x: rand(0, W),
     y: rand(0, H),
     r,
-    vy: rand(-0.10, -0.35),
-    vx: rand(-0.06, 0.06),
-    a: rand(0.04, 0.12),
+    vy: rand(-0.10, -0.30),
+    vx: rand(-0.05, 0.05),
+    a: rand(0.04, 0.11),
     hue: rand(200, 330),
     phase: rand(0, Math.PI*2),
-    ps: rand(0.006, 0.014)
+    ps: rand(0.006, 0.013)
   };
 }
 function resetBokeh(){
@@ -377,7 +379,7 @@ function resetBokeh(){
   for(let i=0;i<n;i++) bokehs.push(makeBokeh());
 }
 
-/* init */
+/* init + loop */
 function init(){
   resizeAll();
   resetPetals();
@@ -402,10 +404,10 @@ function loop(now){
     if(p.y > H + 40){
       p.y = rand(-140, -20);
       p.x = rand(0, W);
-      p.vy = rand(0.9, 2.3);
-      p.vx = rand(-0.22, 0.22);
-      p.s = rand(10, 22);
-      p.a = rand(0.35, 0.85);
+      p.vy = rand(0.9, 2.1);
+      p.vx = rand(-0.20, 0.20);
+      p.s = rand(10, 20);
+      p.a = rand(0.35, 0.82);
       p.hue = rand(320, 360);
     }
     if(p.x < -60) p.x = W + 60;
@@ -434,13 +436,13 @@ function loop(now){
     if(b.y < -b.r - 20){
       b.y = H + b.r + 20;
       b.x = rand(0, W);
-      b.r = rand(18, 60);
-      b.vy = rand(-0.10, -0.35);
-      b.vx = rand(-0.06, 0.06);
-      b.a = rand(0.04, 0.12);
+      b.r = rand(18, 54);
+      b.vy = rand(-0.10, -0.30);
+      b.vx = rand(-0.05, 0.05);
+      b.a = rand(0.04, 0.11);
       b.hue = rand(200, 330);
       b.phase = rand(0, Math.PI*2);
-      b.ps = rand(0.006, 0.014);
+      b.ps = rand(0.006, 0.013);
     }
   }
 
@@ -449,7 +451,7 @@ function loop(now){
 requestAnimationFrame(loop);
 
 /* =========================
-   App
+   App (texte + animations)
    ========================= */
 const SON_PRENOM = "Bambi";
 const app = document.getElementById("app");
@@ -497,7 +499,12 @@ Tu peux ouvrir.`;
 
   app.innerHTML = `
     <div class="pill">✨ Un petit instant</div>
-    <div class="title">${SON_PRENOM}…</div>
+
+    <!-- ✅ Phrase déplacée sur l'accueil -->
+    <div class="title">Salam la plus belle des Allemandes 🇩🇪✨</div>
+
+    <div class="sub">${SON_PRENOM}…</div>
+
     ${animatedCard(text)}
     <div class="grid">
       <button class="main" onclick="pagePrincipale()">Ouvrir</button>
@@ -517,8 +524,7 @@ Juste choisis celle qui te ressemble le plus.`;
 
   app.innerHTML = `
     <div class="pill">💬 Prendre de tes nouvelles</div>
-    <div class="title">Salam la plus belle des Allemandes 🇩🇪✨</div>
-    <div class="sub">J’espère que tu vas bien.</div>
+    <div class="title">${SON_PRENOM}…</div>
     ${animatedCard(text)}
     <div class="grid">
       <button class="soft" onclick="reponse('bien')">😄 Ça va super</button>
