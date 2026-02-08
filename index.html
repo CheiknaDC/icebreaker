@@ -525,10 +525,16 @@ function bindFancyClicks(){
   });
 }
 
+/* ✅ HTML du prénom en or partout */
+function goldNameHTML(id){
+  return `<div class="gold-name" id="${id}"></div>`;
+}
+
 /* ✍️ Écriture lettre par lettre + shimmer */
-function writeGoldName(text){
-  const el = document.getElementById("goldName");
+function writeGoldName(id, text){
+  const el = document.getElementById(id);
   if(!el) return;
+
   el.textContent = "";
   el.classList.remove("shimmer");
   let i = 0;
@@ -537,13 +543,22 @@ function writeGoldName(text){
     if(i < text.length){
       el.textContent += text[i];
       i++;
-      setTimeout(write, 95); // vitesse
+      setTimeout(write, 95);
     }else{
-      // démarre le scintillement une fois écrit
       el.classList.add("shimmer");
     }
   }
   write();
+}
+
+/* helper : écrit Bambi... sur une page donnée */
+function paintNameEverywhere(){
+  const ids = ["goldName1","goldName2"];
+  ids.forEach(id=>{
+    if(document.getElementById(id)){
+      writeGoldName(id, SON_PRENOM + "...");
+    }
+  });
 }
 
 function accueil(){
@@ -562,8 +577,7 @@ Tu peux ouvrir.`;
 
     <div class="title">Salam la plus belle des Allemandes 🇩🇪✨</div>
 
-    <!-- 🟡 Bambi en or -->
-    <div class="gold-name" id="goldName"></div>
+    ${goldNameHTML("goldName1")}
 
     ${animatedCard(text)}
     <div class="grid">
@@ -573,7 +587,7 @@ Tu peux ouvrir.`;
   `;
 
   bindFancyClicks();
-  setTimeout(()=> writeGoldName(SON_PRENOM + "..."), 350);
+  setTimeout(paintNameEverywhere, 250);
 }
 
 function pagePrincipale(){
@@ -585,14 +599,16 @@ Alors j’ai laissé deux petites réponses possibles.
 Juste choisis celle qui te ressemble le plus.`;
 
   app.innerHTML = `
-    <div class="title">${SON_PRENOM}…</div>
+    ${goldNameHTML("goldName2")}
     ${animatedCard(text)}
     <div class="grid">
       <button class="soft" onclick="reponse('bien')">😄 Ça va super</button>
       <button class="soft" onclick="reponse('fatigue')">😮‍💨 Bof / fatiguée</button>
     </div>
   `;
+
   bindFancyClicks();
+  setTimeout(paintNameEverywhere, 200);
 }
 
 function reponse(type){
@@ -609,6 +625,7 @@ je décline toute responsabilité 😌
 Dis-moi juste un petit moment cool de ta journée.`;
 
     app.innerHTML = `
+      ${goldNameHTML("goldName2")}
       <div class="title">Ça, c’est une bonne nouvelle 😄</div>
       ${animatedCard(text)}
       <div class="grid">
@@ -628,6 +645,7 @@ Dis-moi juste :
 qu’est-ce qui t’a volé ton énergie ?`;
 
     app.innerHTML = `
+      ${goldNameHTML("goldName2")}
       <div class="title">Message reçu.</div>
       ${animatedCard(text)}
       <div class="grid">
@@ -637,7 +655,9 @@ qu’est-ce qui t’a volé ton énergie ?`;
       <div class="hint">Petit check-in, grand sourire.</div>
     `;
   }
+
   bindFancyClicks();
+  setTimeout(paintNameEverywhere, 200);
 }
 
 function copierBien(){
