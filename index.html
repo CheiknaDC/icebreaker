@@ -99,7 +99,7 @@ body{
     max(14px, env(safe-area-inset-left));
 }
 
-/* ✅ Carte plus compacte iPhone */
+/* ✅ Carte compacte iPhone */
 .container{
   width: min(560px, 92vw);
   background: linear-gradient(180deg, rgba(255,255,255,0.085), rgba(255,255,255,0.04));
@@ -113,7 +113,7 @@ body{
   overflow:hidden;
 }
 
-/* Vague */
+/* 💡 Vague lumineuse */
 .container .shine{
   position:absolute;
   inset:0;
@@ -159,6 +159,7 @@ body{
   mix-blend-mode: screen;
 }
 
+/* petit badge */
 .pill{
   display:inline-flex;
   gap:8px;
@@ -171,7 +172,7 @@ body{
   margin-bottom:8px;
 }
 
-/* ✍️ Titres manuscrits lisibles */
+/* ✍️ Titres manuscrits */
 .title{
   font-family: "Dancing Script", cursive;
   font-weight: 700;
@@ -204,7 +205,7 @@ body{
   letter-spacing: 0.2px;
 }
 
-/* Animation lignes */
+/* 🎬 Animation lignes */
 .line{
   opacity:0;
   transform: translateY(10px);
@@ -212,10 +213,11 @@ body{
 }
 @keyframes lineIn{ to{ opacity:1; transform: translateY(0); } }
 
-.grid{ display:grid; gap:10px; margin-top:12px; }
-
+/* mini tap */
 .tap{ animation: tap 170ms ease-out; }
 @keyframes tap{ 0%{transform:scale(1)} 50%{transform:scale(.985)} 100%{transform:scale(1)} }
+
+.grid{ display:grid; gap:10px; margin-top:12px; }
 
 button{
   font-family: Inter, -apple-system, system-ui, Arial, sans-serif;
@@ -227,13 +229,11 @@ button{
   font-weight:700;
   transition: transform .18s ease, filter .18s ease, background .18s ease;
 }
-
 .main{
   background: rgba(255,255,255,0.92);
   color:black;
 }
 .main:hover{ transform: translateY(-1px) scale(1.01); filter: brightness(1.02); }
-
 .soft{
   background: rgba(255,255,255,0.10);
   color:white;
@@ -243,10 +243,49 @@ button{
 
 .hint{ margin-top:8px; opacity:.68; font-size:12px; }
 
+/* 🟡 NOM EN OR + scintillement */
+.gold-name{
+  font-family: "Dancing Script", cursive;
+  font-weight: 700;
+  font-size: clamp(26px, 6vw, 36px);
+  margin: 2px 0 10px;
+  min-height: 44px;
+  letter-spacing: 0.4px;
+
+  background: linear-gradient(
+    90deg,
+    #fff6cc 0%,
+    #ffd700 20%,
+    #ffcc33 40%,
+    #fff1a8 60%,
+    #ffd700 80%,
+    #fff6cc 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  text-shadow:
+    0 0 8px rgba(255,215,0,0.35),
+    0 0 18px rgba(255,215,0,0.25);
+}
+
+/* shimmer léger */
+.gold-name.shimmer{
+  animation: goldShimmer 2.4s ease-in-out infinite;
+}
+@keyframes goldShimmer{
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 @media (prefers-reduced-motion: reduce){
   .lights{ animation:none; }
   .line{ opacity:1; transform:none; animation:none; }
   .container.shine-run .shine{ animation:none; opacity:0; }
+  .gold-name.shimmer{ animation:none; }
 }
 </style>
 </head>
@@ -305,7 +344,7 @@ window.addEventListener("resize", resizeAll, { passive:true });
 /* =========================
    🌸 Petals
    ========================= */
-const PETAL_COUNT = () => Math.floor(Math.max(26, Math.min(58, W * 0.085))); // léger pour iPhone
+const PETAL_COUNT = () => Math.floor(Math.max(26, Math.min(58, W * 0.085)));
 let petals = [];
 function makePetal(){
   const size = rand(10, 20);
@@ -357,7 +396,7 @@ function drawPetal(p){
 /* =========================
    ✨ Bokeh
    ========================= */
-const BOKEH_COUNT = () => Math.floor(Math.max(10, Math.min(18, W * 0.02))); // léger pour iPhone
+const BOKEH_COUNT = () => Math.floor(Math.max(10, Math.min(18, W * 0.02)));
 let bokehs = [];
 function makeBokeh(){
   const r = rand(18, 54);
@@ -451,7 +490,7 @@ function loop(now){
 requestAnimationFrame(loop);
 
 /* =========================
-   App (texte + animations)
+   App
    ========================= */
 const SON_PRENOM = "Bambi";
 const app = document.getElementById("app");
@@ -486,6 +525,27 @@ function bindFancyClicks(){
   });
 }
 
+/* ✍️ Écriture lettre par lettre + shimmer */
+function writeGoldName(text){
+  const el = document.getElementById("goldName");
+  if(!el) return;
+  el.textContent = "";
+  el.classList.remove("shimmer");
+  let i = 0;
+
+  function write(){
+    if(i < text.length){
+      el.textContent += text[i];
+      i++;
+      setTimeout(write, 95); // vitesse
+    }else{
+      // démarre le scintillement une fois écrit
+      el.classList.add("shimmer");
+    }
+  }
+  write();
+}
+
 function accueil(){
   const text =
 `Je me suis demandé comment tu allais.
@@ -500,10 +560,10 @@ Tu peux ouvrir.`;
   app.innerHTML = `
     <div class="pill">✨ Un petit instant</div>
 
-    <!-- ✅ Phrase déplacée sur l'accueil -->
     <div class="title">Salam la plus belle des Allemandes 🇩🇪✨</div>
 
-    <div class="sub">${SON_PRENOM}…</div>
+    <!-- 🟡 Bambi en or -->
+    <div class="gold-name" id="goldName"></div>
 
     ${animatedCard(text)}
     <div class="grid">
@@ -511,7 +571,9 @@ Tu peux ouvrir.`;
     </div>
     <div class="hint">Simple, doux… et rapide.</div>
   `;
+
   bindFancyClicks();
+  setTimeout(()=> writeGoldName(SON_PRENOM + "..."), 350);
 }
 
 function pagePrincipale(){
@@ -523,7 +585,6 @@ Alors j’ai laissé deux petites réponses possibles.
 Juste choisis celle qui te ressemble le plus.`;
 
   app.innerHTML = `
-    <div class="pill">💬 Prendre de tes nouvelles</div>
     <div class="title">${SON_PRENOM}…</div>
     ${animatedCard(text)}
     <div class="grid">
@@ -548,7 +609,6 @@ je décline toute responsabilité 😌
 Dis-moi juste un petit moment cool de ta journée.`;
 
     app.innerHTML = `
-      <div class="pill">🌸 Dernière page</div>
       <div class="title">Ça, c’est une bonne nouvelle 😄</div>
       ${animatedCard(text)}
       <div class="grid">
@@ -568,7 +628,6 @@ Dis-moi juste :
 qu’est-ce qui t’a volé ton énergie ?`;
 
     app.innerHTML = `
-      <div class="pill">🌙 Dernière page</div>
       <div class="title">Message reçu.</div>
       ${animatedCard(text)}
       <div class="grid">
