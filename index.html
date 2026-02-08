@@ -5,281 +5,120 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Un petit instant ✨</title>
 
-<!-- ✍️ Manuscrite lisible + UI -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --bg1:#050b18;
-  --bg2:#020617;
-  --border: rgba(255,255,255,0.14);
-  --shadow: 0 28px 90px rgba(0,0,0,0.75);
-}
-
+:root{ --bg1:#050b18; --bg2:#020617; --border:rgba(255,255,255,.14); --shadow:0 28px 90px rgba(0,0,0,.75); }
 *{ box-sizing:border-box; }
-
 body{
-  margin:0;
-  font-family: Inter, -apple-system, system-ui, Arial, sans-serif;
-  color:white;
-  height:100vh;
-  overflow:hidden;
+  margin:0; font-family:Inter,-apple-system,system-ui,Arial,sans-serif; color:#fff;
+  height:100vh; overflow:hidden;
   background: radial-gradient(circle at top, var(--bg1), var(--bg2));
 }
-
-/* 🌸 Pluie de fleurs */
-#petals{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-  display:block;
-  z-index:0;
-}
-
-/* ✨ Bokeh (bulles) */
-#bokeh{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-  display:block;
-  z-index:1;
-  pointer-events:none;
-  opacity:0.68;
-}
-
-/* ✨ Jeux de lumière */
+#petals{ position:fixed; inset:0; width:100%; height:100%; z-index:0; }
+#bokeh{ position:fixed; inset:0; width:100%; height:100%; z-index:1; pointer-events:none; opacity:.66; }
 .lights{
-  position:fixed;
-  inset:-20vmax;
-  z-index:2;
-  pointer-events:none;
-  filter: blur(24px);
-  opacity:0.85;
-  animation: drift 10s ease-in-out infinite alternate;
+  position:fixed; inset:-20vmax; z-index:2; pointer-events:none; filter:blur(24px); opacity:.85;
+  animation:drift 10s ease-in-out infinite alternate;
   background:
     radial-gradient(closest-side at 18% 22%, rgba(168,85,247,0.25), transparent 55%),
     radial-gradient(closest-side at 85% 20%, rgba(34,197,94,0.18), transparent 55%),
     radial-gradient(closest-side at 70% 82%, rgba(59,130,246,0.14), transparent 55%),
     radial-gradient(closest-side at 30% 80%, rgba(251,191,36,0.10), transparent 55%);
 }
-@keyframes drift{
-  from{ transform: translate3d(-2%, -1%, 0) scale(1.02); }
-  to  { transform: translate3d( 2%,  1%, 0) scale(1.06); }
-}
-
-/* Grain */
+@keyframes drift{ from{transform:translate3d(-2%,-1%,0) scale(1.02)} to{transform:translate3d(2%,1%,0) scale(1.06)} }
 .grain{
-  position:fixed;
-  inset:0;
-  z-index:3;
-  pointer-events:none;
-  opacity:0.10;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
-  background-size:220px 220px;
-  mix-blend-mode: overlay;
+  position:fixed; inset:0; z-index:3; pointer-events:none; opacity:.10;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+  background-size:220px 220px; mix-blend-mode:overlay;
 }
-
-/* ✅ iPhone safe-area + centrage */
 .wrap{
-  position:relative;
-  z-index:4;
-  height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:
-    max(14px, env(safe-area-inset-top))
-    max(14px, env(safe-area-inset-right))
-    max(14px, env(safe-area-inset-bottom))
-    max(14px, env(safe-area-inset-left));
+  position:relative; z-index:4; height:100vh; display:flex; align-items:center; justify-content:center;
+  padding:max(14px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) max(14px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
 }
-
-/* ✅ Carte compacte iPhone */
 .container{
-  width: min(560px, 92vw);
-  background: linear-gradient(180deg, rgba(255,255,255,0.085), rgba(255,255,255,0.04));
-  border:1px solid var(--border);
-  border-radius:24px;
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(14px);
-  padding: 18px;
-  text-align:center;
-  position:relative;
-  overflow:hidden;
+  width:min(560px, 92vw);
+  background:linear-gradient(180deg, rgba(255,255,255,0.085), rgba(255,255,255,0.04));
+  border:1px solid var(--border); border-radius:24px; box-shadow:var(--shadow);
+  backdrop-filter:blur(14px);
+  padding:18px; text-align:center; position:relative; overflow:hidden;
 }
-
-/* 💡 Vague lumineuse */
 .container .shine{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  opacity:0;
-  transform: translateX(-140%) rotate(10deg);
-  background: linear-gradient(90deg,
-    transparent 0%,
-    rgba(255,255,255,0.00) 35%,
-    rgba(255,255,255,0.22) 50%,
-    rgba(255,255,255,0.00) 65%,
-    transparent 100%);
-  filter: blur(2px);
+  position:absolute; inset:0; pointer-events:none; opacity:0;
+  transform:translateX(-140%) rotate(10deg);
+  background:linear-gradient(90deg, transparent 0%, rgba(255,255,255,0) 35%, rgba(255,255,255,.22) 50%, rgba(255,255,255,0) 65%, transparent 100%);
+  filter:blur(2px);
 }
-.container.shine-run .shine{
-  animation: shineMove 700ms ease-out forwards;
-}
+.container.shine-run .shine{ animation:shineMove 700ms ease-out forwards; }
 @keyframes shineMove{
-  0%   { opacity:0; transform: translateX(-140%) rotate(10deg); }
-  15%  { opacity:1; }
-  100% { opacity:0; transform: translateX(140%) rotate(10deg); }
+  0%{opacity:0; transform:translateX(-140%) rotate(10deg)}
+  15%{opacity:1}
+  100%{opacity:0; transform:translateX(140%) rotate(10deg)}
 }
-
-.container::before{
-  content:"";
-  position:absolute;
-  inset:-40% -30% auto -30%;
-  height:60%;
-  background: radial-gradient(closest-side, rgba(255,255,255,0.20), transparent 70%);
-  transform: rotate(-8deg);
-  opacity:0.18;
-  pointer-events:none;
-}
-.container::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:24px;
-  pointer-events:none;
-  background:
-    linear-gradient(90deg, rgba(255,182,193,0.10), transparent 22%, transparent 78%, rgba(168,85,247,0.12));
-  opacity:0.60;
-  mix-blend-mode: screen;
-}
-
-/* petit badge */
 .pill{
-  display:inline-flex;
-  gap:8px;
-  align-items:center;
-  padding:7px 11px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.16);
-  background: rgba(0,0,0,.18);
-  font-size:12px;
-  margin-bottom:8px;
+  display:inline-flex; gap:8px; align-items:center;
+  padding:7px 11px; border-radius:999px; border:1px solid rgba(255,255,255,.16);
+  background:rgba(0,0,0,.18); font-size:12px; margin-bottom:8px;
 }
-
-/* ✍️ Titres manuscrits */
 .title{
-  font-family: "Dancing Script", cursive;
-  font-weight: 700;
-  font-size: clamp(30px, 7vw, 42px);
-  margin: 8px 0 6px;
-  text-shadow: 0 0 22px rgba(255,255,255,0.18);
+  font-family:"Dancing Script", cursive; font-weight:700;
+  font-size:clamp(30px, 7vw, 42px);
+  margin:8px 0 6px; text-shadow:0 0 22px rgba(255,255,255,0.18);
 }
-
-/* sous-texte */
-.sub{
-  opacity:.90;
-  font-size:14px;
-  margin-bottom:10px;
-  line-height:1.55;
-}
-
-/* ✍️ Carte manuscrite lisible */
 .card{
-  text-align:left;
-  padding:14px;
-  border-radius:18px;
-  background: rgba(0,0,0,0.14);
-  border:1px solid rgba(255,255,255,0.12);
-  box-shadow: 0 14px 46px rgba(0,0,0,0.34);
-
-  font-family: "Dancing Script", cursive;
-  font-weight: 600;
-  font-size: clamp(18px, 4.6vw, 22px);
-  line-height: 1.55;
-  letter-spacing: 0.2px;
+  text-align:left; padding:14px; border-radius:18px;
+  background:rgba(0,0,0,0.14); border:1px solid rgba(255,255,255,0.12);
+  box-shadow:0 14px 46px rgba(0,0,0,0.34);
+  font-family:"Dancing Script", cursive; font-weight:600;
+  font-size:clamp(18px, 4.6vw, 22px);
+  line-height:1.55; letter-spacing:.2px;
 }
-
-/* 🎬 Animation lignes */
-.line{
-  opacity:0;
-  transform: translateY(10px);
-  animation: lineIn .55s ease forwards;
-}
-@keyframes lineIn{ to{ opacity:1; transform: translateY(0); } }
-
-/* mini tap */
-.tap{ animation: tap 170ms ease-out; }
+.line{ opacity:0; transform:translateY(10px); animation:lineIn .55s ease forwards; }
+@keyframes lineIn{ to{ opacity:1; transform:translateY(0);} }
+.grid{ display:grid; gap:10px; margin-top:12px; }
+.tap{ animation:tap 170ms ease-out; }
 @keyframes tap{ 0%{transform:scale(1)} 50%{transform:scale(.985)} 100%{transform:scale(1)} }
 
-.grid{ display:grid; gap:10px; margin-top:12px; }
-
 button{
-  font-family: Inter, -apple-system, system-ui, Arial, sans-serif;
-  padding:14px;
-  border-radius:16px;
-  border:none;
-  font-size:16px;
-  cursor:pointer;
-  font-weight:700;
-  transition: transform .18s ease, filter .18s ease, background .18s ease;
+  font-family:Inter,-apple-system,system-ui,Arial,sans-serif;
+  padding:14px; border-radius:16px; border:none;
+  font-size:16px; cursor:pointer; font-weight:700;
+  transition:transform .18s ease, filter .18s ease, background .18s ease;
 }
-.main{
-  background: rgba(255,255,255,0.92);
-  color:black;
-}
-.main:hover{ transform: translateY(-1px) scale(1.01); filter: brightness(1.02); }
-.soft{
-  background: rgba(255,255,255,0.10);
-  color:white;
-  border:1px solid rgba(255,255,255,0.18);
-}
-.soft:hover{ transform: translateY(-1px) scale(1.01); background: rgba(255,255,255,0.14); }
+.main{ background:rgba(255,255,255,0.92); color:#000; }
+.main:hover{ transform:translateY(-1px) scale(1.01); filter:brightness(1.02); }
+.soft{ background:rgba(255,255,255,0.10); color:#fff; border:1px solid rgba(255,255,255,0.18); }
+.soft:hover{ transform:translateY(-1px) scale(1.01); background:rgba(255,255,255,0.14); }
 
-.hint{ margin-top:8px; opacity:.68; font-size:12px; }
-
-/* 🟡 NOM EN OR + scintillement */
 .gold-name{
-  font-family: "Dancing Script", cursive;
-  font-weight: 700;
-  font-size: clamp(26px, 6vw, 36px);
-  margin: 2px 0 10px;
-  min-height: 44px;
-  letter-spacing: 0.4px;
-
-  background: linear-gradient(
-    90deg,
-    #fff6cc 0%,
-    #ffd700 20%,
-    #ffcc33 40%,
-    #fff1a8 60%,
-    #ffd700 80%,
-    #fff6cc 100%
-  );
-  background-size: 220% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-
-  text-shadow:
-    0 0 8px rgba(255,215,0,0.35),
-    0 0 18px rgba(255,215,0,0.25);
+  font-family:"Dancing Script", cursive; font-weight:700;
+  font-size:clamp(26px, 6vw, 36px);
+  margin:2px 0 10px; min-height:44px; letter-spacing:.4px;
+  background:linear-gradient(90deg,#fff6cc 0%,#ffd700 20%,#ffcc33 40%,#fff1a8 60%,#ffd700 80%,#fff6cc 100%);
+  background-size:220% 100%;
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  text-shadow:0 0 8px rgba(255,215,0,.35), 0 0 18px rgba(255,215,0,.25);
 }
+.gold-name.shimmer{ animation:goldShimmer 2.4s ease-in-out infinite; }
+@keyframes goldShimmer{ 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
 
-/* shimmer léger */
-.gold-name.shimmer{
-  animation: goldShimmer 2.4s ease-in-out infinite;
+textarea{
+  width:100%;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.16);
+  background:rgba(0,0,0,0.18);
+  color:#fff;
+  padding:12px 12px;
+  font-size:16px;
+  line-height:1.4;
+  outline:none;
+  resize:none;
+  min-height:96px;
 }
-@keyframes goldShimmer{
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+.smallNote{ opacity:.7; font-size:12px; margin-top:8px; }
+.hint{ margin-top:8px; opacity:.68; font-size:12px; }
 
 @media (prefers-reduced-motion: reduce){
   .lights{ animation:none; }
@@ -304,197 +143,18 @@ button{
 </div>
 
 <script>
-/* =========================
-   Utils
-   ========================= */
+/* ✅ Mets TON numéro ici (format international, sans +, sans espaces)
+   Exemple FR: 33612345678  |  DE: 4917612345678 */
+const TON_NUMERO_WHATSAPP = "33658998092";
+
+const SON_PRENOM = "Bambi";
+const app = document.getElementById("app");
+const container = document.getElementById("container");
+
 function rand(a,b){ return a + Math.random()*(b-a); }
 function escapeHtml(str){
   return str.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
 }
-
-/* =========================
-   Canvas setup
-   ========================= */
-const petalsCanvas = document.getElementById("petals");
-const petalsCtx = petalsCanvas.getContext("2d", { alpha:true });
-
-const bokehCanvas = document.getElementById("bokeh");
-const bokehCtx = bokehCanvas.getContext("2d", { alpha:true });
-
-let W=0,H=0,DPR=Math.min(2, window.devicePixelRatio || 1);
-
-function resizeAll(){
-  W = Math.floor(window.innerWidth);
-  H = Math.floor(window.innerHeight);
-
-  petalsCanvas.width  = Math.floor(W * DPR);
-  petalsCanvas.height = Math.floor(H * DPR);
-  petalsCanvas.style.width = W + "px";
-  petalsCanvas.style.height = H + "px";
-  petalsCtx.setTransform(DPR,0,0,DPR,0,0);
-
-  bokehCanvas.width  = Math.floor(W * DPR);
-  bokehCanvas.height = Math.floor(H * DPR);
-  bokehCanvas.style.width = W + "px";
-  bokehCanvas.style.height = H + "px";
-  bokehCtx.setTransform(DPR,0,0,DPR,0,0);
-}
-window.addEventListener("resize", resizeAll, { passive:true });
-
-/* =========================
-   🌸 Petals
-   ========================= */
-const PETAL_COUNT = () => Math.floor(Math.max(26, Math.min(58, W * 0.085)));
-let petals = [];
-function makePetal(){
-  const size = rand(10, 20);
-  return {
-    x: rand(0, W),
-    y: rand(-H, H),
-    s: size,
-    vy: rand(0.85, 2.0),
-    vx: rand(-0.20, 0.20),
-    rot: rand(0, Math.PI*2),
-    vr: rand(-0.02, 0.02),
-    sway: rand(0.6, 1.6),
-    phase: rand(0, Math.PI*2),
-    a: rand(0.35, 0.82),
-    hue: rand(320, 360)
-  };
-}
-function resetPetals(){
-  petals = [];
-  const n = PETAL_COUNT();
-  for(let i=0;i<n;i++) petals.push(makePetal());
-}
-function drawPetal(p){
-  petalsCtx.save();
-  petalsCtx.translate(p.x, p.y);
-  petalsCtx.rotate(p.rot);
-
-  const w = p.s * 0.75;
-  const h = p.s;
-
-  const grad = petalsCtx.createRadialGradient(0, -h*0.2, 0, 0, 0, h);
-  grad.addColorStop(0, `hsla(${p.hue}, 80%, 82%, ${p.a})`);
-  grad.addColorStop(1, `hsla(${p.hue}, 70%, 65%, ${p.a*0.55})`);
-
-  petalsCtx.fillStyle = grad;
-  petalsCtx.beginPath();
-  petalsCtx.moveTo(0, -h*0.6);
-  petalsCtx.quadraticCurveTo(w*0.9, -h*0.2, 0, h*0.6);
-  petalsCtx.quadraticCurveTo(-w*0.9, -h*0.2, 0, -h*0.6);
-  petalsCtx.closePath();
-  petalsCtx.fill();
-
-  petalsCtx.strokeStyle = `rgba(255,255,255,${p.a*0.12})`;
-  petalsCtx.lineWidth = 1;
-  petalsCtx.stroke();
-  petalsCtx.restore();
-}
-
-/* =========================
-   ✨ Bokeh
-   ========================= */
-const BOKEH_COUNT = () => Math.floor(Math.max(10, Math.min(18, W * 0.02)));
-let bokehs = [];
-function makeBokeh(){
-  const r = rand(18, 54);
-  return {
-    x: rand(0, W),
-    y: rand(0, H),
-    r,
-    vy: rand(-0.10, -0.30),
-    vx: rand(-0.05, 0.05),
-    a: rand(0.04, 0.11),
-    hue: rand(200, 330),
-    phase: rand(0, Math.PI*2),
-    ps: rand(0.006, 0.013)
-  };
-}
-function resetBokeh(){
-  bokehs = [];
-  const n = BOKEH_COUNT();
-  for(let i=0;i<n;i++) bokehs.push(makeBokeh());
-}
-
-/* init + loop */
-function init(){
-  resizeAll();
-  resetPetals();
-  resetBokeh();
-}
-init();
-
-let last = performance.now();
-function loop(now){
-  const dt = Math.min(32, now-last);
-  last = now;
-
-  // petals
-  petalsCtx.clearRect(0,0,W,H);
-  for(const p of petals){
-    p.phase += 0.01 * (dt/16);
-    p.rot += p.vr * (dt/16);
-    p.y += p.vy * (dt/16);
-    p.x += (p.vx + Math.sin(p.phase)*0.22*p.sway) * (dt/16);
-    drawPetal(p);
-
-    if(p.y > H + 40){
-      p.y = rand(-140, -20);
-      p.x = rand(0, W);
-      p.vy = rand(0.9, 2.1);
-      p.vx = rand(-0.20, 0.20);
-      p.s = rand(10, 20);
-      p.a = rand(0.35, 0.82);
-      p.hue = rand(320, 360);
-    }
-    if(p.x < -60) p.x = W + 60;
-    if(p.x > W + 60) p.x = -60;
-  }
-
-  // bokeh
-  bokehCtx.clearRect(0,0,W,H);
-  for(const b of bokehs){
-    b.phase += b.ps * (dt/16);
-    b.y += b.vy * (dt/16);
-    b.x += b.vx * (dt/16);
-
-    const pulse = 0.65 + 0.35*Math.sin(b.phase);
-    const a = b.a * pulse;
-
-    const g = bokehCtx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
-    g.addColorStop(0, `hsla(${b.hue}, 85%, 78%, ${a})`);
-    g.addColorStop(1, `hsla(${b.hue}, 85%, 78%, 0)`);
-
-    bokehCtx.fillStyle = g;
-    bokehCtx.beginPath();
-    bokehCtx.arc(b.x, b.y, b.r, 0, Math.PI*2);
-    bokehCtx.fill();
-
-    if(b.y < -b.r - 20){
-      b.y = H + b.r + 20;
-      b.x = rand(0, W);
-      b.r = rand(18, 54);
-      b.vy = rand(-0.10, -0.30);
-      b.vx = rand(-0.05, 0.05);
-      b.a = rand(0.04, 0.11);
-      b.hue = rand(200, 330);
-      b.phase = rand(0, Math.PI*2);
-      b.ps = rand(0.006, 0.013);
-    }
-  }
-
-  requestAnimationFrame(loop);
-}
-requestAnimationFrame(loop);
-
-/* =========================
-   App
-   ========================= */
-const SON_PRENOM = "Bambi";
-const app = document.getElementById("app");
-const container = document.getElementById("container");
 
 function animatedCard(text, baseDelay=0){
   const lines = text.split("\n");
@@ -525,42 +185,170 @@ function bindFancyClicks(){
   });
 }
 
-/* ✅ HTML du prénom en or partout */
-function goldNameHTML(id){
-  return `<div class="gold-name" id="${id}"></div>`;
-}
+function goldNameHTML(id){ return `<div class="gold-name" id="${id}"></div>`; }
 
-/* ✍️ Écriture lettre par lettre + shimmer */
 function writeGoldName(id, text){
   const el = document.getElementById(id);
   if(!el) return;
-
   el.textContent = "";
   el.classList.remove("shimmer");
   let i = 0;
-
   function write(){
     if(i < text.length){
       el.textContent += text[i];
       i++;
-      setTimeout(write, 95);
+      setTimeout(write, 90);
     }else{
       el.classList.add("shimmer");
     }
   }
   write();
 }
-
-/* helper : écrit Bambi... sur une page donnée */
 function paintNameEverywhere(){
-  const ids = ["goldName1","goldName2"];
-  ids.forEach(id=>{
-    if(document.getElementById(id)){
-      writeGoldName(id, SON_PRENOM + "...");
-    }
+  ["goldName1","goldName2","goldName3"].forEach(id=>{
+    if(document.getElementById(id)) writeGoldName(id, SON_PRENOM + "...");
   });
 }
 
+/* =========================
+   Canvas FX (petals + bokeh)
+   ========================= */
+const petalsCanvas = document.getElementById("petals");
+const petalsCtx = petalsCanvas.getContext("2d", { alpha:true });
+const bokehCanvas = document.getElementById("bokeh");
+const bokehCtx = bokehCanvas.getContext("2d", { alpha:true });
+
+let W=0,H=0,DPR=Math.min(2, window.devicePixelRatio || 1);
+
+function resizeAll(){
+  W = Math.floor(window.innerWidth);
+  H = Math.floor(window.innerHeight);
+
+  petalsCanvas.width  = Math.floor(W * DPR);
+  petalsCanvas.height = Math.floor(H * DPR);
+  petalsCanvas.style.width = W + "px";
+  petalsCanvas.style.height = H + "px";
+  petalsCtx.setTransform(DPR,0,0,DPR,0,0);
+
+  bokehCanvas.width  = Math.floor(W * DPR);
+  bokehCanvas.height = Math.floor(H * DPR);
+  bokehCanvas.style.width = W + "px";
+  bokehCanvas.style.height = H + "px";
+  bokehCtx.setTransform(DPR,0,0,DPR,0,0);
+}
+window.addEventListener("resize", resizeAll, { passive:true });
+
+const PETAL_COUNT = () => Math.floor(Math.max(26, Math.min(58, W * 0.085)));
+let petals = [];
+function makePetal(){
+  const size = rand(10, 20);
+  return { x:rand(0,W), y:rand(-H,H), s:size, vy:rand(.85,2.0), vx:rand(-.20,.20),
+    rot:rand(0,Math.PI*2), vr:rand(-.02,.02), sway:rand(.6,1.6), phase:rand(0,Math.PI*2),
+    a:rand(.35,.82), hue:rand(320,360)
+  };
+}
+function resetPetals(){ petals=[]; for(let i=0;i<PETAL_COUNT();i++) petals.push(makePetal()); }
+function drawPetal(p){
+  petalsCtx.save(); petalsCtx.translate(p.x,p.y); petalsCtx.rotate(p.rot);
+  const w=p.s*.75, h=p.s;
+  const grad=petalsCtx.createRadialGradient(0,-h*.2,0,0,0,h);
+  grad.addColorStop(0,`hsla(${p.hue},80%,82%,${p.a})`);
+  grad.addColorStop(1,`hsla(${p.hue},70%,65%,${p.a*0.55})`);
+  petalsCtx.fillStyle=grad;
+  petalsCtx.beginPath();
+  petalsCtx.moveTo(0,-h*.6);
+  petalsCtx.quadraticCurveTo(w*.9,-h*.2,0,h*.6);
+  petalsCtx.quadraticCurveTo(-w*.9,-h*.2,0,-h*.6);
+  petalsCtx.closePath(); petalsCtx.fill();
+  petalsCtx.strokeStyle=`rgba(255,255,255,${p.a*0.12})`;
+  petalsCtx.lineWidth=1; petalsCtx.stroke();
+  petalsCtx.restore();
+}
+
+const BOKEH_COUNT = () => Math.floor(Math.max(10, Math.min(18, W * 0.02)));
+let bokehs = [];
+function makeBokeh(){
+  const r=rand(18,54);
+  return { x:rand(0,W), y:rand(0,H), r, vy:rand(-.10,-.30), vx:rand(-.05,.05),
+    a:rand(.04,.11), hue:rand(200,330), phase:rand(0,Math.PI*2), ps:rand(.006,.013)
+  };
+}
+function resetBokeh(){ bokehs=[]; for(let i=0;i<BOKEH_COUNT();i++) bokehs.push(makeBokeh()); }
+
+function initFX(){ resizeAll(); resetPetals(); resetBokeh(); }
+initFX();
+
+let last=performance.now();
+function loop(now){
+  const dt=Math.min(32, now-last); last=now;
+
+  petalsCtx.clearRect(0,0,W,H);
+  for(const p of petals){
+    p.phase += 0.01*(dt/16);
+    p.rot += p.vr*(dt/16);
+    p.y += p.vy*(dt/16);
+    p.x += (p.vx + Math.sin(p.phase)*0.22*p.sway) * (dt/16);
+    drawPetal(p);
+    if(p.y>H+40){ p.y=rand(-140,-20); p.x=rand(0,W); p.vy=rand(.9,2.1); p.vx=rand(-.20,.20); p.s=rand(10,20); p.a=rand(.35,.82); p.hue=rand(320,360); }
+    if(p.x<-60) p.x=W+60;
+    if(p.x>W+60) p.x=-60;
+  }
+
+  bokehCtx.clearRect(0,0,W,H);
+  for(const b of bokehs){
+    b.phase += b.ps*(dt/16);
+    b.y += b.vy*(dt/16);
+    b.x += b.vx*(dt/16);
+    const pulse=0.65 + 0.35*Math.sin(b.phase);
+    const a=b.a*pulse;
+    const g=bokehCtx.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);
+    g.addColorStop(0,`hsla(${b.hue},85%,78%,${a})`);
+    g.addColorStop(1,`hsla(${b.hue},85%,78%,0)`);
+    bokehCtx.fillStyle=g;
+    bokehCtx.beginPath(); bokehCtx.arc(b.x,b.y,b.r,0,Math.PI*2); bokehCtx.fill();
+    if(b.y < -b.r-20){
+      b.y=H+b.r+20; b.x=rand(0,W); b.r=rand(18,54); b.vy=rand(-.10,-.30); b.vx=rand(-.05,.05);
+      b.a=rand(.04,.11); b.hue=rand(200,330); b.phase=rand(0,Math.PI*2); b.ps=rand(.006,.013);
+    }
+  }
+
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+/* =========================
+   Réponses -> WhatsApp / SMS / Snap
+   ========================= */
+function buildMessage(){
+  const t = document.getElementById("replyText")?.value?.trim() || "";
+  // petit message “cadre” (tu peux le modifier)
+  return `Bambi…\n\n${t}`;
+}
+
+function openWhatsApp(){
+  const msg = buildMessage();
+  const url = `https://wa.me/${TON_NUMERO_WHATSAPP}?text=${encodeURIComponent(msg)}`;
+  window.open(url, "_blank");
+}
+
+function openSMS(){
+  const msg = buildMessage();
+  // iPhone: sms:&body=...
+  const url = `sms:&body=${encodeURIComponent(msg)}`;
+  window.location.href = url;
+}
+
+async function copyAndOpenSnap(){
+  const msg = buildMessage();
+  try{ await navigator.clipboard.writeText(msg); }catch(e){}
+  // Ouvre Snapchat si possible (sinon rien ne se passe, mais le texte est copié)
+  window.location.href = "snapchat://";
+  alert("Message copié ✅\nTu peux le coller dans Snapchat.");
+}
+
+/* =========================
+   Pages
+   ========================= */
 function accueil(){
   const text =
 `Je me suis demandé comment tu allais.
@@ -574,20 +362,16 @@ Tu peux ouvrir.`;
 
   app.innerHTML = `
     <div class="pill">✨ Un petit instant</div>
-
     <div class="title">Salam la plus belle des Allemandes 🇩🇪✨</div>
-
     ${goldNameHTML("goldName1")}
-
     ${animatedCard(text)}
     <div class="grid">
       <button class="main" onclick="pagePrincipale()">Ouvrir</button>
     </div>
     <div class="hint">Simple, doux… et rapide.</div>
   `;
-
   bindFancyClicks();
-  setTimeout(paintNameEverywhere, 250);
+  setTimeout(paintNameEverywhere, 200);
 }
 
 function pagePrincipale(){
@@ -606,14 +390,12 @@ Juste choisis celle qui te ressemble le plus.`;
       <button class="soft" onclick="reponse('fatigue')">😮‍💨 Bof / fatiguée</button>
     </div>
   `;
-
   bindFancyClicks();
   setTimeout(paintNameEverywhere, 200);
 }
 
 function reponse(type){
-  if(type === "bien"){
-    const text =
+  const textBien =
 `C’est exactement ce que je voulais entendre.
 
 Si tu vas bien… alors tout va bien.
@@ -624,18 +406,7 @@ je décline toute responsabilité 😌
 
 Dis-moi juste un petit moment cool de ta journée.`;
 
-    app.innerHTML = `
-      ${goldNameHTML("goldName2")}
-      <div class="title">Ça, c’est une bonne nouvelle 😄</div>
-      ${animatedCard(text)}
-      <div class="grid">
-        <button class="main" onclick="copierBien()">Copier une réponse WhatsApp 💬</button>
-        <button class="soft" onclick="accueil()">Rejouer</button>
-      </div>
-      <div class="hint">Tu copies, tu colles, et c’est parfait.</div>
-    `;
-  } else {
-    const text =
+  const textFat =
 `Ok… alors je vais faire comme si je n’avais rien vu.
 
 Mais entre nous,
@@ -644,29 +415,25 @@ la fatigue a choisi la mauvaise personne aujourd’hui 😌
 Dis-moi juste :
 qu’est-ce qui t’a volé ton énergie ?`;
 
-    app.innerHTML = `
-      ${goldNameHTML("goldName2")}
-      <div class="title">Message reçu.</div>
-      ${animatedCard(text)}
-      <div class="grid">
-        <button class="main" onclick="copierFatigue()">Copier une réponse WhatsApp 💬</button>
-        <button class="soft" onclick="accueil()">Rejouer</button>
-      </div>
-      <div class="hint">Petit check-in, grand sourire.</div>
-    `;
-  }
+  const text = (type==="bien") ? textBien : textFat;
+
+  app.innerHTML = `
+    ${goldNameHTML("goldName3")}
+    ${animatedCard(text)}
+    <div class="smallNote">✍️ Tu peux répondre ici (et l’envoyer directement)</div>
+    <textarea id="replyText" placeholder="Écris ici… (un petit message suffit)"></textarea>
+
+    <div class="grid">
+      <button class="main" onclick="openWhatsApp()">Envoyer sur WhatsApp 💬</button>
+      <button class="soft" onclick="openSMS()">Envoyer par SMS 📩</button>
+      <button class="soft" onclick="copyAndOpenSnap()">Copier + ouvrir Snapchat 👻</button>
+      <button class="soft" onclick="accueil()">Rejouer</button>
+    </div>
+    <div class="hint">WhatsApp/SMS peuvent s’ouvrir avec le message déjà prêt.</div>
+  `;
 
   bindFancyClicks();
   setTimeout(paintNameEverywhere, 200);
-}
-
-function copierBien(){
-  navigator.clipboard.writeText("Ça va super 😄 Et toi ?");
-  alert("Message copié ✅");
-}
-function copierFatigue(){
-  navigator.clipboard.writeText("Je suis un peu fatiguée 😮‍💨 Et toi ?");
-  alert("Message copié ✅");
 }
 
 accueil();
